@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор питания</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+       
+        
+        <input type="text" id="search-input" placeholder="Поиск продукта...">
+        <div id="suggestions" class="suggestions"></div>
+    </header>
+    <main>
+        
+        <div id="products"></div>
+        <section id="meals">
+            <h2>Завтрак</h2>
+            <div id="breakfast-products" class="meal-products"></div>
+            <div id="breakfast-total" class="meal-total"></div>
+
+            <h2>Обед</h2>
+            <div id="lunch-products" class="meal-products"></div>
+            <div id="lunch-total" class="meal-total"></div>
+
+            <h2>Ужин</h2>
+            <div id="dinner-products" class="meal-products"></div>
+            <div id="dinner-total" class="meal-total"></div>
+        </section>
+        <section id="daily-summary">
+            <h2>Итог за день</h2>
+            <div>
+                <p>Калории: <span id="daily-calories">0.00</span> ккал</p>
+                <p>Белки: <span id="daily-protein">0.00</span> г</p>
+                <p>Жиры: <span id="daily-fats">0.00</span> г</p>
+                <p>Углеводы: <span id="daily-carbs">0.00</span> г</p>
+                <p>Клетчатка: <span id="daily-fiber">0.00</span> г</p>
+                <p>Вода: <span id="daily-water">0.00</span> мл</p>
+            </div>
+            
+        </section>
+
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
