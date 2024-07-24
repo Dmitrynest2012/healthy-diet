@@ -96,5 +96,23 @@
       "столовая ложка": 7,
       "шт.": 100
     }
+  },
+  {
+    "id": "6",
+    "name": "Авокадо",
+    "image": "avocado.png",
+    "weightDefault": 100,
+    "calories": 160,
+    "protein": 2,
+    "carbs": 8.5,
+    "fats": 14.7,
+    "waterContent": 73.2,
+    "fiberContent": 7,
+    "servings": {
+      "чайная ложка": 4.75,
+      "столовая ложка": 14.25,
+      "шт.": 100
+    }
   }
 ]
+
