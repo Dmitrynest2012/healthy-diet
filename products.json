@@ -1,0 +1,100 @@
+[
+
+
+  
+
+
+
+
+
+
+
+
+  {
+    "id": "1",
+    "name": "Водородная вода",
+    "image": "charged water.png",
+    "weightDefault": 250,
+    "calories": 0,
+    "protein": 0,
+    "carbs": 0,
+    "fats": 0,
+    "waterContent": 100,
+    "fiberContent": 0,
+    "servings": {
+      "чайная ложка": 5,
+      "столовая ложка": 15,
+      "шт.": 250
+    }
+  },
+  {
+    "id": "2",
+    "name": "Льняное масло холодного отжима",
+    "image": "cold pressed linseed oil.png",
+    "weightDefault": 100,
+    "calories": 884,
+    "protein": 0,
+    "carbs": 0,
+    "fats": 100,
+    "waterContent": 0,
+    "fiberContent": 0,
+    "servings": {
+      "чайная ложка": 4.8,
+      "столовая ложка": 14.2,
+      "шт.": 100
+    }
+  },
+  {
+    "id": "3",
+    "name": "Пророщенная зеленая гречка",
+    "image": "sprouted buckwheat.png",
+    "weightDefault": 100,
+    "calories": 343,
+    "protein": 13.3,
+    "carbs": 71.5,
+    "fats": 3.4,
+    "waterContent": 57,
+    "fiberContent": 5.7,
+    "servings": {
+      "мерная ложка": 20,
+      "чайная ложка": 4,
+      "столовая ложка": 12.5,
+      "шт.": 100
+    }
+  },
+  {
+    "id": "4",
+    "name": "Пророщенная зеленая чечевица",
+    "image": "sprouted lentils.png",
+    "weightDefault": 100,
+    "calories": 105,
+    "protein": 24.6,
+    "carbs": 22.14,
+    "fats": 1.1,
+    "waterContent": 67.3,
+    "fiberContent": 8,
+    "servings": {
+      "мерная ложка": 15,
+      "чайная ложка": 5,
+      "столовая ложка": 15,
+      "шт.": 100
+    }
+  },
+  {
+    "id": "5",
+    "name": "Капуста белокочанная",
+    "image": "white cabbage.png",
+    "weightDefault": 100,
+    "calories": 28,
+    "protein": 1.8,
+    "carbs": 4.7,
+    "fats": 0.2,
+    "waterContent": 90.4,
+    "fiberContent": 2,
+    "servings": {
+      "чайная ложка": 2.5,
+      "столовая ложка": 7,
+      "шт.": 100
+    }
+  }
+]

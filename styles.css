@@ -1,0 +1,141 @@
+html {
+    font-family: 'Play';
+
+}
+
+/* styles.css */
+header {
+    padding: 10px;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #ddd;
+    position: relative;
+}
+
+#search-input {
+    width: 300px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.suggestions {
+    position: absolute;
+    top: 50px;
+    width: 300px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.suggestion-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f0f0;
+}
+
+.product-card {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 1px solid #ddd;
+    padding: 20px;
+    max-width: 50%;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.product-card img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.product-card select,
+.product-card input {
+    display: block;
+    margin: 10px 0;
+}
+
+.meal-products {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.meal-total {
+    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: #f8f8f8;
+    
+}
+
+.product-entry {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid #ddd;
+
+}
+
+.product-entry span {
+    flex: 1;
+}
+
+
+.input {
+    font-family: 'Play';
+}
+
+
+
+
+
+
+
+/* Стили для таблиц в приемах пищи */
+.table-container {
+    margin-bottom: 20px;
+}
+
+.meal-products table, .meal-total table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
+
+.meal-products th, .meal-total th {
+    background-color: #f4f4f4;
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.meal-products td, .meal-total td {
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+.meal-products th, .meal-total th {
+    background-color: #f4f4f4;
+}
+
+.product-entry-item {
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+.remove-btn {
+            cursor: pointer;
+            color: red;
+        }
+        .draggable {
+            cursor: move;
+        }
+
+
