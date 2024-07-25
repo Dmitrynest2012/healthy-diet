@@ -14,11 +14,12 @@
     "id": "1",
     "name": "Водородная вода",
     "image": "charged water.png",
+    "description": "Дистиллированная, насыщенная шунгитом, структурированная, с отрицательным ОВП около - 400.",
     "weightDefault": 250,
     "calories": 0,
     "protein": 0,
-    "carbs": 0,
     "fats": 0,
+    "carbs": 0,
     "waterContent": 100,
     "fiberContent": 0,
     "servings": {
@@ -34,8 +35,8 @@
     "weightDefault": 100,
     "calories": 884,
     "protein": 0,
-    "carbs": 0,
     "fats": 100,
+    "carbs": 0,
     "waterContent": 0,
     "fiberContent": 0,
     "servings": {
@@ -51,8 +52,8 @@
     "weightDefault": 100,
     "calories": 343,
     "protein": 13.3,
-    "carbs": 71.5,
     "fats": 3.4,
+    "carbs": 71.5,
     "waterContent": 57,
     "fiberContent": 5.7,
     "servings": {
@@ -69,8 +70,8 @@
     "weightDefault": 100,
     "calories": 105,
     "protein": 24.6,
-    "carbs": 22.14,
     "fats": 1.1,
+    "carbs": 22.14,
     "waterContent": 67.3,
     "fiberContent": 8,
     "servings": {
@@ -87,8 +88,8 @@
     "weightDefault": 100,
     "calories": 28,
     "protein": 1.8,
-    "carbs": 4.7,
     "fats": 0.2,
+    "carbs": 4.7,
     "waterContent": 90.4,
     "fiberContent": 2,
     "servings": {
@@ -104,8 +105,8 @@
     "weightDefault": 100,
     "calories": 160,
     "protein": 2,
-    "carbs": 8.5,
     "fats": 14.7,
+    "carbs": 8.5,
     "waterContent": 73.2,
     "fiberContent": 7,
     "servings": {
@@ -115,4 +116,5 @@
     }
   }
 ]
+
 
