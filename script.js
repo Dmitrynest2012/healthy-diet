@@ -178,134 +178,158 @@ function checkAndOpenCalendar(mealType) {
         }
     }
 
-     // Отображение карточки продукта
-    function displayProductCard(product) {
-        productsDiv.innerHTML = '';
+    // Обновление значений питательных веществ с учетом метода обработки
+    const processingMethods = {
+        'Отсутствует': 1.0,
+        'Резка': 0.9,
+        'Пароварка': 0.8,
+        'Варка': 0.5,
+        'Жарка': 0.2
+    };
 
-        const card = document.createElement("div");
-        card.classList.add("product-card");
+    // Отображение карточки продукта
+function displayProductCard(product) {
+    productsDiv.innerHTML = '';
 
-        const updateServingsOptions = (productWeight) => {
-            return Object.keys(product.servings).map(serving => {
-                let servingWeight = serving === 'шт.' ? productWeight : product.servings[serving];
-                return `<option value="${serving}" ${serving === 'шт.' ? 'selected' : ''}>${serving} [${servingWeight} г]</option>`;
-            }).join('');
-        };
+    const card = document.createElement("div");
+    card.classList.add("product-card");
 
-        const mealsOptions = ["breakfast", "lunch", "dinner"].map(meal => 
-            `<option value="${meal}">${meal === 'breakfast' ? 'Завтрак' : meal === 'lunch' ? 'Обед' : 'Ужин'}</option>`
-        ).join('');
+    // Функция для обновления опций порций
+    const updateServingsOptions = (productWeight) => {
+        return Object.keys(product.servings).map(serving => {
+            let servingWeight = serving === 'шт.' ? productWeight : product.servings[serving];
+            return `<option value="${serving}" ${serving === 'шт.' ? 'selected' : ''}>${serving} [${servingWeight} г]</option>`;
+        }).join('');
+    };
 
-        const defaultWeight = product.weightDefault;
+    const mealsOptions = ["breakfast", "lunch", "dinner"].map(meal => 
+        `<option value="${meal}">${meal === 'breakfast' ? 'Завтрак' : meal === 'lunch' ? 'Обед' : 'Ужин'}</option>`
+    ).join('');
 
-        card.innerHTML = `
-            <img src="${product.image}" alt="${product.name}">
-            <div>
-                <h3>${product.name}</h3>
-                ${product.description ? `<p>${product.description}</p>` : ''}
-                <label>Введите вес продукта (граммы):
-                    <input type="number" class="product-weight" min="1" step="1" value="${defaultWeight}">
-                </label>
-                <p>Калории: <span class="calories-info">${product.calories}</span> ккал</p>
-                <p>Белки: <span class="protein-info">${product.protein}</span> г</p>
-                <p>Жиры: <span class="fats-info">${product.fats}</span> г</p>
-                <p>Углеводы: <span class="carbs-info">${product.carbs}</span> г</p>
-                <p>Содержание клетчатки: <span class="fiber-info">${product.fiberContent}</span> г</p>
-                <p>Содержание воды: <span class="water-info">0.00</span> мл</p>
-                <select class="serving-size">
-                    ${updateServingsOptions(defaultWeight)}
+    const defaultWeight = product.weightDefault;
+
+    // Создание HTML-кода карточки
+    card.innerHTML = `
+        <img src="${product.image}" alt="${product.name}">
+        <div>
+            <h3>${product.name}</h3>
+            ${product.description ? `<p>${product.description}</p>` : ''}
+            <label>Введите вес продукта (граммы):
+                <input type="number" class="product-weight" min="1" step="1" value="${defaultWeight}">
+            </label>
+            <p>Калории: <span class="calories-info">${product.calories}</span> ккал</p>
+            <p>Белки: <span class="protein-info">${product.protein}</span> г</p>
+            <p>Жиры: <span class="fats-info">${product.fats}</span> г</p>
+            <p>Углеводы: <span class="carbs-info">${product.carbs}</span> г</p>
+            <p>Содержание клетчатки: <span class="fiber-info">${product.fiberContent}</span> г</p>
+            <p>Содержание воды: <span class="water-info">0.00</span> мл</p>
+
+            <label>Метод обработки:
+                <select class="processing-method">
+                    ${Object.keys(processingMethods).map(method => 
+                        `<option value="${method}">${method}</option>`
+                    ).join('')}
                 </select>
-                <input type="number" class="serving-amount" placeholder="Количество порций" min="1" step="1">
-                <select class="meal-time">
-                    <option value="">Выберите прием пищи</option>
-                    ${mealsOptions}
-                </select>
-                <button class="add-to-meal">Добавить в прием пищи</button>
-            </div>
-        `;
-        productsDiv.appendChild(card);
+            </label>
 
-        const weightInput = card.querySelector(".product-weight");
-        const servingSizeSelect = card.querySelector(".serving-size");
-        const waterInfo = card.querySelector(".water-info");
-        const fiberInfo = card.querySelector(".fiber-info");
+            <select class="serving-size">
+                ${updateServingsOptions(defaultWeight)}
+            </select>
 
-        // Обновление информации о питательных веществах при изменении веса продукта
-        weightInput.addEventListener('input', updateNutritionalInfo);
+            <input type="number" class="serving-amount" placeholder="Количество порций" min="1" step="1">
+            <select class="meal-time">
+                <option value="">Выберите прием пищи</option>
+                ${mealsOptions}
+            </select>
+            <button class="add-to-meal">Добавить в прием пищи</button>
+        </div>
+    `;
+    productsDiv.appendChild(card);
 
-        function updateNutritionalInfo() {
-            const weight = parseFloat(weightInput.value) || defaultWeight;
+    const weightInput = card.querySelector(".product-weight");
+    const methodSelect = card.querySelector(".processing-method");
+    const servingSizeSelect = card.querySelector(".serving-size");
+    const waterInfo = card.querySelector(".water-info");
+    const fiberInfo = card.querySelector(".fiber-info");
 
-            card.querySelector(".calories-info").textContent = (product.calories * (weight / 100)).toFixed(2);
-            card.querySelector(".protein-info").textContent = (product.protein * (weight / 100)).toFixed(2);
-            card.querySelector(".fats-info").textContent = (product.fats * (weight / 100)).toFixed(2);
-            card.querySelector(".carbs-info").textContent = (product.carbs * (weight / 100)).toFixed(2);
+    // Установка метода обработки в select
+    if (product.processingMethod) {
+        const methodOption = methodSelect.querySelector(`option[value="${product.processingMethod}"]`);
+        if (methodOption) {
+            methodSelect.value = product.processingMethod;
+        }
+    }
 
-            const waterContent = (product.waterContent * weight) / 100;
-            waterInfo.textContent = waterContent.toFixed(2);
+    // Обновление информации о питательных веществах
+    function updateNutritionalInfo() {
+        const weight = parseFloat(weightInput.value) || defaultWeight;
+        const method = methodSelect.value;
+        const factor = processingMethods[method] || 1; // Дефолтный фактор 1, если метод не выбран
 
-            const fiberContent = (product.fiberContent * weight) / 100;
-            fiberInfo.textContent = fiberContent.toFixed(2);
+        card.querySelector(".calories-info").textContent = (product.calories * weight / 100 * factor).toFixed(2);
+        card.querySelector(".protein-info").textContent = (product.protein * weight / 100 * factor).toFixed(2);
+        card.querySelector(".carbs-info").textContent = (product.carbs * weight / 100 * factor).toFixed(2);
+        card.querySelector(".fats-info").textContent = (product.fats * weight / 100 * factor).toFixed(2);
+        card.querySelector(".fiber-info").textContent = (product.fiberContent * weight / 100 * factor).toFixed(2);
+        card.querySelector(".water-info").textContent = (product.waterContent * weight / 100 * factor).toFixed(2);
 
-            servingSizeSelect.innerHTML = updateServingsOptions(weight);
+        servingSizeSelect.innerHTML = updateServingsOptions(weight);
+    }
+
+    weightInput.addEventListener('input', updateNutritionalInfo);
+    methodSelect.addEventListener("change", updateNutritionalInfo);
+    updateNutritionalInfo(); // Первоначальное обновление информации
+
+    const addToMealButton = card.querySelector(".add-to-meal");
+    addToMealButton.addEventListener("click", function() {
+        const servingSize = card.querySelector(".serving-size").value;
+        const servingAmount = parseFloat(card.querySelector(".serving-amount").value);
+        const mealTime = card.querySelector(".meal-time").value;
+        const productWeight = parseFloat(weightInput.value) || defaultWeight;
+
+        if (!mealTime) {
+            alert("Выберите прием пищи");
+            return;
         }
 
-        updateNutritionalInfo();  // Первоначальное обновление информации
+        const servingWeight = servingSize === 'шт.' ? productWeight : product.servings[servingSize];
+        const weight = servingAmount * servingWeight;
 
-        const addToMealButton = card.querySelector(".add-to-meal");
-        addToMealButton.addEventListener("click", function() {
-            const servingSize = card.querySelector(".serving-size").value;
-            const servingAmount = parseFloat(card.querySelector(".serving-amount").value);
-            const mealTime = card.querySelector(".meal-time").value;
-            const productWeight = parseFloat(weightInput.value) || defaultWeight;
+        const method = methodSelect.value;
+        const factor = processingMethods[method] || 1; // Дефолтный фактор 1, если метод не выбран
 
-            if (!mealTime) {
-                alert("Выберите прием пищи");
-                return;
-            }
+        const caloriesPerServing = (product.calories * weight / 100 * factor);
+        const proteinPerServing = (product.protein * weight / 100 * factor);
+        const carbsPerServing = (product.carbs * weight / 100 * factor);
+        const fatsPerServing = (product.fats * weight / 100 * factor);
+        const waterPerServing = (product.waterContent * weight / 100 * factor);
+        const fiberPerServing = (product.fiberContent * weight / 100 * factor);
 
-            const productName = card.querySelector("h3").textContent;
-            const product = products.find(p => p.name === productName);
+        const productEntry = {
+            name: product.name,
+            weight: weight,
+            servingSize: servingSize,
+            servingAmount: servingAmount,
+            calories: caloriesPerServing,
+            protein: proteinPerServing,
+            carbs: carbsPerServing,
+            fats: fatsPerServing,
+            fiber: fiberPerServing,
+            water: waterPerServing
+        };
 
-            if (!product) {
-                alert("Не удалось найти продукт");
-                return;
-            }
+        if (!mealData[mealTime]) {
+            mealData[mealTime] = [];
+        }
+        mealData[mealTime].push(productEntry);
 
-            const servingWeight = servingSize === 'шт.' ? productWeight : product.servings[servingSize];
-            const weight = servingAmount * servingWeight;
+        updateMealSummary(mealTime, productEntry);
+        updateMealTotal(mealTime);
+        updateDailySummary();
+        saveMealData();
+    });
+}
 
-            const caloriesPerServing = (product.calories * weight) / 100;
-            const proteinPerServing = (product.protein * weight) / 100;
-            const carbsPerServing = (product.carbs * weight) / 100;
-            const fatsPerServing = (product.fats * weight) / 100;
-            const waterPerServing = (product.waterContent * weight) / 100;
-            const fiberPerServing = (product.fiberContent * weight) / 100;
-
-            const productEntry = {
-                name: productName,
-                weight: weight,
-                servingSize: servingSize,
-                servingAmount: servingAmount,
-                calories: caloriesPerServing,
-                protein: proteinPerServing,
-                carbs: carbsPerServing,
-                fats: fatsPerServing,
-                fiber: fiberPerServing,
-                water: waterPerServing
-            };
-
-            if (!mealData[mealTime]) {
-                mealData[mealTime] = [];
-            }
-            mealData[mealTime].push(productEntry);
-
-            updateMealSummary(mealTime, productEntry);
-            updateMealTotal(mealTime);
-            updateDailySummary();
-            saveMealData();
-        });
-    }
 
      // Обновление сводной информации по приему пищи
      function updateMealSummary(meal, productEntry) {
@@ -469,6 +493,7 @@ function checkAndOpenCalendar(mealType) {
     updateDateDisplay();
     loadMealData();
 });
+
 
 
 
