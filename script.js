@@ -16,6 +16,62 @@ document.addEventListener("DOMContentLoaded", function() {
         dinner: { calories: 0, protein: 0, carbs: 0, fats: 0, fiber: 0, water: 0, grams: 0 }
     };
 
+
+    // календарь для копирования приема пищи
+    function openCalendar(mealType) {
+        const calendarDiv = document.createElement('div');
+        calendarDiv.classList.add('calendar-overlay');
+        calendarDiv.innerHTML = `
+            <div class="calendar-container">
+                <label for="copy-date-picker">Выберите дату:</label>
+                <input type="date" id="copy-date-picker">
+                <label for="copy-meal-type">Выберите прием пищи:</label>
+                <select id="copy-meal-type">
+                    <option value="breakfast">Завтрак</option>
+                    <option value="lunch">Обед</option>
+                    <option value="dinner">Ужин</option>
+                </select>
+                <button id="copy-meal-confirm">Копировать</button>
+                <button id="copy-meal-cancel">Отмена</button>
+            </div>
+        `;
+        document.body.appendChild(calendarDiv);
+    
+        const datePicker = document.getElementById('copy-date-picker');
+        const mealTypeSelect = document.getElementById('copy-meal-type');
+        const confirmButton = document.getElementById('copy-meal-confirm');
+        const cancelButton = document.getElementById('copy-meal-cancel');
+    
+        confirmButton.addEventListener('click', () => {
+            const selectedDate = new Date(datePicker.value);
+            const selectedMealType = mealTypeSelect.value;
+            if (isNaN(selectedDate)) {
+                alert('Пожалуйста, выберите корректную дату.');
+                return;
+            }
+            copyMealToDate(mealType, selectedDate, selectedMealType);
+            document.body.removeChild(calendarDiv);
+        });
+    
+        cancelButton.addEventListener('click', () => {
+            document.body.removeChild(calendarDiv);
+        });
+    }
+    
+    
+    // выбор дня и типа приема пищи
+    function copyMealToDate(sourceMealType, targetDate, targetMealType) {
+        const dateKey = formatDate(targetDate);
+        const targetData = JSON.parse(localStorage.getItem(dateKey)) || { breakfast: [], lunch: [], dinner: [] };
+    
+        targetData[targetMealType] = mealData[sourceMealType].map(product => ({ ...product }));
+    
+        localStorage.setItem(dateKey, JSON.stringify(targetData));
+        alert('Прием пищи успешно скопирован!');
+    }
+    
+    
+
     
 
     function updateMealDataOrder(meal, fromIndex, toIndex) {
@@ -345,21 +401,30 @@ document.addEventListener("DOMContentLoaded", function() {
         const mealTotalEl = document.getElementById(`${meal}-total`);
         mealTotalEl.innerHTML = `
             <table>
-                <thead>
-                    <tr>
-                        <th>Итог:</th>
-                        <th>${mealTotals[meal].grams.toFixed(2)} г</th>
-                        <th>${mealTotals[meal].calories.toFixed(2)} ккал</th>
-                        <th>${mealTotals[meal].protein.toFixed(2)} г</th>
-                        <th>${mealTotals[meal].fats.toFixed(2)} г</th>
-                        <th>${mealTotals[meal].carbs.toFixed(2)} г</th>
-                        <th>${mealTotals[meal].fiber.toFixed(2)} г</th>
-                        <th>${mealTotals[meal].water.toFixed(2)} мл</th>
-                        <th></th>
-                    </tr>
-                </thead>
-            </table>
-        `;
+            <thead>
+                <tr>
+                    <th>Итог:</th>
+                    <th>${mealTotals[meal].grams.toFixed(2)} г</th>
+                    <th>${mealTotals[meal].calories.toFixed(2)} ккал</th>
+                    <th>${mealTotals[meal].protein.toFixed(2)} г</th>
+                    <th>${mealTotals[meal].fats.toFixed(2)} г</th>
+                    <th>${mealTotals[meal].carbs.toFixed(2)} г</th>
+                    <th>${mealTotals[meal].fiber.toFixed(2)} г</th>
+                    <th>${mealTotals[meal].water.toFixed(2)} мл</th>
+                    <th>
+                        <button class="copy-meal-btn" data-meal="${meal}">▶</button>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    `;
+
+        // Добавляем обработчик для кнопки копирования
+    mealTotalEl.querySelector('.copy-meal-btn').addEventListener('click', (e) => {
+        const mealType = e.target.dataset.meal;
+        openCalendar(mealType);
+    });
+
     }
 
      // Обновление общей информации за день
@@ -392,4 +457,5 @@ document.addEventListener("DOMContentLoaded", function() {
     updateDateDisplay();
     loadMealData();
 });
+
 
