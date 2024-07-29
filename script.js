@@ -16,6 +16,20 @@ document.addEventListener("DOMContentLoaded", function() {
         dinner: { calories: 0, protein: 0, carbs: 0, fats: 0, fiber: 0, water: 0, grams: 0 }
     };
 
+    
+
+    function updateMealDataOrder(meal, fromIndex, toIndex) {
+        const movedItem = mealData[meal].splice(fromIndex, 1)[0];
+        mealData[meal].splice(toIndex, 0, movedItem);
+        // Обновление индексов для всех продуктов в mealData[meal]
+        mealData[meal].forEach((item, index) => item.index = index);
+        saveMealData();
+        // Перезагрузка данных для обновления UI
+        loadMealData(); 
+    }
+    
+    
+
     function formatDate(date) {
         return date.toISOString().split('T')[0];
     }
@@ -28,21 +42,28 @@ document.addEventListener("DOMContentLoaded", function() {
         const dateKey = formatDate(selectedDate);
         const storedData = JSON.parse(localStorage.getItem(dateKey)) || { breakfast: [], lunch: [], dinner: [] };
         mealData = storedData;
-
-        // Обновляем отображение приемов пищи и итогов
+    
         ["breakfast", "lunch", "dinner"].forEach(meal => {
-            document.getElementById(`${meal}-products`).innerHTML = '';
+            const mealProductsDiv = document.getElementById(`${meal}-products`);
+            mealProductsDiv.innerHTML = '';
             mealTotals[meal] = { calories: 0, protein: 0, carbs: 0, fats: 0, fiber: 0, water: 0, grams: 0 };
-            storedData[meal].forEach(product => {
+    
+            storedData[meal].sort((a, b) => a.index - b.index).forEach(product => {
                 updateMealSummary(meal, product);
             });
             updateMealTotal(meal);
         });
         updateDailySummary();
     }
+    
+    
 
     function saveMealData() {
         const dateKey = formatDate(selectedDate);
+        // Добавим индексы каждому продукту перед сохранением
+        ["breakfast", "lunch", "dinner"].forEach(meal => {
+            mealData[meal] = mealData[meal].map((item, index) => ({ ...item, index }));
+        });
         localStorage.setItem(dateKey, JSON.stringify(mealData));
     }
 
@@ -219,10 +240,9 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
      // Обновление сводной информации по приему пищи
-    function updateMealSummary(meal, productEntry) {
+     function updateMealSummary(meal, productEntry) {
         const mealProductsDiv = document.getElementById(`${meal}-products`);
-        const mealTotalEl = document.getElementById(`${meal}-total`);
-
+    
         // Проверяем, нужно ли добавить заголовок таблицы
         if (mealProductsDiv.innerHTML.trim() === '') {
             mealProductsDiv.innerHTML = `
@@ -245,12 +265,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 </table>
             `;
         }
-
+    
         // Добавляем запись о продукте в таблицу
         const tableBody = mealProductsDiv.querySelector('tbody');
         const productRow = document.createElement("tr");
         productRow.classList.add("draggable");
         productRow.draggable = true;
+        productRow.dataset.index = mealData[meal].indexOf(productEntry); // Устанавливаем индекс
         productRow.innerHTML = `
             <td>${productEntry.name}</td>
             <td>${productEntry.servingAmount} ${productEntry.servingSize} [${productEntry.weight.toFixed(2)} г]</td>
@@ -263,7 +284,7 @@ document.addEventListener("DOMContentLoaded", function() {
             <td><span class="remove-btn">X</span></td>
         `;
         tableBody.appendChild(productRow);
-
+    
         // Добавляем обработчик для удаления продукта
         productRow.querySelector('.remove-btn').addEventListener('click', () => {
             tableBody.removeChild(productRow);
@@ -282,29 +303,29 @@ document.addEventListener("DOMContentLoaded", function() {
             updateDailySummary();
             saveMealData();
         });
-
+    
         // Добавляем обработчики для перетаскивания
         productRow.addEventListener('dragstart', (e) => {
-            e.dataTransfer.setData('text/plain', productRow.rowIndex);
+            e.dataTransfer.setData('text/plain', productRow.dataset.index);
         });
-
+    
         productRow.addEventListener('dragover', (e) => {
             e.preventDefault();
         });
-
+    
         productRow.addEventListener('drop', (e) => {
             e.preventDefault();
-            const draggedRowIndex = e.dataTransfer.getData('text/plain');
-            const draggedRow = tableBody.rows[draggedRowIndex];
-            if (draggedRow !== productRow) {
-                const temp = document.createElement('tr');
-                tableBody.insertBefore(temp, productRow);
-                tableBody.insertBefore(productRow, draggedRow);
-                tableBody.insertBefore(draggedRow, temp);
-                tableBody.removeChild(temp);
+            const draggedIndex = e.dataTransfer.getData('text/plain');
+            const targetIndex = productRow.dataset.index;
+            if (draggedIndex !== targetIndex) {
+                const draggedRow = tableBody.querySelector(`[data-index='${draggedIndex}']`);
+                if (draggedRow && draggedRow !== productRow) {
+                    tableBody.insertBefore(draggedRow, productRow);
+                    updateMealDataOrder(meal, parseInt(draggedIndex), parseInt(targetIndex));
+                }
             }
         });
-
+    
         mealTotals[meal].calories += productEntry.calories;
         mealTotals[meal].protein += productEntry.protein;
         mealTotals[meal].carbs += productEntry.carbs;
@@ -312,9 +333,12 @@ document.addEventListener("DOMContentLoaded", function() {
         mealTotals[meal].fiber += productEntry.fiber;
         mealTotals[meal].water += productEntry.water;
         mealTotals[meal].grams += productEntry.weight;
-
+    
         updateMealTotal(meal);
     }
+    
+
+    
 
     // Обновление итоговой строки для приема пищи
     function updateMealTotal(meal) {
@@ -362,7 +386,10 @@ document.addEventListener("DOMContentLoaded", function() {
         dailyWaterEl.textContent = totalWater.toFixed(2);
     }
 
+    
+
     // Инициализация текущей даты
     updateDateDisplay();
     loadMealData();
 });
+
