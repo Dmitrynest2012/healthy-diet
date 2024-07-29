@@ -17,60 +17,72 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
 
-    // календарь для копирования приема пищи
-    function openCalendar(mealType) {
-        const calendarDiv = document.createElement('div');
-        calendarDiv.classList.add('calendar-overlay');
-        calendarDiv.innerHTML = `
-            <div class="calendar-container">
-                <label for="copy-date-picker">Выберите дату:</label>
-                <input type="date" id="copy-date-picker">
-                <label for="copy-meal-type">Выберите прием пищи:</label>
-                <select id="copy-meal-type">
-                    <option value="breakfast">Завтрак</option>
-                    <option value="lunch">Обед</option>
-                    <option value="dinner">Ужин</option>
-                </select>
-                <button id="copy-meal-confirm">Копировать</button>
-                <button id="copy-meal-cancel">Отмена</button>
-            </div>
-        `;
-        document.body.appendChild(calendarDiv);
+    let calendarOpened = false; // Флаг состояния для открытия календаря
+
+function openCalendar(mealType) {
+    if (calendarOpened) return; // Проверяем флаг, если окно уже открыто, выходим из функции
+    calendarOpened = true; // Устанавливаем флаг в true, указывая, что окно открыто
+
+    const calendarDiv = document.createElement('div');
+    calendarDiv.classList.add('calendar-overlay');
+    calendarDiv.innerHTML = `
+        <div class="calendar-container">
+            <label for="copy-date-picker">Выберите дату:</label>
+            <input type="date" id="copy-date-picker">
+            <label for="copy-meal-type">Выберите прием пищи:</label>
+            <select id="copy-meal-type">
+                <option value="breakfast">Завтрак</option>
+                <option value="lunch">Обед</option>
+                <option value="dinner">Ужин</option>
+            </select>
+            <button id="copy-meal-confirm">Копировать</button>
+            <button id="copy-meal-cancel">Отмена</button>
+        </div>
+    `;
+    document.body.appendChild(calendarDiv);
+
+    const datePicker = document.getElementById('copy-date-picker');
+    const mealTypeSelect = document.getElementById('copy-meal-type');
+    const confirmButton = document.getElementById('copy-meal-confirm');
+    const cancelButton = document.getElementById('copy-meal-cancel');
+
+    confirmButton.addEventListener('click', () => {
+        const selectedDate = new Date(datePicker.value);
+        const selectedMealType = mealTypeSelect.value;
+        if (isNaN(selectedDate)) {
+            alert('Пожалуйста, выберите корректную дату.');
+            return;
+        }
+        copyMealToDate(mealType, selectedDate, selectedMealType);
+        document.body.removeChild(calendarDiv);
+        calendarOpened = false; // Сбрасываем флаг при закрытии окна
+    });
+
+    cancelButton.addEventListener('click', () => {
+        document.body.removeChild(calendarDiv);
+        calendarOpened = false; // Сбрасываем флаг при закрытии окна
+    });
+}
+
+function copyMealToDate(sourceMealType, targetDate, targetMealType) {
+    const dateKey = formatDate(targetDate);
+    const targetData = JSON.parse(localStorage.getItem(dateKey)) || { breakfast: [], lunch: [], dinner: [] };
+
+    targetData[targetMealType] = mealData[sourceMealType].map(product => ({ ...product }));
+
+    localStorage.setItem(dateKey, JSON.stringify(targetData));
+    alert('Прием пищи успешно скопирован!');
+}
     
-        const datePicker = document.getElementById('copy-date-picker');
-        const mealTypeSelect = document.getElementById('copy-meal-type');
-        const confirmButton = document.getElementById('copy-meal-confirm');
-        const cancelButton = document.getElementById('copy-meal-cancel');
-    
-        confirmButton.addEventListener('click', () => {
-            const selectedDate = new Date(datePicker.value);
-            const selectedMealType = mealTypeSelect.value;
-            if (isNaN(selectedDate)) {
-                alert('Пожалуйста, выберите корректную дату.');
-                return;
-            }
-            copyMealToDate(mealType, selectedDate, selectedMealType);
-            document.body.removeChild(calendarDiv);
-        });
-    
-        cancelButton.addEventListener('click', () => {
-            document.body.removeChild(calendarDiv);
-        });
+
+ // Проверка наличия продуктов перед открытием календаря
+function checkAndOpenCalendar(mealType) {
+    if (mealData[mealType] && mealData[mealType].length > 0) {
+        openCalendar(mealType);
+    } else {
+        alert('В этом приеме пищи нет продуктов для копирования.');
     }
-    
-    
-    // выбор дня и типа приема пищи
-    function copyMealToDate(sourceMealType, targetDate, targetMealType) {
-        const dateKey = formatDate(targetDate);
-        const targetData = JSON.parse(localStorage.getItem(dateKey)) || { breakfast: [], lunch: [], dinner: [] };
-    
-        targetData[targetMealType] = mealData[sourceMealType].map(product => ({ ...product }));
-    
-        localStorage.setItem(dateKey, JSON.stringify(targetData));
-        alert('Прием пищи успешно скопирован!');
-    }
-    
-    
+}   
 
     
 
@@ -457,5 +469,6 @@ document.addEventListener("DOMContentLoaded", function() {
     updateDateDisplay();
     loadMealData();
 });
+
 
 
