@@ -1,4 +1,276 @@
+
+
 document.addEventListener("DOMContentLoaded", function() {
+
+    // Восстановление позиции прокрутки
+    const savedScrollPosition = localStorage.getItem('scrollPosition');
+    if (savedScrollPosition) {
+        window.scrollTo(0, parseInt(savedScrollPosition, 10));
+        localStorage.removeItem('scrollPosition'); // Удаляем сохраненную позицию после восстановления
+    }
+
+    let globalBMR;
+
+    const buttonClass = 'profile-btn';
+    const modalClass = 'profile-modal';
+    const closeButtonClass = 'close-btn';
+    
+    const header = document.createElement('header');
+    
+    // Создание кнопки с треугольником
+    const button = document.createElement('button');
+    button.className = buttonClass;
+    button.id = "toggle-profile";
+    button.innerHTML = '&#9650;'; // Юникод треугольника
+    document.body.appendChild(button);
+
+    // Создание модального окна
+    const modal = document.createElement('div');
+    modal.className = modalClass;
+    modal.innerHTML = `
+        <button class="${closeButtonClass}">&times;</button>
+        <h2>Основные данные пользователя</h2>
+        <label for="first-name">Имя:</label>
+        <input type="text" id="first-name" placeholder="Имя">
+        <label for="last-name">Фамилия:</label>
+        <input type="text" id="last-name" placeholder="Фамилия">
+        <label for="birth-date">Дата рождения:</label>
+        <input type="date" id="birth-date">
+        <p id="age">Возраст:</p>
+        <label for="gender">Пол:</label>
+        <select id="gender">
+            <option value="male">Мужской</option>
+            <option value="female">Женский</option>
+            <option value="other">Другой</option>
+        </select>
+        <label for="height">Рост (см):</label>
+        <input type="number" id="height" placeholder="Рост (см)">
+        <label for="weight">Вес (кг):</label>
+        <input type="number" id="weight" placeholder="Вес (кг)">
+        <p id="bmi">ИМТ:</p>
+        <p id="bmr">Базальный метаболизм (BMR):</p>
+    `;
+    document.body.appendChild(modal);
+
+    // Получение элементов формы
+    const firstNameInput = document.getElementById('first-name');
+    const lastNameInput = document.getElementById('last-name');
+    const birthDateInput = document.getElementById('birth-date');
+    const ageParagraph = document.getElementById('age');
+    const genderSelect = document.getElementById('gender');
+    const heightInput = document.getElementById('height');
+    const weightInput = document.getElementById('weight');
+    const bmiParagraph = document.getElementById('bmi');
+    const bmrParagraph = document.getElementById('bmr');
+
+    // Функция для обновления возраста
+function updateAge() {
+    const birthDateValue = birthDateInput.value;
+    if (birthDateValue) {
+        const [year, month, day] = birthDateValue.split('-').map(Number);
+        const birthDate = new Date(year, month - 1, day);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const isBeforeBirthday = today.getMonth() < birthDate.getMonth() ||
+                                 (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate());
+        if (isBeforeBirthday) {
+            age--;
+        }
+        ageParagraph.textContent = `Возраст: ${age} лет`;
+        return age;
+    } else {
+        ageParagraph.textContent = 'Возраст:';
+        return null;
+    }
+}
+
+// Функция для обновления ИМТ
+function updateBMI() {
+    const height = parseFloat(heightInput.value);
+    const weight = parseFloat(weightInput.value);
+    if (height && weight) {
+        const heightInMeters = height / 100;
+        const bmi = (weight / (heightInMeters * heightInMeters)).toFixed(2);
+        bmiParagraph.innerHTML = `<strong>ИМТ:</strong> ${bmi}`;
+        return bmi;
+    } else {
+        bmiParagraph.innerHTML = '<strong>ИМТ:</strong>';
+        return null;
+    }
+}
+    
+
+    let GlobalpercentageBMR;
+
+    // Функция для обновления BMR (формула Миффлина-Сан Жеора)
+    // Функция для обновления BMR (формула Миффлина-Сан Жеора)
+// Функция для обновления BMR (формула Миффлина-Сан Жеора)
+function updateBMR(age) {
+    const height = parseFloat(heightInput.value);
+    const weight = parseFloat(weightInput.value);
+    const gender = genderSelect.value;
+    if (height && weight && age !== null) {
+        let bmr;
+        if (gender === 'male') {
+            bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+        } else if (gender === 'female') {
+            bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+        } else {
+            bmr = null; // Для прочих гендеров можно либо добавить усредненное значение, либо оставить пустым
+        }
+        bmr = bmr ? bmr.toFixed(2) : 'N/A';
+        bmrParagraph.innerHTML = `<strong>Базальный метаболизм (BMR):</strong> ${bmr} ккал/день`;
+
+        // Сохранение в глобальную переменную и в локальное хранилище
+        globalBMR = bmr;
+        localStorage.setItem('globalBMR', bmr);
+
+        const dailyCaloriesElement = document.getElementById('daily-calories');
+        if (dailyCaloriesElement) {
+            const dailyCalories = parseFloat(dailyCaloriesElement.textContent);
+
+            // Рассчет процента от BMR
+            const percentage = dailyCalories && globalBMR != 0 ? ((dailyCalories / globalBMR) * 100).toFixed(2) : 'N/A';
+
+            GlobalpercentageBMR = percentage;
+            localStorage.setItem('globalPercentageBMR', GlobalpercentageBMR);
+
+            // Обновление текста элемента с дневными калориями
+            dailyCaloriesElement.nextSibling.textContent = ` ккал / BMR: ${globalBMR} ккал [${GlobalpercentageBMR}% от базовой нормы]`;
+        }
+
+        return bmr;
+    } else {
+        bmrParagraph.textContent = 'Базальный метаболизм (BMR):';
+        return null;
+    }
+}
+
+
+    // Функция для сохранения данных в локальное хранилище
+function saveProfileData() {
+    const age = updateAge();
+    const bmi = updateBMI();
+    updateBMR(age); // Обновляем BMR без сохранения, чтобы использовать актуальное значение
+    const userProfile = {
+        firstName: firstNameInput.value,
+        lastName: lastNameInput.value,
+        birthDate: birthDateInput.value,
+        age: age,
+        gender: genderSelect.value,
+        height: heightInput.value,
+        weight: weightInput.value,
+        bmi: bmi,
+        bmr: globalBMR // Используем глобальную переменную для BMR
+    };
+    localStorage.setItem('userProfile', JSON.stringify(userProfile));
+}
+
+    globalBMR = localStorage.getItem('globalBMR') ? localStorage.getItem('globalBMR') : 'N/A'; // Обратите внимание на значение по умолчанию
+
+
+
+
+
+    
+    // Функция для загрузки данных из локального хранилища
+    function loadProfileData() {
+        const savedData = JSON.parse(localStorage.getItem('userProfile'));
+        
+        if (savedData) {
+            firstNameInput.value = savedData.firstName || '';
+            lastNameInput.value = savedData.lastName || '';
+            birthDateInput.value = savedData.birthDate || '';
+            ageParagraph.textContent = savedData.age ? `Возраст: ${savedData.age} лет` : 'Возраст:';
+            genderSelect.value = savedData.gender || 'male';
+            heightInput.value = savedData.height || '';
+            weightInput.value = savedData.weight || '';
+            bmiParagraph.innerHTML = savedData.bmi ? `<strong>ИМТ:</strong> ${savedData.bmi}` : '<strong>ИМТ:</strong>';
+
+            bmrParagraph.innerHTML = savedData.bmr ? `<strong>Базальный метаболизм (BMR):</strong> ${savedData.bmr} ккал/день` : '<strong>Базальный метаболизм (BMR):</strong>';
+
+    
+
+            GlobalpercentageBMR = localStorage.getItem('globalPercentageBMR') || '?';
+
+            const dailyCaloriesElement = document.getElementById('daily-calories');
+            if (dailyCaloriesElement && globalBMR) {
+                // Проверяем, есть ли уже BMR в тексте
+                if (!dailyCaloriesElement.nextSibling.textContent.includes('/ BMR:')) {
+                    
+                    dailyCaloriesElement.nextSibling.textContent += ` / BMR: ${globalBMR} ккал [${GlobalpercentageBMR}% от базовой нормы]`;
+                }
+            }
+        }
+    }
+    
+    
+
+    // Загрузка сохраненных данных при загрузке страницы
+    loadProfileData();
+
+    // Обновление возраста, ИМТ и BMR при изменении данных
+birthDateInput.addEventListener('input', function() {
+    saveProfileData(); // Вызываем функцию сохранения, которая сама обновит все данные
+});
+heightInput.addEventListener('input', function() {
+    saveProfileData();
+});
+weightInput.addEventListener('input', function() {
+    saveProfileData();
+    
+});
+genderSelect.addEventListener('input', function() {
+    saveProfileData();
+});
+
+
+    // Обработчик для кнопки открытия/закрытия модального окна
+button.addEventListener('click', function() {
+    if (modal.classList.contains('active')) {
+        // Если окно уже открыто, закрываем его и сохраняем позицию прокрутки
+        modal.classList.remove('active');
+        saveScrollPosition(); // Сохранение позиции прокрутки
+        setTimeout(() => location.reload(), 0); // Перезагрузка страницы
+    } else {
+        // Если окно закрыто, просто открываем его
+        modal.classList.add('active');
+    }
+});
+
+
+    // Обработчик для закрытия модального окна
+    modal.querySelector(`.${closeButtonClass}`).addEventListener('click', function() {
+        saveScrollPosition(); // Сохранение позиции прокрутки
+        modal.classList.remove('active');
+        
+    location.reload();   // Перезагрузка страницы
+    });
+
+
+    document.addEventListener('keydown', function(event) {
+        // Проверяем нажатие Ctrl и F8
+        if (event.ctrlKey && event.key === 'F8') {
+            localStorage.clear();
+            alert('Локальное хранилище очищено!');
+        }
+    });
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     const productsDiv = document.getElementById("products");
     const searchInput = document.getElementById("search-input");
     const suggestionsDiv = document.getElementById("suggestions");
@@ -139,6 +411,7 @@ function checkAndOpenCalendar(mealType) {
         selectedDate.setDate(selectedDate.getDate() + offset);
         updateDateDisplay();
         loadMealData();
+        saveProfileData();
     }
 
     prevDayButton.addEventListener('click', () => changeDay(-1));
@@ -327,107 +600,122 @@ function displayProductCard(product) {
         updateMealTotal(mealTime);
         updateDailySummary();
         saveMealData();
+        saveScrollPosition(); // Сохранение позиции прокрутки
+    location.reload();   // Перезагрузка страницы
     });
 }
 
+function saveScrollPosition() {
+    localStorage.setItem('scrollPosition', window.scrollY);
+}
 
      // Обновление сводной информации по приему пищи
-     function updateMealSummary(meal, productEntry) {
-        const mealProductsDiv = document.getElementById(`${meal}-products`);
-    
-        // Проверяем, нужно ли добавить заголовок таблицы
-        if (mealProductsDiv.innerHTML.trim() === '') {
-            mealProductsDiv.innerHTML = `
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Продукт</th>
-                            <th>Количество</th>
-                            <th>Калории</th>
-                            <th>Белки</th>
-                            <th>Жиры</th>
-                            <th>Углеводы</th>
-                            <th>Клетчатка</th>
-                            <th>Вода</th>
-                            <th>Управление</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            `;
-        }
-    
-        // Добавляем запись о продукте в таблицу
-        const tableBody = mealProductsDiv.querySelector('tbody');
-        const productRow = document.createElement("tr");
-        productRow.classList.add("draggable");
-        productRow.draggable = true;
-        productRow.dataset.index = mealData[meal].indexOf(productEntry); // Устанавливаем индекс
-        productRow.innerHTML = `
-            <td>${productEntry.name}</td>
-            <td>${productEntry.servingAmount} ${productEntry.servingSize} [${productEntry.weight.toFixed(2)} г]</td>
-            <td>${productEntry.calories.toFixed(2)} ккал</td>
-            <td>${productEntry.protein.toFixed(2)} г</td>
-            <td>${productEntry.fats.toFixed(2)} г</td>
-            <td>${productEntry.carbs.toFixed(2)} г</td>
-            <td>${productEntry.fiber.toFixed(2)} г</td>
-            <td>${productEntry.water.toFixed(2)} мл</td>
-            <td><span class="remove-btn">X</span></td>
+     // Функция для обновления сводной информации по приему пищи
+function updateMealSummary(meal, productEntry) {
+    const mealProductsDiv = document.getElementById(`${meal}-products`);
+
+    // Проверяем, нужно ли добавить заголовок таблицы
+    if (mealProductsDiv.innerHTML.trim() === '') {
+        mealProductsDiv.innerHTML = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>Продукт</th>
+                        <th>Количество</th>
+                        <th>Калории</th>
+                        <th>Белки</th>
+                        <th>Жиры</th>
+                        <th>Углеводы</th>
+                        <th>Клетчатка</th>
+                        <th>Вода</th>
+                        <th>Управление</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         `;
-        tableBody.appendChild(productRow);
-    
-        // Добавляем обработчик для удаления продукта
-        productRow.querySelector('.remove-btn').addEventListener('click', () => {
-            tableBody.removeChild(productRow);
-            const index = mealData[meal].indexOf(productEntry);
-            if (index > -1) {
-                mealData[meal].splice(index, 1);
-            }
-            mealTotals[meal].calories -= productEntry.calories;
-            mealTotals[meal].protein -= productEntry.protein;
-            mealTotals[meal].carbs -= productEntry.carbs;
-            mealTotals[meal].fats -= productEntry.fats;
-            mealTotals[meal].fiber -= productEntry.fiber;
-            mealTotals[meal].water -= productEntry.water;
-            mealTotals[meal].grams -= productEntry.weight;
-            updateMealTotal(meal);
-            updateDailySummary();
-            saveMealData();
-        });
-    
-        // Добавляем обработчики для перетаскивания
-        productRow.addEventListener('dragstart', (e) => {
-            e.dataTransfer.setData('text/plain', productRow.dataset.index);
-        });
-    
-        productRow.addEventListener('dragover', (e) => {
-            e.preventDefault();
-        });
-    
-        productRow.addEventListener('drop', (e) => {
-            e.preventDefault();
-            const draggedIndex = e.dataTransfer.getData('text/plain');
-            const targetIndex = productRow.dataset.index;
-            if (draggedIndex !== targetIndex) {
-                const draggedRow = tableBody.querySelector(`[data-index='${draggedIndex}']`);
-                if (draggedRow && draggedRow !== productRow) {
-                    tableBody.insertBefore(draggedRow, productRow);
-                    updateMealDataOrder(meal, parseInt(draggedIndex), parseInt(targetIndex));
-                }
-            }
-        });
-    
-        mealTotals[meal].calories += productEntry.calories;
-        mealTotals[meal].protein += productEntry.protein;
-        mealTotals[meal].carbs += productEntry.carbs;
-        mealTotals[meal].fats += productEntry.fats;
-        mealTotals[meal].fiber += productEntry.fiber;
-        mealTotals[meal].water += productEntry.water;
-        mealTotals[meal].grams += productEntry.weight;
-    
-        updateMealTotal(meal);
+
+        
     }
+
+    // Добавляем запись о продукте в таблицу
+    const tableBody = mealProductsDiv.querySelector('tbody');
+    const productRow = document.createElement("tr");
+    productRow.classList.add("draggable");
+    productRow.draggable = true;
+    productRow.dataset.index = mealData[meal].indexOf(productEntry); // Устанавливаем индекс
+    productRow.innerHTML = `
+        <td>${productEntry.name}</td>
+        <td>${productEntry.servingAmount} ${productEntry.servingSize} [${productEntry.weight.toFixed(2)} г]</td>
+        <td>${productEntry.calories.toFixed(2)} ккал</td>
+        <td>${productEntry.protein.toFixed(2)} г</td>
+        <td>${productEntry.fats.toFixed(2)} г</td>
+        <td>${productEntry.carbs.toFixed(2)} г</td>
+        <td>${productEntry.fiber.toFixed(2)} г</td>
+        <td>${productEntry.water.toFixed(2)} мл</td>
+        <td><span class="remove-btn">X</span></td>
+    `;
+    tableBody.appendChild(productRow);
+
+    // Добавляем обработчик для удаления продукта
+    productRow.querySelector('.remove-btn').addEventListener('click', () => {
+        const index = mealData[meal].indexOf(productEntry);
+        if (index > -1) {
+            mealData[meal].splice(index, 1); // Удаление элемента из mealData
+        }
+        tableBody.removeChild(productRow); // Удаление строки из таблицы
+        
+        // Обновление сводной информации
+        mealTotals[meal].calories -= productEntry.calories;
+        mealTotals[meal].protein -= productEntry.protein;
+        mealTotals[meal].carbs -= productEntry.carbs;
+        mealTotals[meal].fats -= productEntry.fats;
+        mealTotals[meal].fiber -= productEntry.fiber;
+        mealTotals[meal].water -= productEntry.water;
+        mealTotals[meal].grams -= productEntry.weight;
+        
+        updateMealTotal(meal);
+        updateDailySummary();
+        saveMealData(); // Немедленное обновление локального хранилища
+        saveProfileData();
+    });
+
+    // Добавляем обработчики для перетаскивания
+    productRow.addEventListener('dragstart', (e) => {
+        e.dataTransfer.setData('text/plain', productRow.dataset.index);
+    });
+
+    productRow.addEventListener('dragover', (e) => {
+        e.preventDefault();
+    });
+
+    productRow.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const draggedIndex = e.dataTransfer.getData('text/plain');
+        const targetIndex = productRow.dataset.index;
+        if (draggedIndex !== targetIndex) {
+            const draggedRow = tableBody.querySelector(`[data-index='${draggedIndex}']`);
+            if (draggedRow && draggedRow !== productRow) {
+                tableBody.insertBefore(draggedRow, productRow);
+                updateMealDataOrder(meal, parseInt(draggedIndex), parseInt(targetIndex));
+            }
+        }
+    });
+
+    mealTotals[meal].calories += productEntry.calories;
+    mealTotals[meal].protein += productEntry.protein;
+    mealTotals[meal].carbs += productEntry.carbs;
+    mealTotals[meal].fats += productEntry.fats;
+    mealTotals[meal].fiber += productEntry.fiber;
+    mealTotals[meal].water += productEntry.water;
+    mealTotals[meal].grams += productEntry.weight;
+
+    updateMealTotal(meal);
+    
+}
+
+    
     
 
     
@@ -485,6 +773,8 @@ function displayProductCard(product) {
         dailyFatsEl.textContent = totalFats.toFixed(2);
         dailyFiberEl.textContent = totalFiber.toFixed(2);
         dailyWaterEl.textContent = totalWater.toFixed(2);
+
+        saveProfileData();
     }
 
     
@@ -492,7 +782,9 @@ function displayProductCard(product) {
     // Инициализация текущей даты
     updateDateDisplay();
     loadMealData();
+    
 });
+
 
 
 
