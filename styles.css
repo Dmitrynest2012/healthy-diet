@@ -8,7 +8,9 @@ header {
     padding: 10px;
     background-color: #f8f8f8;
     border-bottom: 1px solid #ddd;
-    position: relative;
+    position: absolute;
+    width: 100%;
+    top: 0;
 }
 
 #search-input {
@@ -25,6 +27,7 @@ header {
     border: 1px solid #ddd;
     max-height: 200px;
     overflow-y: auto;
+    z-index: 100;
 }
 
 .suggestion-item {
@@ -43,6 +46,7 @@ header {
     border: 1px solid #ddd;
     padding: 20px;
     max-width: 50%;
+
     margin: 10px 0;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -63,6 +67,7 @@ header {
 }
 
 .meal-products {
+    
     border: 1px solid #ddd;
     padding: 10px;
     margin-bottom: 10px;
@@ -73,6 +78,12 @@ header {
     padding: 10px;
     background-color: #f8f8f8;
     
+}
+
+.max {
+    position: absolute;
+    top: 70px;
+    margin: 5px;
 }
 
 .product-entry {
@@ -120,6 +131,7 @@ header {
 .meal-products td, .meal-total td {
     padding: 8px;
     border: 1px solid #ddd;
+    width: 200px;
 }
 
 .meal-products th, .meal-total th {
@@ -138,5 +150,141 @@ header {
         .draggable {
             cursor: move;
         }
+
+
+
+
+        .calendar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .calendar-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .calendar-container input[type="date"] {
+            margin-bottom: 10px;
+        }
+        
+        .calendar-container button {
+            margin: 5px;
+        }
+
+
+
+
+
+
+
+
+
+        /* Стили для кнопки с треугольником */
+/* Стили для кнопки */
+.profile-btn {
+    background-color: #a0a0a0;
+    color: white;
+    border: none;
+    pointer-events: auto; /* Включает взаимодействие с кнопкой */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    text-align: center;
+    line-height: 50px;
+    cursor: pointer;
+    position: absolute;
+    top: 5px; /* Вертикально центрирует кнопку в родителе */
+    right: 10px; /* Отступ от правого края родителя */
+    
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.3s;
+    z-index: 5;
+}
+
+.profile-btn:hover {
+    background-color: #0056b3;
+
+}
+
+.profile-btn:active {
+    background-color: #004494;
+}
+
+/* Стили для модального окна */
+.profile-modal {
+
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -0%);
+    background: #f3f3f3;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 300px;
+    display: none;
+    z-index: 1000;
+    position: absolute;
+}
+
+.profile-modal.active {
+    display: block;
+}
+
+.profile-modal .close-btn {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #333;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    transition: color 0.3s;
+}
+
+.profile-modal .close-btn:hover {
+    color: #ff0000;
+}
+
+.profile-modal label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.profile-modal input[type="text"],
+.profile-modal input[type="number"],
+.profile-modal select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.profile-modal p {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+
+
+.bold-text {
+    font-weight: bold;
+}
 
 
