@@ -1,5 +1,7 @@
 
 
+
+
 document.addEventListener("DOMContentLoaded", function() {
 
     // Восстановление позиции прокрутки
@@ -548,18 +550,28 @@ function displayProductCard(product) {
     const defaultWeight = product.weightDefault;
 
 
-   
+    product.vegan;
 
     // Создание HTML-кода карточки
     card.innerHTML = `
-        <img src="${product.image}" alt="${product.name}">
+        <img class="product-image" src="${product.image}" alt="${product.name}">
+
         <div>
             <h3>${product.name}</h3>
             ${product.manufacturerOrSeller ? `<p><span class="manufacturerOrSeller"><b>Производитель/Продавец:</b> ${product.manufacturerOrSeller}</span></p>` : ''}
             ${product.description ? `<p><b>Описание:</b>  ${product.description}</p>` : ''}
 
+            <!-- Контейнер для индикаторов -->
+            <div class="indicators-container">
+
+            <!-- Добавляем Vegan, если продукт является веганским -->
+            ${product.vegan ? `<p class="vegan-info"><b>Vegan</b></p>` : ''}
+
             <!-- Добавляем сюда RAW, он будет динамически управляться -->
             <p class="raw-info" style="display: none;"><b>RAW</b></p>
+
+            
+            </div>
 
             <label>Введите вес продукта (граммы):
                 <input type="number" class="product-weight" min="1" step="1" value="${defaultWeight}">
@@ -901,6 +913,7 @@ function updateMealSummary(meal, productEntry) {
     
     
 });
+
 
 
 
