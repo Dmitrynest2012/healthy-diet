@@ -46,9 +46,9 @@ header {
     border: 1px solid #ddd;
     padding: 20px;
     max-width: 50%;
-
+    background: #f3f3f3;
     margin: 10px 0;
-    border-radius: 5px;
+    border-radius: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -288,10 +288,35 @@ header {
 }
 
 
-.raw-info {
+.product-image {
+    border-radius: 10px; /* Закругление углов */
+    width: 150px; /* Занимает всю ширину контейнера */
+    max-width: 150px; /* Максимальная ширина изображения */
+    height: auto; /* Автоматическая высота для сохранения пропорций */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Небольшая тень для эффекта */
+    object-fit: cover; /* Сохранение пропорций и обрезка по контейнеру, если нужно */
+}
+
+
+.indicators-container {
     position: absolute;
-    top: 5px;
-    left: 200px;
+    top: 20px;
+    left: 185px;
+    display: flex;
+    flex-direction: row; /* Горизонтальное расположение элементов */
+    align-items: center; /* Вертикальное выравнивание по центру */
+    gap: 10px; /* Отступ между индикаторами */
+    background-color: #e0e0e04f;
+    border: 1px solid #b1b1b170;
+    border-radius: 10px;
+    padding: 5px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    width: fit-content; /* Контейнер будет адаптироваться под содержимое */
+}
+
+.raw-info,
+.vegan-info {
     background-color: #28a745; /* Зеленый цвет фона */
     color: white; /* Белый цвет текста */
     padding: 5px 10px; /* Отступы внутри элемента */
@@ -299,12 +324,12 @@ header {
     display: inline-block; /* Отображение как блочный элемент с размером по контенту */
     font-weight: bold; /* Жирный текст */
     text-align: center; /* Центрирование текста */
-    min-width: 50px; /* Минимальная ширина, чтобы сделать элемент более похожим на кнопку */
-    max-width: 50px; /* Максимальная ширина, чтобы не растягиваться слишком сильно */
     white-space: nowrap; /* Предотвращение переноса текста */
-    cursor: pointer; /* Изменение курсора на указатель, как у кнопки */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Небольшая тень для эффекта кнопки */
+    cursor: default; /* Курсор по умолчанию */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Небольшая тень */
 }
+
+
 
 
 
