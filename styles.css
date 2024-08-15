@@ -330,6 +330,35 @@ header {
 }
 
 
+/* Стили для контейнера с витаминами */
+.vitamins-container {
+    position: absolute;
+    top: 165px;
+    left: 350px;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    background-color: #f9f9f9;
+    width: 130px;
+}
+
+.vitamins-container h4 {
+    margin-top: 0;
+    font-size: 1.0em;
+    color: #333;
+}
+
+.vitamins-container p {
+    margin: 5px 0;
+    font-size: 0.9em;
+    color: #555;
+}
+
+
+
+
+
 
 
 
