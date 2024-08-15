@@ -1,7 +1,5 @@
 
 
-
-
 document.addEventListener("DOMContentLoaded", function() {
 
     // Восстановление позиции прокрутки
@@ -599,19 +597,7 @@ function displayProductCard(product) {
             <p><b>Содержание клетчатки:</b> <span class="fiber-info">${product.fiberContent}</span> г</p>
             <p><b>Содержание воды:</b> <span class="water-info">0.00</span> мл</p>
 
-            <!-- Контейнер для витаминов -->
-        <div class="vitamins-container">
-            <h4>Витамины</h4>
-            ${Object.entries(product.vitamins).map(([vitamin, value]) => {
-                if (vitamin.endsWith("units")) {
-                    return ''; // Пропускаем поля units
-                }
-                const unitKey = vitamin + 'units';
-                const unit = product.vitamins[unitKey] || '';
-                const vitaminName = vitaminTranslations[vitamin] || vitamin;
-                return `<p><b>${vitaminName}:</b> ${value} ${unit}</p>`;
-            }).join('')}
-        </div>
+            
 
             <label>Метод обработки:
                 <select class="processing-method">
@@ -633,11 +619,32 @@ function displayProductCard(product) {
             <button class="add-to-meal">Добавить в прием пищи</button>
         </div>
     `;
+
+    // Добавляем контейнер для витаминов только если есть витамины
+    if (product.vitamins && Object.keys(product.vitamins).length > 0) {
+        const vitaminsContainer = document.createElement("div");
+        vitaminsContainer.classList.add("vitamins-container");
+        vitaminsContainer.innerHTML = '<h4>Витамины</h4>' +
+            Object.entries(product.vitamins).map(([vitamin, value]) => {
+                if (vitamin.endsWith("units")) {
+                    return ''; // Пропускаем поля units
+                }
+                const unitKey = vitamin + 'units';
+                const unit = product.vitamins[unitKey] || '';
+                const vitaminName = vitaminTranslations[vitamin] || vitamin;
+                const vitaminValue = (value * defaultWeight / 100).toFixed(2);
+                return `<p><b>${vitaminName}:</b> ${vitaminValue} ${unit}</p>`;
+            }).join('');
+        card.appendChild(vitaminsContainer);
+    }
+
+
     productsDiv.appendChild(card);
 
     const weightInput = card.querySelector(".product-weight");
     const methodSelect = card.querySelector(".processing-method");
     const servingSizeSelect = card.querySelector(".serving-size");
+    const servingAmountInput = card.querySelector(".serving-amount");
     const waterInfo = card.querySelector(".water-info");
     const fiberInfo = card.querySelector(".fiber-info");
     const rawInfo = card.querySelector(".raw-info");
@@ -676,24 +683,30 @@ function displayProductCard(product) {
         servingSizeSelect.innerHTML = updateServingsOptions(weight);
 
         // Пересчет витаминов
+        
+        // Пересчет витаминов
+        const servingsAmount = parseFloat(servingAmountInput.value) || 1; // По умолчанию 1 порция
         const vitaminsContainer = card.querySelector(".vitamins-container");
-        vitaminsContainer.innerHTML = '<h4>Витамины</h4>' +
-            Object.entries(product.vitamins).map(([vitamin, value]) => {
-                if (vitamin.endsWith("units")) {
-                    return ''; // Пропускаем поля units
-                }
-                const unitKey = vitamin + 'units';
-                const unit = product.vitamins[unitKey] || '';
-                const vitaminName = vitaminTranslations[vitamin] || vitamin;
-                const vitaminValue = (value * weight / 100 * factor).toFixed(2);
-                return `<p><b>${vitaminName}:</b> ${vitaminValue} ${unit}</p>`;
-            }).join('');
+        if (vitaminsContainer) {
+            vitaminsContainer.innerHTML = '<h4>Витамины</h4>' +
+                Object.entries(product.vitamins).map(([vitamin, value]) => {
+                    if (vitamin.endsWith("units")) {
+                        return ''; // Пропускаем поля units
+                    }
+                    const unitKey = vitamin + 'units';
+                    const unit = product.vitamins[unitKey] || '';
+                    const vitaminName = vitaminTranslations[vitamin] || vitamin;
+                    const vitaminValue = (value * weight / 100 * factor * servingsAmount).toFixed(2);
+                    return `<p><b>${vitaminName}:</b> ${vitaminValue} ${unit}</p>`;
+                }).join('');
+        }
 
         updateRawInfo(); // Обновляем отображение RAW
     }
 
     weightInput.addEventListener('input', updateNutritionalInfo);
     methodSelect.addEventListener("change", updateNutritionalInfo);
+    servingAmountInput.addEventListener('input', updateNutritionalInfo);
     updateNutritionalInfo(); // Первоначальное обновление информации
 
     const addToMealButton = card.querySelector(".add-to-meal");
@@ -957,6 +970,7 @@ function updateMealSummary(meal, productEntry) {
     
     
 });
+
 
 
 
