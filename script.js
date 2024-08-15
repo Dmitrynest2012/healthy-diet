@@ -547,21 +547,29 @@ function displayProductCard(product) {
 
     const defaultWeight = product.weightDefault;
 
+
+   
+
     // Создание HTML-кода карточки
     card.innerHTML = `
         <img src="${product.image}" alt="${product.name}">
         <div>
             <h3>${product.name}</h3>
-            ${product.description ? `<p>${product.description}</p>` : ''}
+            ${product.manufacturerOrSeller ? `<p><span class="manufacturerOrSeller"><b>Производитель/Продавец:</b> ${product.manufacturerOrSeller}</span></p>` : ''}
+            ${product.description ? `<p><b>Описание:</b>  ${product.description}</p>` : ''}
+
+            <!-- Добавляем сюда RAW, он будет динамически управляться -->
+            <p class="raw-info" style="display: none;"><b>RAW</b></p>
+
             <label>Введите вес продукта (граммы):
                 <input type="number" class="product-weight" min="1" step="1" value="${defaultWeight}">
             </label>
-            <p>Калории: <span class="calories-info">${product.calories}</span> ккал</p>
-            <p>Белки: <span class="protein-info">${product.protein}</span> г</p>
-            <p>Жиры: <span class="fats-info">${product.fats}</span> г</p>
-            <p>Углеводы: <span class="carbs-info">${product.carbs}</span> г</p>
-            <p>Содержание клетчатки: <span class="fiber-info">${product.fiberContent}</span> г</p>
-            <p>Содержание воды: <span class="water-info">0.00</span> мл</p>
+            <p><b>Калории:</b> <span class="calories-info">${product.calories}</span> ккал</p>
+            <p><b>Белки:</b> <span class="protein-info">${product.protein}</span> г</p>
+            <p><b>Жиры:</b> <span class="fats-info">${product.fats}</span> г</p>
+            <p><b>Углеводы:</b> <span class="carbs-info">${product.carbs}</span> г</p>
+            <p><b>Содержание клетчатки:</b> <span class="fiber-info">${product.fiberContent}</span> г</p>
+            <p><b>Содержание воды:</b> <span class="water-info">0.00</span> мл</p>
 
             <label>Метод обработки:
                 <select class="processing-method">
@@ -590,12 +598,23 @@ function displayProductCard(product) {
     const servingSizeSelect = card.querySelector(".serving-size");
     const waterInfo = card.querySelector(".water-info");
     const fiberInfo = card.querySelector(".fiber-info");
+    const rawInfo = card.querySelector(".raw-info");
 
     // Установка метода обработки в select
     if (product.processingMethod) {
         const methodOption = methodSelect.querySelector(`option[value="${product.processingMethod}"]`);
         if (methodOption) {
             methodSelect.value = product.processingMethod;
+        }
+    }
+
+    // Обновление отображения элемента RAW
+    function updateRawInfo() {
+        const method = methodSelect.value;
+        if (method === 'Отсутствует' || method === 'Резка') {
+            rawInfo.style.display = 'block'; // Показываем RAW
+        } else {
+            rawInfo.style.display = 'none'; // Скрываем RAW
         }
     }
 
@@ -613,6 +632,8 @@ function displayProductCard(product) {
         card.querySelector(".water-info").textContent = (product.waterContent * weight / 100 * factor).toFixed(2);
 
         servingSizeSelect.innerHTML = updateServingsOptions(weight);
+
+        updateRawInfo(); // Обновляем отображение RAW
     }
 
     weightInput.addEventListener('input', updateNutritionalInfo);
@@ -880,6 +901,7 @@ function updateMealSummary(meal, productEntry) {
     
     
 });
+
 
 
 
