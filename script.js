@@ -1,7 +1,5 @@
 
 
-
-
 document.addEventListener("DOMContentLoaded", function() {
 
     // Восстановление позиции прокрутки
@@ -528,6 +526,17 @@ function checkAndOpenCalendar(mealType) {
         'Жарка': 0.2
     };
 
+    // Переводы названий витаминов
+const vitaminTranslations = {
+    'vitaminA': 'A',
+    'vitaminB1': 'B1',
+    'vitaminB2': 'B2',
+    'vitaminB4': 'B4',
+    'vitaminB5': 'B5',
+    'vitaminB6': 'B6',
+    'vitaminB9': 'B9'
+};
+
     // Отображение карточки продукта
 function displayProductCard(product) {
     productsDiv.innerHTML = '';
@@ -582,6 +591,20 @@ function displayProductCard(product) {
             <p><b>Углеводы:</b> <span class="carbs-info">${product.carbs}</span> г</p>
             <p><b>Содержание клетчатки:</b> <span class="fiber-info">${product.fiberContent}</span> г</p>
             <p><b>Содержание воды:</b> <span class="water-info">0.00</span> мл</p>
+
+            <!-- Контейнер для витаминов -->
+        <div class="vitamins-container">
+            <h4>Витамины</h4>
+            ${Object.entries(product.vitamins).map(([vitamin, value]) => {
+                if (vitamin.endsWith("units")) {
+                    return ''; // Пропускаем поля units
+                }
+                const unitKey = vitamin + 'units';
+                const unit = product.vitamins[unitKey] || '';
+                const vitaminName = vitaminTranslations[vitamin] || vitamin;
+                return `<p><b>${vitaminName}:</b> ${value} ${unit}</p>`;
+            }).join('')}
+        </div>
 
             <label>Метод обработки:
                 <select class="processing-method">
@@ -644,6 +667,20 @@ function displayProductCard(product) {
         card.querySelector(".water-info").textContent = (product.waterContent * weight / 100 * factor).toFixed(2);
 
         servingSizeSelect.innerHTML = updateServingsOptions(weight);
+
+        // Пересчет витаминов
+        const vitaminsContainer = card.querySelector(".vitamins-container");
+        vitaminsContainer.innerHTML = '<h4>Витамины</h4>' +
+            Object.entries(product.vitamins).map(([vitamin, value]) => {
+                if (vitamin.endsWith("units")) {
+                    return ''; // Пропускаем поля units
+                }
+                const unitKey = vitamin + 'units';
+                const unit = product.vitamins[unitKey] || '';
+                const vitaminName = vitaminTranslations[vitamin] || vitamin;
+                const vitaminValue = (value * weight / 100 * factor).toFixed(2);
+                return `<p><b>${vitaminName}:</b> ${vitaminValue} ${unit}</p>`;
+            }).join('');
 
         updateRawInfo(); // Обновляем отображение RAW
     }
@@ -913,6 +950,7 @@ function updateMealSummary(meal, productEntry) {
     
     
 });
+
 
 
 
