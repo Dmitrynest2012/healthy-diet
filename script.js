@@ -1,5 +1,7 @@
 
 
+
+
 document.addEventListener("DOMContentLoaded", function() {
 
     // Восстановление позиции прокрутки
@@ -534,7 +536,12 @@ const vitaminTranslations = {
     'vitaminB4': 'B4',
     'vitaminB5': 'B5',
     'vitaminB6': 'B6',
-    'vitaminB9': 'B9'
+    'vitaminB9': 'B9',
+    'vitaminB12': 'B12',
+    'vitaminС': 'С',
+    'vitaminD': 'D',
+    'vitaminE': 'E',
+    'vitaminK': 'K'
 };
 
     // Отображение карточки продукта
@@ -950,6 +957,7 @@ function updateMealSummary(meal, productEntry) {
     
     
 });
+
 
 
 
