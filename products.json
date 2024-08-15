@@ -88,7 +88,17 @@
     "vitaminB6": 2.01,
     "vitaminB6units": "мг",
     "vitaminB9": 168,
-    "vitaminB9units": "мкг"
+    "vitaminB9units": "мкг",
+    "vitaminB12": 0,
+    "vitaminB12units": "мкг",
+    "vitaminС": 26,
+    "vitaminСunits": "мг",
+    "vitaminD": 0,
+    "vitaminDunits": "мкг",
+    "vitaminE": 8.3,
+    "vitaminEunits": "мг",
+    "vitaminK": 0,
+    "vitaminKunits": "мкг"
     }
   },
   {
