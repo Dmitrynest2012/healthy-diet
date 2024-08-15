@@ -52,6 +52,7 @@
       "шт.": 100
     },
     "processingMethod": "Отсутствует"
+    
   },
   {
     "id": "3",
@@ -72,7 +73,23 @@
       "столовая ложка": 12.5,
       "шт.": 100
     },
-    "processingMethod": "Отсутствует"
+    "processingMethod": "Отсутствует",
+    "vitamins": {
+    "vitaminA": 1,
+    "vitaminAunits": "мкг",
+    "vitaminB1": 1.3,
+    "vitaminB1units": "мг",
+    "vitaminB2": 0.49,
+    "vitaminB2units": "мг",
+    "vitaminB4": 0,
+    "vitaminB4units": "мг",
+    "vitaminB5": 0,
+    "vitaminB5units": "мг",
+    "vitaminB6": 2.01,
+    "vitaminB6units": "мг",
+    "vitaminB9": 168,
+    "vitaminB9units": "мкг"
+    }
   },
   {
     "id": "4",
@@ -156,6 +173,7 @@
     "processingMethod": "Резка"
   }
 ]
+
 
 
 
