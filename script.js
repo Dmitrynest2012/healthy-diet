@@ -130,7 +130,7 @@ function updateBMR(age) {
             const dailyCalories = parseFloat(dailyCaloriesElement.textContent);
 
             // Рассчет процента от BMR
-            const percentage = dailyCalories && globalBMR != 0 ? ((dailyCalories / globalBMR) * 100).toFixed(2) : 'N/A';
+            const percentage = dailyCalories && globalBMR != 0 ? ((dailyCalories / globalBMR) * 100).toFixed(2) : '0';
 
             GlobalpercentageBMR = percentage;
             localStorage.setItem('globalPercentageBMR', GlobalpercentageBMR);
@@ -784,6 +784,7 @@ function updateMealSummary(meal, productEntry) {
     loadMealData();
     
 });
+
 
 
 
