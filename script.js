@@ -9,7 +9,24 @@ document.addEventListener("DOMContentLoaded", function() {
         localStorage.removeItem('scrollPosition'); // Удаляем сохраненную позицию после восстановления
     }
 
+    // Дополнительные глобальные переменные
+    let globalProteinNorm, globalFatsNorm, globalCarbsNorm, globalFiberNorm, globalWaterNorm;
+
+    
+    // Функции для расчета норм потребления
+    function calculateNutrientNorms(weight) {
+        
+        globalProteinNorm = (1.0 * weight).toFixed(2); // 1.0 г на кг веса
+        globalFatsNorm = (1.0 * weight).toFixed(2); // 1.0 г на кг веса
+        globalCarbsNorm = (4.0 * weight).toFixed(2); // 4.0 г на кг веса
+        globalFiberNorm = 28; // Стандартное значение клетчатки
+        globalWaterNorm = (35 * weight).toFixed(2); // 35 мл на кг веса
+    }
+
     let globalBMR;
+
+    
+    
 
     const buttonClass = 'profile-btn';
     const modalClass = 'profile-modal';
@@ -125,6 +142,8 @@ function updateBMR(age) {
         globalBMR = bmr;
         localStorage.setItem('globalBMR', bmr);
 
+        
+
         const dailyCaloriesElement = document.getElementById('daily-calories');
         if (dailyCaloriesElement) {
             const dailyCalories = parseFloat(dailyCaloriesElement.textContent);
@@ -136,7 +155,7 @@ function updateBMR(age) {
             localStorage.setItem('globalPercentageBMR', GlobalpercentageBMR);
 
             // Обновление текста элемента с дневными калориями
-            dailyCaloriesElement.nextSibling.textContent = ` ккал / BMR: ${globalBMR} ккал [${GlobalpercentageBMR}% от базовой нормы]`;
+            dailyCaloriesElement.nextSibling.textContent = ` ккал / Норма: ${globalBMR} ккал [${GlobalpercentageBMR}% от нормы]`;
         }
 
         return bmr;
@@ -164,18 +183,46 @@ function saveProfileData() {
         bmr: globalBMR // Используем глобальную переменную для BMR
     };
     localStorage.setItem('userProfile', JSON.stringify(userProfile));
+    
 }
 
     globalBMR = localStorage.getItem('globalBMR') ? localStorage.getItem('globalBMR') : 'N/A'; // Обратите внимание на значение по умолчанию
 
 
 
+// Функция для обновления процентного выполнения нормы
+function updateDailySummary2() {
+    const dailyProtein = parseFloat(document.getElementById('daily-protein').textContent);
+    const dailyFats = parseFloat(document.getElementById('daily-fats').textContent);
+    const dailyCarbs = parseFloat(document.getElementById('daily-carbs').textContent);
+    const dailyFiber = parseFloat(document.getElementById('daily-fiber').textContent);
+    const dailyWater = parseFloat(document.getElementById('daily-water').textContent);
 
+    const proteinPercentage = (dailyProtein / globalProteinNorm * 100).toFixed(2);
+    const fatsPercentage = (dailyFats / globalFatsNorm * 100).toFixed(2);
+    const carbsPercentage = (dailyCarbs / globalCarbsNorm * 100).toFixed(2);
+    const fiberPercentage = (dailyFiber / globalFiberNorm * 100).toFixed(2);
+    const waterPercentage = (dailyWater / globalWaterNorm * 100).toFixed(2);
+
+    const savedData = JSON.parse(localStorage.getItem('userProfile'));
+    const Globalweight = parseFloat(savedData.weight) || 0;
+    calculateNutrientNorms(Globalweight);
+
+    // Обновление HTML
+    document.getElementById('daily-protein').nextSibling.textContent = ` г / Норма: ${globalProteinNorm} г [${proteinPercentage}% от нормы]`;
+    document.getElementById('daily-fats').nextSibling.textContent = ` г / Норма: ${globalFatsNorm} г [${fatsPercentage}% от нормы]`;
+    document.getElementById('daily-carbs').nextSibling.textContent = ` г / Норма: ${globalCarbsNorm} г [${carbsPercentage}% от нормы]`;
+    document.getElementById('daily-fiber').nextSibling.textContent = ` г / Норма: ${globalFiberNorm} г [${fiberPercentage}% от нормы]`;
+    document.getElementById('daily-water').nextSibling.textContent = ` мл / Норма: ${globalWaterNorm} мл [${waterPercentage}% от нормы]`;
+}
 
     
     // Функция для загрузки данных из локального хранилища
     function loadProfileData() {
         const savedData = JSON.parse(localStorage.getItem('userProfile'));
+        
+            
+        
         
         if (savedData) {
             firstNameInput.value = savedData.firstName || '';
@@ -189,20 +236,29 @@ function saveProfileData() {
 
             bmrParagraph.innerHTML = savedData.bmr ? `<strong>Базальный метаболизм (BMR):</strong> ${savedData.bmr} ккал/день` : '<strong>Базальный метаболизм (BMR):</strong>';
 
-    
+            
+            const Globalweight = parseFloat(savedData.weight) || 0;
 
-            GlobalpercentageBMR = localStorage.getItem('globalPercentageBMR') || '?';
+            
+        
+        if (Globalweight > 0) {
+            
+            setInterval(calculateNutrientNorms(Globalweight), 1000);
+            // Запуск обновления сводки за день раз в секунду
+    setInterval(updateDailySummary2, 1000); // Обновляем сводку за день
+        }
 
-            const dailyCaloriesElement = document.getElementById('daily-calories');
-            if (dailyCaloriesElement && globalBMR) {
-                // Проверяем, есть ли уже BMR в тексте
-                if (!dailyCaloriesElement.nextSibling.textContent.includes('/ BMR:')) {
-                    
-                    dailyCaloriesElement.nextSibling.textContent += ` / BMR: ${globalBMR} ккал [${GlobalpercentageBMR}% от базовой нормы]`;
-                }
+        GlobalpercentageBMR = localStorage.getItem('globalPercentageBMR') || '?';
+
+        const dailyCaloriesElement = document.getElementById('daily-calories');
+        if (dailyCaloriesElement && globalBMR) {
+            if (!dailyCaloriesElement.nextSibling.textContent.includes('/ Норма:')) {
+                dailyCaloriesElement.nextSibling.textContent += ` / Норма: ${globalBMR} ккал [${GlobalpercentageBMR}% от нормы]`;
             }
         }
     }
+}
+    
     
     
 
@@ -212,16 +268,24 @@ function saveProfileData() {
     // Обновление возраста, ИМТ и BMR при изменении данных
 birthDateInput.addEventListener('input', function() {
     saveProfileData(); // Вызываем функцию сохранения, которая сама обновит все данные
+    updateDailySummary2(); // Добавляем вызов обновления сводки
+    
 });
 heightInput.addEventListener('input', function() {
     saveProfileData();
+    updateDailySummary2();
+    
 });
 weightInput.addEventListener('input', function() {
     saveProfileData();
+    updateDailySummary2();
+    
     
 });
 genderSelect.addEventListener('input', function() {
     saveProfileData();
+    updateDailySummary2();
+    
 });
 
 
@@ -230,8 +294,7 @@ button.addEventListener('click', function() {
     if (modal.classList.contains('active')) {
         // Если окно уже открыто, закрываем его и сохраняем позицию прокрутки
         modal.classList.remove('active');
-        saveScrollPosition(); // Сохранение позиции прокрутки
-        setTimeout(() => location.reload(), 0); // Перезагрузка страницы
+        
     } else {
         // Если окно закрыто, просто открываем его
         modal.classList.add('active');
@@ -241,10 +304,10 @@ button.addEventListener('click', function() {
 
     // Обработчик для закрытия модального окна
     modal.querySelector(`.${closeButtonClass}`).addEventListener('click', function() {
-        saveScrollPosition(); // Сохранение позиции прокрутки
+        
         modal.classList.remove('active');
         
-    location.reload();   // Перезагрузка страницы
+    
     });
 
 
@@ -259,7 +322,7 @@ button.addEventListener('click', function() {
     
 
 
-
+    
 
 
 
@@ -411,7 +474,10 @@ function checkAndOpenCalendar(mealType) {
         selectedDate.setDate(selectedDate.getDate() + offset);
         updateDateDisplay();
         loadMealData();
+        
         saveProfileData();
+        calculateNutrientNorms(Globalweight);
+        
     }
 
     prevDayButton.addEventListener('click', () => changeDay(-1));
@@ -599,7 +665,11 @@ function displayProductCard(product) {
         updateMealSummary(mealTime, productEntry);
         updateMealTotal(mealTime);
         updateDailySummary();
+        
+        
         saveMealData();
+        
+        
         saveScrollPosition(); // Сохранение позиции прокрутки
     location.reload();   // Перезагрузка страницы
     });
@@ -677,8 +747,18 @@ function updateMealSummary(meal, productEntry) {
         
         updateMealTotal(meal);
         updateDailySummary();
+        
+
+        
+        
+        
         saveMealData(); // Немедленное обновление локального хранилища
         saveProfileData();
+        
+        
+        calculateNutrientNorms(Globalweight);
+        
+        
     });
 
     // Добавляем обработчики для перетаскивания
@@ -749,6 +829,12 @@ function updateMealSummary(meal, productEntry) {
         openCalendar(mealType);
     });
 
+   
+
+    
+
+    
+
     }
 
      // Обновление общей информации за день
@@ -767,6 +853,11 @@ function updateMealSummary(meal, productEntry) {
         const totalFiber = Object.values(mealTotals).reduce((sum, meal) => sum + meal.fiber, 0);
         const totalWater = Object.values(mealTotals).reduce((sum, meal) => sum + meal.water, 0);
 
+        
+
+
+        
+
         dailyCaloriesEl.textContent = totalCalories.toFixed(2);
         dailyProteinEl.textContent = totalProtein.toFixed(2);
         dailyCarbsEl.textContent = totalCarbs.toFixed(2);
@@ -774,7 +865,10 @@ function updateMealSummary(meal, productEntry) {
         dailyFiberEl.textContent = totalFiber.toFixed(2);
         dailyWaterEl.textContent = totalWater.toFixed(2);
 
+        
+
         saveProfileData();
+        
     }
 
     
@@ -783,7 +877,10 @@ function updateMealSummary(meal, productEntry) {
     updateDateDisplay();
     loadMealData();
     
+    
+    
 });
+
 
 
 
