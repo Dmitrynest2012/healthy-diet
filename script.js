@@ -1,5 +1,7 @@
 
 
+
+
 document.addEventListener("DOMContentLoaded", function() {
 
     // Восстановление позиции прокрутки
@@ -529,17 +531,21 @@ function checkAndOpenCalendar(mealType) {
     // Переводы названий витаминов
 const vitaminTranslations = {
     'vitaminA': 'A',
+    'vitaminBeta-carotene': 'Бета-Каротин',
     'vitaminB1': 'B1',
     'vitaminB2': 'B2',
-    'vitaminB4': 'B4',
+    'vitaminB3': 'B3-Ниацин',
+    'vitaminCholine': '[B4*]-Холин',
     'vitaminB5': 'B5',
     'vitaminB6': 'B6',
+    'vitaminB7': 'B7',
     'vitaminB9': 'B9',
     'vitaminB12': 'B12',
     'vitaminС': 'С',
     'vitaminD': 'D',
     'vitaminE': 'E',
-    'vitaminK': 'K'
+    'vitaminK': 'K',
+    
 };
 
     // Отображение карточки продукта
