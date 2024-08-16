@@ -1,5 +1,7 @@
 
 
+
+
 document.addEventListener("DOMContentLoaded", function() {
 
     // Восстановление позиции прокрутки
@@ -109,7 +111,8 @@ function updateAge() {
 }
 
 // Функция для определения категории ИМТ и соответствующего CSS-класса
-function getBMICategoryAndClass(bmi) {
+// Функция для определения категории на основе ИМТ и процента жира
+function getBMICategoryAndClass(bmi, bodyFat) {
     let category = '';
     let cssClass = '';
 
@@ -120,17 +123,37 @@ function getBMICategoryAndClass(bmi) {
         category = 'Недостаточная масса тела';
         cssClass = 'bmi-insufficient';
     } else if (bmi >= 18.5 && bmi < 25) {
-        category = 'Норма';
-        cssClass = 'bmi-normal';
+        if (bodyFat >= 25) {
+            category = 'Избыточный жир, несмотря на нормальный ИМТ';
+            cssClass = 'bmi-overfat';
+        } else {
+            category = 'Норма';
+            cssClass = 'bmi-normal';
+        }
     } else if (bmi >= 25 && bmi < 30) {
-        category = 'Избыточная масса тела';
-        cssClass = 'bmi-overweight';
+        if (bodyFat >= 30) {
+            category = 'Ожирение 1 степени';
+            cssClass = 'bmi-obesity-1';
+        } else {
+            category = 'Избыточная масса тела';
+            cssClass = 'bmi-overweight';
+        }
     } else if (bmi >= 30 && bmi < 35) {
-        category = 'Ожирение 1 степени';
-        cssClass = 'bmi-obesity-1';
+        if (bodyFat >= 35) {
+            category = 'Ожирение 2 степени';
+            cssClass = 'bmi-obesity-2';
+        } else {
+            category = 'Ожирение 1 степени';
+            cssClass = 'bmi-obesity-1';
+        }
     } else if (bmi >= 35 && bmi < 40) {
-        category = 'Ожирение 2 степени';
-        cssClass = 'bmi-obesity-2';
+        if (bodyFat >= 40) {
+            category = 'Ожирение 3 степени';
+            cssClass = 'bmi-obesity-3';
+        } else {
+            category = 'Ожирение 2 степени';
+            cssClass = 'bmi-obesity-2';
+        }
     } else {
         category = 'Ожирение 3 степени';
         cssClass = 'bmi-obesity-3';
@@ -139,16 +162,24 @@ function getBMICategoryAndClass(bmi) {
     return { category, cssClass };
 }
 
-// Функция для обновления ИМТ с индикатором
+// Функция для обновления ИМТ с индикатором и учетом процента жира
 function updateBMI() {
     const height = parseFloat(heightInput.value);
     const weight = parseFloat(weightInput.value);
+    const bodyFat = parseFloat(bodyFatInput.value); // Получаем процент жира в организме
+
     if (height && weight) {
         const heightInMeters = height / 100;
-        const bmi = (weight / (heightInMeters * heightInMeters)).toFixed(2);
+        let bmi = (weight / (heightInMeters * heightInMeters)).toFixed(2);
 
-        // Получаем категорию и CSS-класс на основе ИМТ
-        const { category, cssClass } = getBMICategoryAndClass(bmi);
+        if (bodyFat && bodyFat > 0) {
+            // Корректируем ИМТ на основе процента жира
+            const fatAdjustment = (bodyFat / 100) * weight / (heightInMeters * heightInMeters);
+            bmi = (parseFloat(bmi) + fatAdjustment).toFixed(2);
+        }
+
+        // Получаем категорию и CSS-класс на основе скорректированного ИМТ
+        const { category, cssClass } = getBMICategoryAndClass(bmi, bodyFat);
 
         // Обновляем HTML с индикатором и подсказкой
         bmiParagraph.innerHTML = `
@@ -170,6 +201,8 @@ function updateBMI() {
         return null;
     }
 }
+
+
     let GlobalpercentageBMR;
 
 // Функция для обновления BMR (формула Миффлина-Сан Жеора)
@@ -220,25 +253,37 @@ function updateBMR(age) {
 
 function calculateMetabolicAge() {
     const bmr = parseFloat(globalBMR);
-    const bodyFat = parseFloat(bodyFatInput.value);
+    const bodyFat = bodyFatInput.value ? parseFloat(bodyFatInput.value) : null; // Учитываем значение жира только если оно указано
     const activityLevel = activityLevelSelect.value;
     const age = updateAge();
 
-    if (bmr && bodyFat && activityLevel && age !== null) {
-        let metabolicAge;
+    if (bmr && activityLevel && age !== null) {
+        // Корректировка коэффициентов на основе активности
+        const activityFactor = {
+            '1.2': 1.3,
+            '1.375': 1.2,
+            '1.55': 1.1,
+            '1.725': 1.0,
+            '1.9': 0.9
+        };
 
-        if (activityLevel === "1.2") {
-            metabolicAge = age + (bodyFat * 0.5);
-        } else if (activityLevel === "1.375") {
-            metabolicAge = age + (bodyFat * 0.3);
-        } else if (activityLevel === "1.55") {
-            metabolicAge = age + (bodyFat * 0.2);
-        } else if (activityLevel === "1.725") {
-            metabolicAge = age + (bodyFat * 0.1);
-        } else if (activityLevel === "1.9") {
-            metabolicAge = age;
+        // Базовый метаболический возраст
+        let metabolicAge = age;
+        
+        if (bodyFat !== null) {
+            // Корректировка метаболического возраста с учетом процента жира
+            const fatFactor = bodyFat > 25 ? (bodyFat - 25) / 2 : 0;
+            metabolicAge += fatFactor;
         }
 
+        // Корректировка по BMR
+        const bmrCorrection = (1500 - bmr) / 100; // Чем ниже BMR, тем выше метаболический возраст
+        metabolicAge += bmrCorrection;
+
+        // Учитываем уровень активности
+        metabolicAge *= activityFactor[activityLevel] || 1;
+
+        // Обновляем интерфейс
         metabolicAgeParagraph.innerHTML = `<strong>Метаболический возраст:</strong> ${metabolicAge.toFixed(2)} лет`;
         localStorage.setItem('metabolicAge', metabolicAge.toFixed(2));
 
@@ -248,6 +293,9 @@ function calculateMetabolicAge() {
         return null;
     }
 }
+
+
+
 
 
 
