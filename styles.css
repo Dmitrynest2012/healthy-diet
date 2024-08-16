@@ -232,7 +232,7 @@ header {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     padding: 20px;
-    width: 300px;
+    width: 370px;
     display: none;
     z-index: 1000;
     position: absolute;
@@ -354,6 +354,87 @@ header {
     font-size: 0.9em;
     color: #555;
 }
+
+
+/* Стили для индикатора ИМТ */
+.bmi-indicator {
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid rgba(110, 110, 110, 0.466);
+    border-radius: 10px;
+    margin-left: 10px;
+    color: white;
+    font-weight: bold;
+}
+
+/* Цвета для различных категорий ИМТ */
+.bmi-acute-deficit {
+    background-color: rgb(187, 187, 255);
+    color: black; /* Можно использовать черный текст на светлом фоне */
+}
+
+.bmi-insufficient {
+    background-color: rgb(196, 240, 255);
+    color: black; /* Можно использовать черный текст на светлом фоне */
+}
+
+.bmi-normal {
+    background-color: rgb(115, 255, 115);
+    color: black; /* Можно использовать черный текст на светлом фоне */
+}
+
+.bmi-overweight {
+    background-color: rgb(255, 255, 122);
+    color: black; /* Можно использовать черный текст на светлом фоне */
+}
+
+.bmi-obesity-1 {
+    background-color: rgb(255, 210, 127);
+    color: black; /* Можно использовать черный текст на светлом фоне */
+}
+
+.bmi-obesity-2 {
+    background-color: rgb(255, 166, 125);
+    color: black; /* Можно использовать черный текст на светлом фоне */
+}
+
+.bmi-obesity-3 {
+    background-color: rgb(255, 131, 131);
+    color: black; /* Можно использовать черный текст на светлом фоне */
+}
+
+/* Стили для всплывающей подсказки */
+.tooltip {
+    position: relative;
+    cursor: pointer;
+}
+
+.tooltip::after {
+    content: attr(data-tooltip); /* Используем атрибут для текста подсказки */
+    position: absolute;
+    bottom: 125%; /* Располагаем над элементом */
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 8px 12px;
+    background-color: #333;
+    color: #fff;
+    border-radius: 10px; /* Более закругленные углы */
+    white-space: pre-line; /* Поддержка переноса строк */
+    font-size: 14px;
+    opacity: 0;
+    pointer-events: none; /* Скрываем возможность взаимодействия */
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+    width: max-content;
+    max-width: 300px; /* Ограничиваем ширину подсказки */
+    text-align: center;
+}
+
+.tooltip:hover::after {
+    opacity: 1;
+    pointer-events: auto;
+}
+
 
 
 
