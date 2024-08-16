@@ -6,6 +6,8 @@
 
 
 
+
+
 document.addEventListener("DOMContentLoaded", function() {
 
     // Восстановление позиции прокрутки
@@ -159,7 +161,7 @@ function updateBMI() {
 
         // Добавляем элемент с классом "tooltip" и атрибутом data-tooltip для всплывающей подсказки
         bmiParagraph.classList.add('tooltip');
-        bmiParagraph.setAttribute('data-tooltip', 'Острый дефицит: < 16\nНедостаточная масса: 16 - 18.5\nНорма: 18.5 - 24.9\nИзбыточная масса: 25 - 29.9\nОжирение 1 степени: 30 - 34.9\nОжирение 2 степени: 35 - 39.9\nОжирение 3 степени: >= 40');
+        bmiParagraph.setAttribute('data-tooltip', 'Острый дефицит: < 15\nНедостаточная масса: 15 - 18.5\nНорма: 18.5 - 24.9\nИзбыточная масса: 25 - 29.9\nОжирение 1 степени: 30 - 34.9\nОжирение 2 степени: 35 - 39.9\nОжирение 3 степени: >= 40');
 
         return bmi;
     } else {
