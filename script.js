@@ -4,6 +4,8 @@
 
 
 
+
+
 document.addEventListener("DOMContentLoaded", function() {
 
     // Восстановление позиции прокрутки
@@ -110,10 +112,10 @@ function getBMICategoryAndClass(bmi) {
     let category = '';
     let cssClass = '';
 
-    if (bmi < 16) {
+    if (bmi < 15) {
         category = 'Острый дефицит массы тела';
         cssClass = 'bmi-acute-deficit';
-    } else if (bmi >= 16 && bmi < 18.5) {
+    } else if (bmi >= 15 && bmi < 18.5) {
         category = 'Недостаточная масса тела';
         cssClass = 'bmi-insufficient';
     } else if (bmi >= 18.5 && bmi < 25) {
