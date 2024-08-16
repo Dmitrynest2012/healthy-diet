@@ -77,16 +77,24 @@
     "vitamins": {
     "vitaminA": 1,
     "vitaminAunits": "мкг",
+    "vitaminBeta-carotene": 0.005,
+    "vitaminBeta-caroteneunits": "мг",
+
+    
     "vitaminB1": 1.3,
     "vitaminB1units": "мг",
     "vitaminB2": 0.49,
     "vitaminB2units": "мг",
-    "vitaminB4": 0,
-    "vitaminB4units": "мг",
+    "vitaminB3": 4.19,
+    "vitaminB3units": "мг",
+    "vitaminCholine": 0,
+    "vitaminCholineunits": "мг",
     "vitaminB5": 0,
     "vitaminB5units": "мг",
     "vitaminB6": 2.01,
     "vitaminB6units": "мг",
+    "vitaminB7": 36,
+    "vitaminB7units": "мкг",
     "vitaminB9": 168,
     "vitaminB9units": "мкг",
     "vitaminB12": 0,
@@ -99,6 +107,7 @@
     "vitaminEunits": "мг",
     "vitaminK": 0,
     "vitaminKunits": "мкг"
+    
     }
   },
   {
@@ -183,6 +192,7 @@
     "processingMethod": "Резка"
   }
 ]
+
 
 
 
