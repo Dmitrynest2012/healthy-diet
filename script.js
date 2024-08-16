@@ -2,6 +2,8 @@
 
 
 
+
+
 document.addEventListener("DOMContentLoaded", function() {
 
     // Восстановление позиции прокрутки
@@ -103,17 +105,65 @@ function updateAge() {
     }
 }
 
-// Функция для обновления ИМТ
+// Функция для определения категории ИМТ и соответствующего CSS-класса
+function getBMICategoryAndClass(bmi) {
+    let category = '';
+    let cssClass = '';
+
+    if (bmi < 16) {
+        category = 'Острый дефицит массы тела';
+        cssClass = 'bmi-acute-deficit';
+    } else if (bmi >= 16 && bmi < 18.5) {
+        category = 'Недостаточная масса тела';
+        cssClass = 'bmi-insufficient';
+    } else if (bmi >= 18.5 && bmi < 25) {
+        category = 'Норма';
+        cssClass = 'bmi-normal';
+    } else if (bmi >= 25 && bmi < 30) {
+        category = 'Избыточная масса тела';
+        cssClass = 'bmi-overweight';
+    } else if (bmi >= 30 && bmi < 35) {
+        category = 'Ожирение 1 степени';
+        cssClass = 'bmi-obesity-1';
+    } else if (bmi >= 35 && bmi < 40) {
+        category = 'Ожирение 2 степени';
+        cssClass = 'bmi-obesity-2';
+    } else {
+        category = 'Ожирение 3 степени';
+        cssClass = 'bmi-obesity-3';
+    }
+
+    return { category, cssClass };
+}
+
+// Функция для обновления ИМТ с индикатором
 function updateBMI() {
     const height = parseFloat(heightInput.value);
     const weight = parseFloat(weightInput.value);
     if (height && weight) {
         const heightInMeters = height / 100;
         const bmi = (weight / (heightInMeters * heightInMeters)).toFixed(2);
-        bmiParagraph.innerHTML = `<strong>ИМТ:</strong> ${bmi}`;
+
+        // Получаем категорию и CSS-класс на основе ИМТ
+        const { category, cssClass } = getBMICategoryAndClass(bmi);
+
+        // Обновляем HTML с индикатором и подсказкой
+        bmiParagraph.innerHTML = `
+            <strong>ИМТ:</strong> ${bmi}
+            <div class="bmi-indicator ${cssClass}">
+                ${category}
+            </div>
+        `;
+
+        // Добавляем элемент с классом "tooltip" и атрибутом data-tooltip для всплывающей подсказки
+        bmiParagraph.classList.add('tooltip');
+        bmiParagraph.setAttribute('data-tooltip', 'Острый дефицит: < 16\nНедостаточная масса: 16 - 18.5\nНорма: 18.5 - 24.9\nИзбыточная масса: 25 - 29.9\nОжирение 1 степени: 30 - 34.9\nОжирение 2 степени: 35 - 39.9\nОжирение 3 степени: >= 40');
+
         return bmi;
     } else {
         bmiParagraph.innerHTML = '<strong>ИМТ:</strong>';
+        bmiParagraph.classList.remove('tooltip');
+        bmiParagraph.removeAttribute('data-tooltip');
         return null;
     }
 }
@@ -160,6 +210,8 @@ function updateBMR(age) {
             dailyCaloriesElement.nextSibling.textContent = ` ккал / Норма: ${globalBMR} ккал [${GlobalpercentageBMR}% от нормы]`;
         }
 
+        
+
         return bmr;
     } else {
         bmrParagraph.textContent = 'Базальный метаболизм (BMR):';
@@ -170,9 +222,13 @@ function updateBMR(age) {
 
     // Функция для сохранения данных в локальное хранилище
 function saveProfileData() {
+
     const age = updateAge();
     const bmi = updateBMI();
     updateBMR(age); // Обновляем BMR без сохранения, чтобы использовать актуальное значение
+    
+    
+    
     const userProfile = {
         firstName: firstNameInput.value,
         lastName: lastNameInput.value,
@@ -209,6 +265,7 @@ function updateDailySummary2() {
     const savedData = JSON.parse(localStorage.getItem('userProfile'));
     const Globalweight = parseFloat(savedData.weight) || 0;
     calculateNutrientNorms(Globalweight);
+    
 
     // Обновление HTML
     document.getElementById('daily-protein').nextSibling.textContent = ` г / Норма: ${globalProteinNorm} г [${proteinPercentage}% от нормы]`;
@@ -216,6 +273,8 @@ function updateDailySummary2() {
     document.getElementById('daily-carbs').nextSibling.textContent = ` г / Норма: ${globalCarbsNorm} г [${carbsPercentage}% от нормы]`;
     document.getElementById('daily-fiber').nextSibling.textContent = ` г / Норма: ${globalFiberNorm} г [${fiberPercentage}% от нормы]`;
     document.getElementById('daily-water').nextSibling.textContent = ` мл / Норма: ${globalWaterNorm} мл [${waterPercentage}% от нормы]`;
+
+    
 }
 
     
@@ -249,6 +308,8 @@ function updateDailySummary2() {
             // Запуск обновления сводки за день раз в секунду
     setInterval(updateDailySummary2, 1000); // Обновляем сводку за день
         }
+        
+        
 
         GlobalpercentageBMR = localStorage.getItem('globalPercentageBMR') || '?';
 
@@ -261,6 +322,27 @@ function updateDailySummary2() {
     }
 }
     
+
+function temporaryHeightChange() {
+    const originalWeightInput = weightInput.value;
+            weightInput.value = 900;
+            updateBMI();
+            updateBMR(updateAge());
+            
+     
+
+        // Установить задержку в 1.2 секунды перед возвратом роста в исходное состояние
+        setTimeout(function() {
+            weightInput.value = originalWeightInput;
+            // Обновить ИМТ и BMR после возврата роста в исходное состояние
+            updateBMI();
+            updateBMR(updateAge());
+            saveProfileData(); // Вызываем функцию сохранения, которая сама обновит все данные
+            
+        }, 50);
+    
+}
+
     
     
 
@@ -274,8 +356,14 @@ birthDateInput.addEventListener('input', function() {
     
 });
 heightInput.addEventListener('input', function() {
+
+
+    // temporaryHeightChange();
+    
     saveProfileData();
+    
     updateDailySummary2();
+    
     
 });
 weightInput.addEventListener('input', function() {
