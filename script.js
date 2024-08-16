@@ -1,55 +1,40 @@
 
 
-
-
-
-
-
-
-
-
 document.addEventListener("DOMContentLoaded", function() {
 
     // Восстановление позиции прокрутки
     const savedScrollPosition = localStorage.getItem('scrollPosition');
     if (savedScrollPosition) {
         window.scrollTo(0, parseInt(savedScrollPosition, 10));
-        localStorage.removeItem('scrollPosition'); // Удаляем сохраненную позицию после восстановления
+        localStorage.removeItem('scrollPosition');
     }
 
     // Дополнительные глобальные переменные
-    let globalProteinNorm, globalFatsNorm, globalCarbsNorm, globalFiberNorm, globalWaterNorm;
+    let globalProteinNorm, globalFatsNorm, globalCarbsNorm, globalFiberNorm, globalWaterNorm, globalMetabolicAge;
 
-    
     // Функции для расчета норм потребления
     function calculateNutrientNorms(weight) {
-        
-        globalProteinNorm = (1.0 * weight).toFixed(2); // 1.0 г на кг веса
-        globalFatsNorm = (1.0 * weight).toFixed(2); // 1.0 г на кг веса
-        globalCarbsNorm = (4.0 * weight).toFixed(2); // 4.0 г на кг веса
-        globalFiberNorm = 28; // Стандартное значение клетчатки
-        globalWaterNorm = (35 * weight).toFixed(2); // 35 мл на кг веса
+        globalProteinNorm = (1.0 * weight).toFixed(2);
+        globalFatsNorm = (1.0 * weight).toFixed(2);
+        globalCarbsNorm = (4.0 * weight).toFixed(2);
+        globalFiberNorm = 28;
+        globalWaterNorm = (35 * weight).toFixed(2);
     }
 
     let globalBMR;
 
-    
-    
-
     const buttonClass = 'profile-btn';
     const modalClass = 'profile-modal';
     const closeButtonClass = 'close-btn';
-    
+
     const header = document.createElement('header');
-    
-    // Создание кнопки с треугольником
+
     const button = document.createElement('button');
     button.className = buttonClass;
     button.id = "toggle-profile";
-    button.innerHTML = '&#9650;'; // Юникод треугольника
+    button.innerHTML = '&#9650;';
     document.body.appendChild(button);
 
-    // Создание модального окна
     const modal = document.createElement('div');
     modal.className = modalClass;
     modal.innerHTML = `
@@ -72,12 +57,23 @@ document.addEventListener("DOMContentLoaded", function() {
         <input type="number" id="height" placeholder="Рост (см)">
         <label for="weight">Вес (кг):</label>
         <input type="number" id="weight" placeholder="Вес (кг)">
+        <label for="body-fat">Общий жир (%):</label>
+        <input type="number" id="body-fat" placeholder="Процент жира в организме">
         <p id="bmi">ИМТ:</p>
+        <label for="activity-level">Уровень физической активности:</label>
+        <select id="activity-level">
+            <option value="">Выберите уровень</option>
+            <option value="1.2">Сидячий образ жизни</option>
+            <option value="1.375">Малая активность</option>
+            <option value="1.55">Умеренный спорт</option>
+            <option value="1.725">Интенсивный спорт</option>
+            <option value="1.9">Профессиональный спорт</option>
+        </select>
         <p id="bmr">Базальный метаболизм (BMR):</p>
+        <p id="metabolic-age">Метаболический возраст:</p>
     `;
     document.body.appendChild(modal);
 
-    // Получение элементов формы
     const firstNameInput = document.getElementById('first-name');
     const lastNameInput = document.getElementById('last-name');
     const birthDateInput = document.getElementById('birth-date');
@@ -85,8 +81,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const genderSelect = document.getElementById('gender');
     const heightInput = document.getElementById('height');
     const weightInput = document.getElementById('weight');
+    const bodyFatInput = document.getElementById('body-fat');
+    const activityLevelSelect = document.getElementById('activity-level');
     const bmiParagraph = document.getElementById('bmi');
     const bmrParagraph = document.getElementById('bmr');
+    const metabolicAgeParagraph = document.getElementById('metabolic-age');
 
     // Функция для обновления возраста
 function updateAge() {
@@ -171,12 +170,8 @@ function updateBMI() {
         return null;
     }
 }
-    
-
     let GlobalpercentageBMR;
 
-    // Функция для обновления BMR (формула Миффлина-Сан Жеора)
-    // Функция для обновления BMR (формула Миффлина-Сан Жеора)
 // Функция для обновления BMR (формула Миффлина-Сан Жеора)
 function updateBMR(age) {
     const height = parseFloat(heightInput.value);
@@ -223,6 +218,39 @@ function updateBMR(age) {
     }
 }
 
+function calculateMetabolicAge() {
+    const bmr = parseFloat(globalBMR);
+    const bodyFat = parseFloat(bodyFatInput.value);
+    const activityLevel = activityLevelSelect.value;
+    const age = updateAge();
+
+    if (bmr && bodyFat && activityLevel && age !== null) {
+        let metabolicAge;
+
+        if (activityLevel === "1.2") {
+            metabolicAge = age + (bodyFat * 0.5);
+        } else if (activityLevel === "1.375") {
+            metabolicAge = age + (bodyFat * 0.3);
+        } else if (activityLevel === "1.55") {
+            metabolicAge = age + (bodyFat * 0.2);
+        } else if (activityLevel === "1.725") {
+            metabolicAge = age + (bodyFat * 0.1);
+        } else if (activityLevel === "1.9") {
+            metabolicAge = age;
+        }
+
+        metabolicAgeParagraph.innerHTML = `<strong>Метаболический возраст:</strong> ${metabolicAge.toFixed(2)} лет`;
+        localStorage.setItem('metabolicAge', metabolicAge.toFixed(2));
+
+        return metabolicAge.toFixed(2);
+    } else {
+        metabolicAgeParagraph.textContent = 'Метаболический возраст:';
+        return null;
+    }
+}
+
+
+
 
     // Функция для сохранения данных в локальное хранилище
 function saveProfileData() {
@@ -230,7 +258,8 @@ function saveProfileData() {
     const age = updateAge();
     const bmi = updateBMI();
     updateBMR(age); // Обновляем BMR без сохранения, чтобы использовать актуальное значение
-    
+    const bodyFatPercentage = parseFloat(bodyFatInput.value) || 0;
+    const metabolicAge = calculateMetabolicAge(); // Вычисляем метаболический возраст
     
     
     const userProfile = {
@@ -241,8 +270,11 @@ function saveProfileData() {
         gender: genderSelect.value,
         height: heightInput.value,
         weight: weightInput.value,
+        bodyFatPercentage: bodyFatPercentage, // Сохраняем процент жира
+        activityLevel: activityLevelSelect.value, // Сохраняем уровень активности
         bmi: bmi,
-        bmr: globalBMR // Используем глобальную переменную для BMR
+        bmr: globalBMR, // Используем глобальную переменную для BMR
+        metabolicAge: metabolicAge // Сохраняем метаболический возраст
     };
     localStorage.setItem('userProfile', JSON.stringify(userProfile));
     
@@ -297,10 +329,12 @@ function updateDailySummary2() {
             genderSelect.value = savedData.gender || 'male';
             heightInput.value = savedData.height || '';
             weightInput.value = savedData.weight || '';
+            bodyFatInput.value = savedData.bodyFatPercentage || ''; // Загружаем процент жира
+            activityLevelSelect.value = savedData.activityLevel || ''; // Загружаем уровень активности
             bmiParagraph.innerHTML = savedData.bmi ? `<strong>ИМТ:</strong> ${savedData.bmi}` : '<strong>ИМТ:</strong>';
 
             bmrParagraph.innerHTML = savedData.bmr ? `<strong>Базальный метаболизм (BMR):</strong> ${savedData.bmr} ккал/день` : '<strong>Базальный метаболизм (BMR):</strong>';
-
+            metabolicAgeParagraph.innerHTML = savedData.metabolicAge ? `<strong>Метаболический возраст:</strong> ${savedData.metabolicAge} лет` : '<strong>Метаболический возраст:</strong>';
             
             const Globalweight = parseFloat(savedData.weight) || 0;
 
@@ -326,30 +360,6 @@ function updateDailySummary2() {
     }
 }
     
-
-function temporaryHeightChange() {
-    const originalWeightInput = weightInput.value;
-            weightInput.value = 900;
-            updateBMI();
-            updateBMR(updateAge());
-            
-     
-
-        // Установить задержку в 1.2 секунды перед возвратом роста в исходное состояние
-        setTimeout(function() {
-            weightInput.value = originalWeightInput;
-            // Обновить ИМТ и BMR после возврата роста в исходное состояние
-            updateBMI();
-            updateBMR(updateAge());
-            saveProfileData(); // Вызываем функцию сохранения, которая сама обновит все данные
-            
-        }, 50);
-    
-}
-
-    
-    
-
     // Загрузка сохраненных данных при загрузке страницы
     loadProfileData();
 
@@ -357,6 +367,7 @@ function temporaryHeightChange() {
 birthDateInput.addEventListener('input', function() {
     saveProfileData(); // Вызываем функцию сохранения, которая сама обновит все данные
     updateDailySummary2(); // Добавляем вызов обновления сводки
+    calculateMetabolicAge();
     
 });
 heightInput.addEventListener('input', function() {
@@ -367,20 +378,39 @@ heightInput.addEventListener('input', function() {
     saveProfileData();
     
     updateDailySummary2();
+    calculateMetabolicAge();
     
     
 });
 weightInput.addEventListener('input', function() {
     saveProfileData();
     updateDailySummary2();
+    calculateMetabolicAge();
     
     
 });
 genderSelect.addEventListener('input', function() {
     saveProfileData();
     updateDailySummary2();
+    calculateMetabolicAge();
     
 });
+
+bodyFatInput.addEventListener('input', function() {
+    saveProfileData();
+    updateDailySummary2();
+    calculateMetabolicAge();
+    
+});
+
+activityLevelSelect.addEventListener('input', function() {
+    saveProfileData();
+    updateDailySummary2(); // При необходимости, пересчитываем сводку дня
+    calculateMetabolicAge();
+});
+
+
+
 
 
     // Обработчик для кнопки открытия/закрытия модального окна
