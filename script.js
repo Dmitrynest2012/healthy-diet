@@ -731,10 +731,11 @@ function updateGlycemicIndexDisplay(methodIndex, product, card) {
             giTooltip.appendChild(glycemicLoadContainer);
         }
 
-        // Расчет ГН
+        // Расчет ГН с учетом количества порций
         const servingWeight = parseFloat(card.querySelector(".product-weight").value) || product.weightDefault;
+        const servingsAmount = parseFloat(card.querySelector(".serving-amount").value) || 1; // Количество порций
         const carbsPerServing = product.carbs * (servingWeight / 100);
-        const glycemicLoad = calculateGlycemicLoad(glycemicIndex, carbsPerServing);
+        const glycemicLoad = calculateGlycemicLoad(glycemicIndex, carbsPerServing * servingsAmount); // Учитываем количество порций
 
         // Обновляем всплывающее окно ГИ
         giTooltip.innerHTML = `
