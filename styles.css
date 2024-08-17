@@ -325,8 +325,9 @@ header {
     font-weight: bold; /* Жирный текст */
     text-align: center; /* Центрирование текста */
     white-space: nowrap; /* Предотвращение переноса текста */
-    cursor: default; /* Курсор по умолчанию */
+    
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Небольшая тень */
+    cursor: pointer;
 }
 
 
@@ -434,6 +435,83 @@ header {
     opacity: 1;
     pointer-events: auto;
 }
+
+
+
+
+/* Основной стиль для контейнера с ГИ */
+.glycemic-index-container {
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid rgba(110, 110, 110, 0.466);
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Небольшая тень */
+    position: relative;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+/* Стиль для значения ГИ */
+.glycemic-index-value {
+    font-weight: bold;
+    color: white; /* Белый цвет для текста */
+
+}
+
+/* Стиль для всплывающей подсказки */
+.glycemic-index-tooltip {
+    display: none; /* По умолчанию скрыта */
+    position: absolute;
+    top: 50px;
+    height: 180px;
+    
+    background-color: #333;
+    color: white; /* Белый цвет текста в подсказке */
+    padding: 10px;
+    border-radius: 10px;
+    width: 200px; /* Ширина подсказки */
+    z-index: 10; /* На переднем плане */
+    bottom: 110%; /* Расположение над элементом */
+    left: 50%; /* Центрирование */
+    transform: translateX(-50%); /* Центрирование */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень для подсказки */
+}
+
+/* Показ подсказки при наведении на контейнер */
+.glycemic-index-container:hover .glycemic-index-tooltip {
+    display: block;
+    width: 300px;
+}
+
+/* Общий стиль для текста подсказки */
+.glycemic-index-tooltip p {
+    margin: 5px 0;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+/* Классы для выделения в зависимости от уровня ГИ */
+.glycemic-index-tooltip .low-gi {
+    background-color: #28a745; /* Зеленый цвет фона */
+    color: white;
+}
+
+.glycemic-index-tooltip .medium-gi {
+    background-color: rgba(124, 124, 35, 0.863);
+    color: rgb(255, 255, 255);
+}
+
+.glycemic-index-tooltip .high-gi {
+    background-color: rgba(189, 77, 77, 0.685);
+    color: white;
+}
+
+
+.glycemic-index-tooltip p.highlight {
+    font-weight: bold;
+}
+
+
 
 
 
