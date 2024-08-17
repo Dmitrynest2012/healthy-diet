@@ -700,7 +700,18 @@ function getGlycemicIndex(methodIndex, product) {
     }
 }
 
-// Функция для обновления отображения ГИ
+
+
+
+
+
+
+
+
+function calculateGlycemicLoad(gi, carbs) {
+    return (gi * carbs) / 100;
+}
+
 function updateGlycemicIndexDisplay(methodIndex, product, card) {
     const glycemicIndex = getGlycemicIndex(methodIndex, product);
     const giContainer = card.querySelector(".glycemic-index-container");
@@ -712,29 +723,70 @@ function updateGlycemicIndexDisplay(methodIndex, product, card) {
         giValue.textContent = `ГИ: ${glycemicIndex}`;
         giContainer.style.backgroundColor = getGlycemicIndexColor(glycemicIndex);
 
-        // Определение класса для подсказки
-        let lowGiClass = '';
-        let mediumGiClass = '';
-        let highGiClass = '';
-
-        if (glycemicIndex <= 55) {
-            lowGiClass = 'low-gi';
-        } else if (glycemicIndex >= 56 && glycemicIndex <= 69) {
-            mediumGiClass = 'medium-gi';
-        } else if (glycemicIndex >= 70) {
-            highGiClass = 'high-gi';
+        // Создание контейнера ГН внутри всплывающего окна ГИ
+        let glycemicLoadContainer = giTooltip.querySelector(".glycemic-load-container");
+        if (!glycemicLoadContainer) {
+            glycemicLoadContainer = document.createElement("div");
+            glycemicLoadContainer.classList.add("glycemic-load-container");
+            giTooltip.appendChild(glycemicLoadContainer);
         }
 
+        // Расчет ГН
+        const servingWeight = parseFloat(card.querySelector(".product-weight").value) || product.weightDefault;
+        const carbsPerServing = product.carbs * (servingWeight / 100);
+        const glycemicLoad = calculateGlycemicLoad(glycemicIndex, carbsPerServing);
+
+        // Обновляем всплывающее окно ГИ
         giTooltip.innerHTML = `
             <p><b>Нормы ГИ:</b><br>[Гликемического индекса]</p>
-            <p class="${lowGiClass}">0-55 (Низкий)</p>
-            <p class="${mediumGiClass}">56-69 (Средний)</p>
-            <p class="${highGiClass}">70+ (Высокий)</p>
+            <p class="low-gi ${getGiClass(glycemicIndex) === 'low-gi' ? 'highlight' : ''}">0-55 (Низкий)</p>
+            <p class="medium-gi ${getGiClass(glycemicIndex) === 'medium-gi' ? 'highlight' : ''}">56-69 (Средний)</p>
+            <p class="high-gi ${getGiClass(glycemicIndex) === 'high-gi' ? 'highlight' : ''}">70+ (Высокий)</p>
+
+            <div class="glycemic-load-container">
+                <span class="glycemic-load-value" style="background-color: ${getGlClassColor(glycemicLoad)}">ГН: ${glycemicLoad.toFixed(2)}</span>
+                <div class="glycemic-load-tooltip">
+                    <p><b>Нормы ГН:</b><br>[Гликемической нагрузки]</p>
+                    <p class="low-gl ${getGlClass(glycemicLoad) === 'low-gl' ? 'highlight' : ''}">0-10 (Низкая)</p>
+                    <p class="medium-gl ${getGlClass(glycemicLoad) === 'medium-gl' ? 'highlight' : ''}">11-20 (Средняя)</p>
+                    <p class="high-gl ${getGlClass(glycemicLoad) === 'high-gl' ? 'highlight' : ''}">21+ (Высокая)</p>
+                </div>
+            </div>
         `;
     } else {
         giContainer.style.display = 'none';
+        giTooltip.innerHTML = ''; // Очищаем содержимое всплывающего окна, если ГИ не задан
     }
 }
+
+function getGiClass(gi) {
+    if (gi <= 55) return 'low-gi';
+    if (gi >= 56 && gi <= 69) return 'medium-gi';
+    return 'high-gi';
+}
+
+function getGlClass(gl) {
+    if (gl <= 10) return 'low-gl';
+    if (gl > 10 && gl <= 20) return 'medium-gl';
+    return 'high-gl';
+}
+
+function getGlClassColor(gl) {
+    if (gl <= 10) return '#4caf50'; // Зеленый цвет для низкого ГН
+    if (gl > 10 && gl <= 20) return 'rgba(255, 193, 7, 0.8)'; // Желтый цвет для среднего ГН
+    return 'rgba(255, 82, 82, 0.8)'; // Красный цвет для высокого ГН
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -788,10 +840,12 @@ const updateServingsOptions = () => {
                     <span class="glycemic-index-value"></span>
                     <div class="glycemic-index-tooltip"></div>
                 </div>
+
+            
             
             </div>
 
-            <label>Введите вес продукта (граммы):
+            <label><b>Введите вес продукта (граммы):</b>
                 <input type="number" class="product-weight" min="1" step="1" value="${defaultWeight}">
             </label>
             <p><b>Калории:</b> <span id="calories-info" class="calories-info">${product.calories}</span> ккал</p>
@@ -803,7 +857,7 @@ const updateServingsOptions = () => {
 
             
 
-            <label>Метод обработки:
+            <label><b>Метод обработки:</b>
                 <select class="processing-method">
                     ${Object.keys(processingMethods).map(method => 
                         `<option value="${method}">${method}</option>`
@@ -811,15 +865,23 @@ const updateServingsOptions = () => {
                 </select>
             </label>
 
+            <label><b>Меры объема:</b>
             <select class="serving-size">
                 ${updateServingsOptions(defaultWeight)}
             </select>
+            </label>
 
+            <label><b>Кол-во порций:</b>
             <input type="number" class="serving-amount" placeholder="Количество порций" min="1" step="1">
+            </label>
+
+            <label><b>Выбранный прием пищи:</b>
             <select class="meal-time">
                 <option value="">Выберите прием пищи</option>
                 ${mealsOptions}
             </select>
+            </label>
+
             <button class="add-to-meal">Добавить в прием пищи</button>
         </div>
     `;
