@@ -876,48 +876,67 @@ function displayProductCard(product) {
         }
     }
 
-    function updateNutritionalInfo() {
-        const weight = parseFloat(weightInput.value) || defaultWeight;
-        const method = methodSelect.value;
-        const factor = processingMethods[method] || 1; // Дефолтный фактор 1, если метод не выбран
-        const servingsAmount = parseFloat(servingAmountInput.value) || 1; // По умолчанию 1 порция
-        
-        card.querySelector(".calories-info").textContent = (product.calories * weight / 100 * factor * servingsAmount).toFixed(2);
-        card.querySelector(".protein-info").textContent = (product.protein * weight / 100 * factor * servingsAmount).toFixed(2);
-        card.querySelector(".carbs-info").textContent = (product.carbs * weight / 100 * factor * servingsAmount).toFixed(2);
-        card.querySelector(".fats-info").textContent = (product.fats * weight / 100 * factor * servingsAmount).toFixed(2);
-        card.querySelector(".fiber-info").textContent = (product.fiberContent * weight / 100 * factor * servingsAmount).toFixed(2);
-        card.querySelector(".water-info").textContent = (product.waterContent * weight / 100 * factor * servingsAmount).toFixed(2);
-    
-        servingSizeSelect.innerHTML = updateServingsOptions(weight);
-    
-        // Пересчет витаминов
-        
-        const vitaminsContainer = card.querySelector(".vitamins-container");
-        if (vitaminsContainer) {
-            vitaminsContainer.innerHTML = '<h4>Витамины</h4>' +
-                Object.entries(product.vitamins).map(([vitamin, value]) => {
-                    if (vitamin.endsWith("units")) {
-                        return ''; // Пропускаем поля units
-                    }
-                    const unitKey = vitamin + 'units';
-                    const unit = product.vitamins[unitKey] || '';
-                    const vitaminName = vitaminTranslations[vitamin] || vitamin;
-                    const vitaminValue = (value * weight / 100 * factor * servingsAmount).toFixed(2);
-                    return `<p><b>${vitaminName}:</b> ${vitaminValue} ${unit}</p>`;
-                }).join('');
+    let initialWeightForUnits = null; // Переменная для хранения исходного веса для типа 'шт.'
+
+function updateNutritionalInfo() {
+    const selectedServing = servingSizeSelect.value; // Получаем выбранный тип порции
+    const servingsAmount = parseFloat(servingAmountInput.value) || 1; // По умолчанию 1 порция
+    let servingWeight = 0;
+
+    if (selectedServing === 'шт.') {
+        if (initialWeightForUnits === null) {
+            // Сохраняем начальное значение веса при первом выборе типа 'шт.'
+            initialWeightForUnits = parseFloat(weightInput.value) || defaultWeight;
         }
+        servingWeight = initialWeightForUnits;
 
+        // Обновляем поле ввода веса на сохраненное начальное значение
+        weightInput.value = initialWeightForUnits;
+    } else {
+        // Используем вес из списка порций для других типов порций
+        servingWeight = product.servings[selectedServing] || defaultWeight;
         
-    
-    
-        updateRawInfo(); // Обновляем отображение RAW
-    
-        // Обновляем отображение ГИ
-        const methodIndex = Object.keys(processingMethods).indexOf(method);
-        updateGlycemicIndexDisplay(methodIndex, product, card);
-
+        // Обновляем weightInput только если тип порции не 'шт.'
+        weightInput.value = servingWeight;
     }
+
+    // Итоговый вес с учетом количества порций
+    const weight = servingWeight * servingsAmount; 
+    const method = methodSelect.value;
+    const factor = processingMethods[method] || 1; // Дефолтный фактор 1, если метод не выбран
+
+    // Обновляем нутриенты
+    card.querySelector(".calories-info").textContent = (product.calories * weight / 100 * factor).toFixed(2);
+    card.querySelector(".protein-info").textContent = (product.protein * weight / 100 * factor).toFixed(2);
+    card.querySelector(".carbs-info").textContent = (product.carbs * weight / 100 * factor).toFixed(2);
+    card.querySelector(".fats-info").textContent = (product.fats * weight / 100 * factor).toFixed(2);
+    card.querySelector(".fiber-info").textContent = (product.fiberContent * weight / 100 * factor).toFixed(2);
+    card.querySelector(".water-info").textContent = (product.waterContent * weight / 100 * factor).toFixed(2);
+
+    // Пересчет витаминов
+    const vitaminsContainer = card.querySelector(".vitamins-container");
+    if (vitaminsContainer) {
+        vitaminsContainer.innerHTML = '<h4>Витамины</h4>' +
+            Object.entries(product.vitamins).map(([vitamin, value]) => {
+                if (vitamin.endsWith("units")) {
+                    return ''; // Пропускаем поля units
+                }
+                const unitKey = vitamin + 'units';
+                const unit = product.vitamins[unitKey] || '';
+                const vitaminName = vitaminTranslations[vitamin] || vitamin;
+                const vitaminValue = (value * weight / 100 * factor).toFixed(2);
+                return `<p><b>${vitaminName}:</b> ${vitaminValue} ${unit}</p>`;
+            }).join('');
+    }
+
+    updateRawInfo(); // Обновляем отображение RAW
+
+    // Обновляем отображение ГИ
+    const methodIndex = Object.keys(processingMethods).indexOf(method);
+    updateGlycemicIndexDisplay(methodIndex, product, card);
+}
+    
+    
 
 
 
@@ -931,13 +950,15 @@ function displayProductCard(product) {
     
 
     
+
     
     
 
-    weightInput.addEventListener('input', updateNutritionalInfo);
+    
     weightInput.addEventListener('input', updateNutritionalInfo);
     methodSelect.addEventListener("change", updateNutritionalInfo);
     servingAmountInput.addEventListener('input', updateNutritionalInfo);
+    servingSizeSelect.addEventListener('change', updateNutritionalInfo);
     updateNutritionalInfo(); // Первоначальное обновление информации
 
     const addToMealButton = card.querySelector(".add-to-meal");
