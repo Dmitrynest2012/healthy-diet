@@ -679,6 +679,65 @@ const vitaminTranslations = {
     
 };
 
+// Определение цвета ГИ
+function getGlycemicIndexColor(gi) {
+    if (gi <= 55) return '#28a745';
+    if (gi <= 69) return 'rgba(124, 124, 35, 0.5)';
+    return 'rgba(189, 77, 77, 0.5)';
+}
+
+// Получаем значение ГИ в зависимости от метода обработки
+function getGlycemicIndex(methodIndex, product) {
+    if (!product.GIDuringProcessing || product.GIDuringProcessing.length === 0) {
+        return null; // ГИ отсутствует
+    }
+    if (product.rawFood) {
+        return product.GIDuringProcessing[methodIndex];
+    } else {
+        // Проверяем, что индекс не выходит за пределы массива
+        const adjustedIndex = Math.max(methodIndex + 2, 3);
+        return product.GIDuringProcessing[adjustedIndex] || null;
+    }
+}
+
+// Функция для обновления отображения ГИ
+function updateGlycemicIndexDisplay(methodIndex, product, card) {
+    const glycemicIndex = getGlycemicIndex(methodIndex, product);
+    const giContainer = card.querySelector(".glycemic-index-container");
+    const giValue = giContainer.querySelector(".glycemic-index-value");
+    const giTooltip = giContainer.querySelector(".glycemic-index-tooltip");
+
+    if (glycemicIndex !== null) {
+        giContainer.style.display = 'inline-block';
+        giValue.textContent = `ГИ: ${glycemicIndex}`;
+        giContainer.style.backgroundColor = getGlycemicIndexColor(glycemicIndex);
+
+        // Определение класса для подсказки
+        let lowGiClass = '';
+        let mediumGiClass = '';
+        let highGiClass = '';
+
+        if (glycemicIndex <= 55) {
+            lowGiClass = 'low-gi';
+        } else if (glycemicIndex >= 56 && glycemicIndex <= 69) {
+            mediumGiClass = 'medium-gi';
+        } else if (glycemicIndex >= 70) {
+            highGiClass = 'high-gi';
+        }
+
+        giTooltip.innerHTML = `
+            <p><b>Нормы ГИ:</b><br>[Гликемического индекса]</p>
+            <p class="${lowGiClass}">0-55 (Низкий)</p>
+            <p class="${mediumGiClass}">56-69 (Средний)</p>
+            <p class="${highGiClass}">70+ (Высокий)</p>
+        `;
+    } else {
+        giContainer.style.display = 'none';
+    }
+}
+
+
+
     // Отображение карточки продукта
 function displayProductCard(product) {
     productsDiv.innerHTML = '';
@@ -692,6 +751,7 @@ function displayProductCard(product) {
             let servingWeight = serving === 'шт.' ? productWeight : product.servings[serving];
             return `<option value="${serving}" ${serving === 'шт.' ? 'selected' : ''}>${serving} [${servingWeight} г]</option>`;
         }).join('');
+        
     };
 
     const mealsOptions = ["breakfast", "lunch", "dinner"].map(meal => 
@@ -702,6 +762,7 @@ function displayProductCard(product) {
 
 
     product.vegan;
+    product.GlycemicIndex;
 
     // Создание HTML-кода карточки
     card.innerHTML = `
@@ -721,13 +782,18 @@ function displayProductCard(product) {
             <!-- Добавляем сюда RAW, он будет динамически управляться -->
             <p class="raw-info" style="display: none;"><b>RAW</b></p>
 
+              <!-- Контейнер для ГИ -->
+            <div class="glycemic-index-container">
+                    <span class="glycemic-index-value"></span>
+                    <div class="glycemic-index-tooltip"></div>
+                </div>
             
             </div>
 
             <label>Введите вес продукта (граммы):
                 <input type="number" class="product-weight" min="1" step="1" value="${defaultWeight}">
             </label>
-            <p><b>Калории:</b> <span class="calories-info">${product.calories}</span> ккал</p>
+            <p><b>Калории:</b> <span id="calories-info" class="calories-info">${product.calories}</span> ккал</p>
             <p><b>Белки:</b> <span class="protein-info">${product.protein}</span> г</p>
             <p><b>Жиры:</b> <span class="fats-info">${product.fats}</span> г</p>
             <p><b>Углеводы:</b> <span class="carbs-info">${product.carbs}</span> г</p>
@@ -792,37 +858,41 @@ function displayProductCard(product) {
         if (methodOption) {
             methodSelect.value = product.processingMethod;
         }
+        
+        
     }
 
     // Обновление отображения элемента RAW
     function updateRawInfo() {
         const method = methodSelect.value;
+        if (product.RawFood === true) {
         if (method === 'Отсутствует' || method === 'Резка') {
             rawInfo.style.display = 'block'; // Показываем RAW
         } else {
             rawInfo.style.display = 'none'; // Скрываем RAW
         }
+        } else {
+            rawInfo.style.display = 'none'; // Скрываем RAW
+        }
     }
 
-    // Обновление информации о питательных веществах
     function updateNutritionalInfo() {
         const weight = parseFloat(weightInput.value) || defaultWeight;
         const method = methodSelect.value;
         const factor = processingMethods[method] || 1; // Дефолтный фактор 1, если метод не выбран
-
-        card.querySelector(".calories-info").textContent = (product.calories * weight / 100 * factor).toFixed(2);
-        card.querySelector(".protein-info").textContent = (product.protein * weight / 100 * factor).toFixed(2);
-        card.querySelector(".carbs-info").textContent = (product.carbs * weight / 100 * factor).toFixed(2);
-        card.querySelector(".fats-info").textContent = (product.fats * weight / 100 * factor).toFixed(2);
-        card.querySelector(".fiber-info").textContent = (product.fiberContent * weight / 100 * factor).toFixed(2);
-        card.querySelector(".water-info").textContent = (product.waterContent * weight / 100 * factor).toFixed(2);
-
+        const servingsAmount = parseFloat(servingAmountInput.value) || 1; // По умолчанию 1 порция
+        
+        card.querySelector(".calories-info").textContent = (product.calories * weight / 100 * factor * servingsAmount).toFixed(2);
+        card.querySelector(".protein-info").textContent = (product.protein * weight / 100 * factor * servingsAmount).toFixed(2);
+        card.querySelector(".carbs-info").textContent = (product.carbs * weight / 100 * factor * servingsAmount).toFixed(2);
+        card.querySelector(".fats-info").textContent = (product.fats * weight / 100 * factor * servingsAmount).toFixed(2);
+        card.querySelector(".fiber-info").textContent = (product.fiberContent * weight / 100 * factor * servingsAmount).toFixed(2);
+        card.querySelector(".water-info").textContent = (product.waterContent * weight / 100 * factor * servingsAmount).toFixed(2);
+    
         servingSizeSelect.innerHTML = updateServingsOptions(weight);
-
+    
         // Пересчет витаминов
         
-        // Пересчет витаминов
-        const servingsAmount = parseFloat(servingAmountInput.value) || 1; // По умолчанию 1 порция
         const vitaminsContainer = card.querySelector(".vitamins-container");
         if (vitaminsContainer) {
             vitaminsContainer.innerHTML = '<h4>Витамины</h4>' +
@@ -838,9 +908,33 @@ function displayProductCard(product) {
                 }).join('');
         }
 
+        
+    
+    
         updateRawInfo(); // Обновляем отображение RAW
+    
+        // Обновляем отображение ГИ
+        const methodIndex = Object.keys(processingMethods).indexOf(method);
+        updateGlycemicIndexDisplay(methodIndex, product, card);
+
     }
 
+
+
+    
+
+   
+
+    
+    
+
+    
+
+    
+    
+    
+
+    weightInput.addEventListener('input', updateNutritionalInfo);
     weightInput.addEventListener('input', updateNutritionalInfo);
     methodSelect.addEventListener("change", updateNutritionalInfo);
     servingAmountInput.addEventListener('input', updateNutritionalInfo);
