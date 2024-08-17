@@ -23,6 +23,8 @@
     "protein": 0,
     "fats": 0,
     "carbs": 0,
+    "GlycemicIndex": 0,
+    "GIDuringProcessing" : [0, 0, 0, 0, 0, 0, 0],
     "waterContent": 100,
     "fiberContent": 0,
     "servings": {
@@ -32,6 +34,34 @@
     },
     "processingMethod": "Отсутствует"
   },
+
+  {
+    "id": "10",
+    "name": "Водородная вода пропаренная",
+    "image": "charged water.png",
+    "description": "Дистиллированная, насыщенная шунгитом, структурированная, с отрицательным ОВП около - 400.",
+    "manufacturerOrSeller": "Натгард",
+    "vegan": true,
+    "RawFood": false,
+    "weightDefault": 250,
+    "calories": 0,
+    "protein": 0,
+    "fats": 0,
+    "carbs": 0,
+    "GlycemicIndex": 0,
+    "GIDuringProcessing" : [0, 0, 0, 0, 0, 0, 0],
+    "waterContent": 100,
+    "fiberContent": 0,
+    "servings": {
+      "чайная ложка": 5,
+      "столовая ложка": 15,
+      "шт.": 250
+    },
+    "processingMethod": "Пароварка"
+  },
+
+
+
   {
     "id": "2",
     "name": "Льняное масло холодного отжима",
@@ -65,6 +95,8 @@
     "protein": 13.3,
     "fats": 3.4,
     "carbs": 71.5,
+    "GlycemicIndex": 0,
+    "GIDuringProcessing" : [0, 0, 45, 45, 50, 55, 60],
     "waterContent": 57,
     "fiberContent": 5.7,
     "servings": {
@@ -121,6 +153,8 @@
     "protein": 24.6,
     "fats": 1.1,
     "carbs": 22.14,
+    "GlycemicIndex": 0,
+    "GIDuringProcessing" : [30, 30, 30, 30, 30, 31, 55],
     "waterContent": 67.3,
     "fiberContent": 8,
     "servings": {
@@ -142,6 +176,8 @@
     "protein": 1.8,
     "fats": 0.2,
     "carbs": 4.7,
+    "GlycemicIndex": 0,
+    "GIDuringProcessing" : [10, 10, 10, 10, 10, 15, 20],
     "waterContent": 90.4,
     "fiberContent": 2,
     "servings": {
@@ -162,6 +198,8 @@
     "protein": 0.93,
     "fats": 0.24,
     "carbs": 9.58,
+    "GlycemicIndex": 0,
+    "GIDuringProcessing" : [35, 35, 35, 35, 40, 45, 70],
     "waterContent": 88.29,
     "fiberContent": 2.8,
     "servings": {
@@ -192,6 +230,7 @@
     "processingMethod": "Резка"
   }
 ]
+
 
 
 
