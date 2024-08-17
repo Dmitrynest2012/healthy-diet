@@ -745,14 +745,15 @@ function displayProductCard(product) {
     const card = document.createElement("div");
     card.classList.add("product-card");
 
-    // Функция для обновления опций порций
-    const updateServingsOptions = (productWeight) => {
-        return Object.keys(product.servings).map(serving => {
-            let servingWeight = serving === 'шт.' ? productWeight : product.servings[serving];
-            return `<option value="${serving}" ${serving === 'шт.' ? 'selected' : ''}>${serving} [${servingWeight} г]</option>`;
-        }).join('');
-        
-    };
+// Функция для обновления опций порций
+const updateServingsOptions = () => {
+    return Object.keys(product.servings).map(serving => {
+        // Если порция "шт.", используем вес из product.servings, а не из productWeight
+        let servingWeight = product.servings[serving];
+        return `<option value="${serving}" ${serving === 'шт.' ? 'selected' : ''}>${serving} [${servingWeight} г]</option>`;
+    }).join('');
+};
+
 
     const mealsOptions = ["breakfast", "lunch", "dinner"].map(meal => 
         `<option value="${meal}">${meal === 'breakfast' ? 'Завтрак' : meal === 'lunch' ? 'Обед' : 'Ужин'}</option>`
@@ -876,68 +877,100 @@ function displayProductCard(product) {
         }
     }
 
-    let initialWeightForUnits = null; // Переменная для хранения исходного веса для типа 'шт.'
-
-function updateNutritionalInfo() {
-    const selectedServing = servingSizeSelect.value; // Получаем выбранный тип порции
-    const servingsAmount = parseFloat(servingAmountInput.value) || 1; // По умолчанию 1 порция
-    if (servingAmountInput.value == 0) {
-    servingAmountInput.value = 1; // Устанавливаем значение по умолчанию 1
-    }
-    let servingWeight = 0;
-
-    if (selectedServing === 'шт.') {
-        if (initialWeightForUnits === null) {
-            // Сохраняем начальное значение веса при первом выборе типа 'шт.'
-            initialWeightForUnits = parseFloat(weightInput.value) || defaultWeight;
+    let editableWeight = null; // Переменная для хранения редактируемого веса для типа 'шт.'
+    let defaultProductWeight = null; // Переменная для хранения веса продукта по умолчанию
+    let weightRestored = false; // Флаг для отслеживания, был ли восстановлен вес
+    let isUnitType = false; // Флаг для проверки, что тип порции 'шт.'
+    
+    // Функция для обновления информации о питательных веществах
+    function updateNutritionalInfo() {
+        const selectedServing = servingSizeSelect.value; // Получаем выбранный тип порции
+        const servingsAmount = parseFloat(servingAmountInput.value) || 1; // По умолчанию 1 порция
+    
+        let servingWeight = 0;
+    
+        console.log("Selected Serving:", selectedServing); // Отладка
+        console.log("Product Servings:", product.servings); // Отладка
+    
+        if (selectedServing === 'шт.') {
+            isUnitType = true;
+    
+            // Если вес ещё не был восстановлен после первого переключения на 'шт.'
+            if (!weightRestored) {
+                editableWeight = product.servings['шт.'] || product.weightDefault || defaultWeight;
+                weightInput.value = editableWeight; // Устанавливаем значение в поле ввода веса
+                weightRestored = true; // Помечаем, что вес восстановлен
+            } else {
+                // Если вес уже был восстановлен ранее, используем текущее значение поля ввода
+                editableWeight = parseFloat(weightInput.value) || product.servings['шт.'];
+            }
+    
+            console.log("Editable Weight for 'шт.':", editableWeight); // Отладка
+    
+            servingWeight = editableWeight; // Присваиваем значение в servingWeight
+    
+            if (servingAmountInput.value < 1) {
+                // Устанавливаем порцию на 1 при выборе 'шт.'
+                servingAmountInput.value = 1;
+            }
+        } else {
+            isUnitType = false;
+            weightRestored = false; // Сбрасываем флаг при переключении на другой тип порции
+    
+            // Используем вес из списка порций для других типов порций
+            servingWeight = product.servings[selectedServing] || defaultWeight;
+    
+            // Обновляем weightInput только если тип порции не 'шт.'
+            weightInput.value = servingWeight;
+    
+            // Сбрасываем editableWeight при смене типа порции
+            editableWeight = null;
         }
-        servingWeight = initialWeightForUnits;
-
-        // Обновляем поле ввода веса на сохраненное начальное значение
-        weightInput.value = initialWeightForUnits;
-    } else {
-        // Используем вес из списка порций для других типов порций
-        servingWeight = product.servings[selectedServing] || defaultWeight;
-        
-        // Обновляем weightInput только если тип порции не 'шт.'
-        weightInput.value = servingWeight;
+    
+        console.log("Final Serving Weight:", servingWeight); // Отладка
+    
+        // Итоговый вес с учетом количества порций
+        const weight = servingWeight * servingsAmount;
+        const method = methodSelect.value;
+        const factor = processingMethods[method] || 1; // Дефолтный фактор 1, если метод не выбран
+    
+        // Обновляем нутриенты
+        card.querySelector(".calories-info").textContent = (product.calories * weight / 100 * factor).toFixed(2);
+        card.querySelector(".protein-info").textContent = (product.protein * weight / 100 * factor).toFixed(2);
+        card.querySelector(".carbs-info").textContent = (product.carbs * weight / 100 * factor).toFixed(2);
+        card.querySelector(".fats-info").textContent = (product.fats * weight / 100 * factor).toFixed(2);
+        card.querySelector(".fiber-info").textContent = (product.fiberContent * weight / 100 * factor).toFixed(2);
+        card.querySelector(".water-info").textContent = (product.waterContent * weight / 100 * factor).toFixed(2);
+    
+        // Пересчет витаминов
+        const vitaminsContainer = card.querySelector(".vitamins-container");
+        if (vitaminsContainer) {
+            vitaminsContainer.innerHTML = '<h4>Витамины</h4>' +
+                Object.entries(product.vitamins).map(([vitamin, value]) => {
+                    if (vitamin.endsWith("units")) {
+                        return ''; // Пропускаем поля units
+                    }
+                    const unitKey = vitamin + 'units';
+                    const unit = product.vitamins[unitKey] || '';
+                    const vitaminName = vitaminTranslations[vitamin] || vitamin;
+                    const vitaminValue = (value * weight / 100 * factor).toFixed(2);
+                    return `<p><b>${vitaminName}:</b> ${vitaminValue} ${unit}</p>`;
+                }).join('');
+        }
+    
+        updateRawInfo(); // Обновляем отображение RAW
+    
+        // Обновляем отображение ГИ
+        const methodIndex = Object.keys(processingMethods).indexOf(method);
+        updateGlycemicIndexDisplay(methodIndex, product, card);
+    
+        // Обновляем опции порций
+        updateServingsOptions(editableWeight);
     }
-
-    // Итоговый вес с учетом количества порций
-    const weight = servingWeight * servingsAmount; 
-    const method = methodSelect.value;
-    const factor = processingMethods[method] || 1; // Дефолтный фактор 1, если метод не выбран
-
-    // Обновляем нутриенты
-    card.querySelector(".calories-info").textContent = (product.calories * weight / 100 * factor).toFixed(2);
-    card.querySelector(".protein-info").textContent = (product.protein * weight / 100 * factor).toFixed(2);
-    card.querySelector(".carbs-info").textContent = (product.carbs * weight / 100 * factor).toFixed(2);
-    card.querySelector(".fats-info").textContent = (product.fats * weight / 100 * factor).toFixed(2);
-    card.querySelector(".fiber-info").textContent = (product.fiberContent * weight / 100 * factor).toFixed(2);
-    card.querySelector(".water-info").textContent = (product.waterContent * weight / 100 * factor).toFixed(2);
-
-    // Пересчет витаминов
-    const vitaminsContainer = card.querySelector(".vitamins-container");
-    if (vitaminsContainer) {
-        vitaminsContainer.innerHTML = '<h4>Витамины</h4>' +
-            Object.entries(product.vitamins).map(([vitamin, value]) => {
-                if (vitamin.endsWith("units")) {
-                    return ''; // Пропускаем поля units
-                }
-                const unitKey = vitamin + 'units';
-                const unit = product.vitamins[unitKey] || '';
-                const vitaminName = vitaminTranslations[vitamin] || vitamin;
-                const vitaminValue = (value * weight / 100 * factor).toFixed(2);
-                return `<p><b>${vitaminName}:</b> ${vitaminValue} ${unit}</p>`;
-            }).join('');
-    }
-
-    updateRawInfo(); // Обновляем отображение RAW
-
-    // Обновляем отображение ГИ
-    const methodIndex = Object.keys(processingMethods).indexOf(method);
-    updateGlycemicIndexDisplay(methodIndex, product, card);
-}
+    
+    
+    
+    
     
     
 
@@ -958,7 +991,9 @@ function updateNutritionalInfo() {
     
 
     
-    weightInput.addEventListener('input', updateNutritionalInfo);
+    weightInput.addEventListener('input', () => {
+        updateNutritionalInfo(); // Пересчитываем нутриенты при изменении веса
+    });
     methodSelect.addEventListener("change", updateNutritionalInfo);
     servingAmountInput.addEventListener('input', updateNutritionalInfo);
     servingSizeSelect.addEventListener('change', updateNutritionalInfo);
