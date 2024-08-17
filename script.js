@@ -881,6 +881,9 @@ function displayProductCard(product) {
 function updateNutritionalInfo() {
     const selectedServing = servingSizeSelect.value; // Получаем выбранный тип порции
     const servingsAmount = parseFloat(servingAmountInput.value) || 1; // По умолчанию 1 порция
+    if (servingAmountInput.value == 0) {
+    servingAmountInput.value = 1; // Устанавливаем значение по умолчанию 1
+    }
     let servingWeight = 0;
 
     if (selectedServing === 'шт.') {
