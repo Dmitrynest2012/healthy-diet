@@ -13,6 +13,18 @@ header {
     top: 0;
 }
 
+/* Стилизация стрелок для Chrome, Safari и Edge (в основе WebKit) */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    
+    padding: 5px; /* Убираем отступы */
+    height: 18px;
+    border: 1px solid rgb(105, 105, 105);
+}
+
+
+
+
 #search-input {
     width: 300px;
     padding: 10px;
@@ -330,6 +342,71 @@ header {
     cursor: pointer;
 }
 
+.product-weight {
+    
+    border: 1px solid rgb(170, 170, 170);
+    border-radius: 10px; /* Скругленные углы */
+    padding: 5px 10px;
+    width: 100px;
+    transition: all 0.5s;
+}
+
+.product-weight:hover {
+    border-color: #3e9bff;
+}
+
+.processing-method {
+    
+    border: 1px solid rgb(170, 170, 170);
+    border-radius: 10px; /* Скругленные углы */
+    padding: 5px 10px;
+    width: 150px;
+    transition: all 0.5s;
+}
+
+.processing-method:hover {
+    border-color: #3e9bff;
+}
+
+.serving-size {
+    
+    border: 1px solid rgb(170, 170, 170);
+    border-radius: 10px; /* Скругленные углы */
+    padding: 5px 10px;
+    width: 200px;
+    transition: all 0.5s;
+}
+
+.serving-size:hover {
+    border-color: #3e9bff;
+}
+
+.serving-amount {
+    
+    border: 1px solid rgb(170, 170, 170);
+    border-radius: 10px; /* Скругленные углы */
+    padding: 5px 10px;
+    width: 50px;
+    transition: all 0.5s;
+}
+
+.serving-amount:hover {
+    border-color: #3e9bff;
+}
+
+.meal-time {
+    
+    border: 1px solid rgb(170, 170, 170);
+    border-radius: 10px; /* Скругленные углы */
+    padding: 5px 10px;
+    width: 250px;
+    transition: all 0.5s;
+}
+
+.meal-time:hover {
+    border-color: #3e9bff;
+}
+
 
 /* Стили для контейнера с витаминами */
 .vitamins-container {
@@ -439,13 +516,16 @@ header {
 
 
 
+
+
+
 /* Основной стиль для контейнера с ГИ */
 .glycemic-index-container {
     display: inline-block;
     padding: 5px 10px;
-    border: 1px solid rgba(110, 110, 110, 0.466);
+    border: 1px solid rgba(110, 110, 110, 0.233);
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Небольшая тень */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     position: relative;
     font-size: 15px;
     cursor: pointer;
@@ -454,62 +534,112 @@ header {
 /* Стиль для значения ГИ */
 .glycemic-index-value {
     font-weight: bold;
-    color: white; /* Белый цвет для текста */
-
+    color: white;
 }
 
-/* Стиль для всплывающей подсказки */
+/* Общий стиль для всплывающего окна ГИ */
 .glycemic-index-tooltip {
-    display: none; /* По умолчанию скрыта */
+    display: none;
     position: absolute;
     top: 50px;
-    height: 180px;
-    
+    height: 350px;
     background-color: #333;
-    color: white; /* Белый цвет текста в подсказке */
+    color: white;
     padding: 10px;
     border-radius: 10px;
-    width: 200px; /* Ширина подсказки */
-    z-index: 10; /* На переднем плане */
-    bottom: 110%; /* Расположение над элементом */
-    left: 50%; /* Центрирование */
-    transform: translateX(-50%); /* Центрирование */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень для подсказки */
+    width: 300px;
+    z-index: 10;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Показ подсказки при наведении на контейнер */
 .glycemic-index-container:hover .glycemic-index-tooltip {
     display: block;
-    width: 300px;
 }
 
-/* Общий стиль для текста подсказки */
-.glycemic-index-tooltip p {
+/* Стиль для подсвеченной нормы */
+.highlight {
+    font-weight: bold;
+}
+
+/* Фон подсвеченной нормы ГИ */
+.low-gi.highlight {
+    background-color: #28a745; /* Зеленый цвет для низкого ГИ */
+    color: white;
+}
+
+.medium-gi.highlight {
+    background-color: rgba(124, 124, 35, 0.863); /* Оливковый цвет для среднего ГИ */
+    color: white;
+}
+
+.high-gi.highlight {
+    background-color: rgba(189, 77, 77, 0.685); /* Красный цвет для высокого ГИ */
+    color: white;
+}
+
+/* Основной стиль для контейнера ГН внутри всплывающего окна */
+.glycemic-load-container {
+    margin-top: 20px;
+    padding-top: 12px;
+    border-top: 1px solid gray;
+}
+
+/* Стиль для значения ГН */
+.glycemic-load-value {
+    font-weight: bold;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+/* Стиль для всплывающей подсказки ГН */
+.glycemic-load-tooltip {
+    display: block;
+    
+    color: white;
+
+    
+    
+}
+
+/* Общий стиль для текста подсказки ГИ и ГН */
+.glycemic-index-tooltip p, .glycemic-load-tooltip p {
     margin: 5px 0;
     padding: 5px;
     border-radius: 5px;
 }
 
-/* Классы для выделения в зависимости от уровня ГИ */
-.glycemic-index-tooltip .low-gi {
-    background-color: #28a745; /* Зеленый цвет фона */
+/* Фон подсвеченной нормы ГН */
+.low-gl.highlight {
+    background-color: #4caf50; /* Зеленый цвет для низкого ГН */
     color: white;
 }
 
-.glycemic-index-tooltip .medium-gi {
-    background-color: rgba(124, 124, 35, 0.863);
-    color: rgb(255, 255, 255);
+.medium-gl.highlight {
+    background-color: rgba(124, 124, 35, 0.863); /* Оливковый цвет для среднего ГН */
+    color: white;
 }
 
-.glycemic-index-tooltip .high-gi {
-    background-color: rgba(189, 77, 77, 0.685);
+.high-gl.highlight {
+    background-color: rgba(255, 82, 82, 0.8); /* Красный цвет для высокого ГН */
     color: white;
 }
 
 
-.glycemic-index-tooltip p.highlight {
-    font-weight: bold;
-}
+
+
+
+
+
+
+
+
+
+
 
 
 
