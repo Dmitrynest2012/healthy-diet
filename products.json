@@ -27,6 +27,7 @@
     "GIDuringProcessing" : [0, 0, 0, 0, 0, 0, 0],
     "waterContent": 100,
     "fiberContent": 0,
+    "ORPValue": -480,
     "servings": {
       "чайная ложка": 5,
       "столовая ложка": 15,
@@ -76,6 +77,7 @@
     "carbs": 0,
     "waterContent": 0,
     "fiberContent": 0,
+    "ORPValue": -95,
     "servings": {
       "чайная ложка": 4.8,
       "столовая ложка": 14.2,
@@ -99,6 +101,7 @@
     "GIDuringProcessing" : [0, 0, 45, 45, 50, 55, 60],
     "waterContent": 57,
     "fiberContent": 5.7,
+    "ORPValue": -75,
     "servings": {
       "мерная ложка": 20,
       "чайная ложка": 4,
@@ -157,6 +160,7 @@
     "GIDuringProcessing" : [30, 30, 30, 30, 30, 31, 55],
     "waterContent": 67.3,
     "fiberContent": 8,
+    "ORPValue": -125,
     "servings": {
       "мерная ложка": 15,
       "чайная ложка": 5,
@@ -180,6 +184,7 @@
     "GIDuringProcessing" : [10, 10, 10, 10, 10, 15, 20],
     "waterContent": 90.4,
     "fiberContent": 2,
+    "ORPValue": -50,
     "servings": {
       "чайная ложка": 2.5,
       "столовая ложка": 7,
@@ -202,6 +207,7 @@
     "GIDuringProcessing" : [35, 35, 35, 35, 40, 45, 70],
     "waterContent": 88.29,
     "fiberContent": 2.8,
+    "ORPValue": -25,
     "servings": {
       "чайная ложка": 6,
       "столовая ложка": 17.5,
@@ -220,6 +226,8 @@
     "protein": 2,
     "fats": 14.7,
     "carbs": 8.5,
+    "GlycemicIndex": 0,
+    "GIDuringProcessing" : [15, 15, 15, 15, 15, 17, 20],
     "waterContent": 73.2,
     "fiberContent": 7,
     "servings": {
@@ -230,6 +238,7 @@
     "processingMethod": "Резка"
   }
 ]
+
 
 
 
