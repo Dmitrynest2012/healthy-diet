@@ -634,6 +634,74 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 
+/* Основной стиль для контейнера с ОВП */
+.orp-container {
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid rgba(110, 110, 110, 0.233);
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    position: relative;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+/* Стиль для значения ОВП */
+.orp-value {
+    font-weight: bold;
+    color: white;
+}
+
+/* Общий стиль для всплывающего окна ОВП */
+.orp-tooltip {
+    display: none;
+    position: absolute;
+    top: 50px;
+    height: 350px;
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    width: 300px;
+    z-index: 10;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Показ подсказки при наведении на контейнер */
+.orp-container:hover .orp-tooltip {
+    display: block;
+}
+
+/* Стиль для подсвечивания соответствующей нормы */
+.highlight {
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+}
+
+/* Стиль для рекомендаций */
+.orp-recommendation {
+    font-size: 0.9em;
+    font-style: italic;
+    margin-top: 10px;
+    color: #ccc;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
