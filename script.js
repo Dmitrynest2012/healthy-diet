@@ -974,9 +974,9 @@ const updateServingsOptions = () => {
         <img class="product-image" src="${product.image}" alt="${product.name}">
 
         <div>
-            <h3>${product.name}</h3>
+            <h3 class="product-name">${product.name}</h3>
             ${product.manufacturerOrSeller ? `<p><span class="manufacturerOrSeller"><b>Производитель/Продавец:</b> ${product.manufacturerOrSeller}</span></p>` : ''}
-            ${product.description ? `<p><b>Описание:</b>  ${product.description}</p>` : ''}
+            ${product.description ? `<p class="description-product-in-card"><b>Описание:</b><span class="description-in-italics">  ${product.description}</span></p>` : ''}
 
             <!-- Контейнер для индикаторов -->
             <div class="indicators-container">
