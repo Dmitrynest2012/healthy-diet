@@ -818,21 +818,31 @@ function updateORPDisplay(product, card) {
         return;
     }
 
-    const orpContainer = document.createElement("div");
-    orpContainer.classList.add("orp-container");
+    // Проверка на существование контейнера
+    let orpContainer = card.querySelector(".orp-container");
+    if (!orpContainer) {
+        orpContainer = document.createElement("div");
+        orpContainer.classList.add("orp-container");
+        card.querySelector(".indicators-container").appendChild(orpContainer);
+    }
     orpContainer.style.backgroundColor = getORPColor(product.ORPValue);
 
-    const orpValue = document.createElement("span");
-    orpValue.classList.add("orp-value");
+    // Обновление или создание значений
+    let orpValue = orpContainer.querySelector(".orp-value");
+    if (!orpValue) {
+        orpValue = document.createElement("span");
+        orpValue.classList.add("orp-value");
+        orpContainer.appendChild(orpValue);
+    }
     orpValue.textContent = `ОВП: ${product.ORPValue} мВ`;
 
-    const orpTooltip = document.createElement("div");
-    orpTooltip.classList.add("orp-tooltip");
+    let orpTooltip = orpContainer.querySelector(".orp-tooltip");
+    if (!orpTooltip) {
+        orpTooltip = document.createElement("div");
+        orpTooltip.classList.add("orp-tooltip");
+        orpContainer.appendChild(orpTooltip);
+    }
     orpTooltip.innerHTML = getORPTooltip(product.ORPValue);
-
-    orpContainer.appendChild(orpValue);
-    orpContainer.appendChild(orpTooltip);
-    card.querySelector(".indicators-container").appendChild(orpContainer);
 }
 
 
@@ -888,21 +898,31 @@ function updatePHDisplay(product, card) {
         return;
     }
 
-    const phContainer = document.createElement("div");
-    phContainer.classList.add("ph-container");
+    // Проверка на существование контейнера
+    let phContainer = card.querySelector(".ph-container");
+    if (!phContainer) {
+        phContainer = document.createElement("div");
+        phContainer.classList.add("ph-container");
+        card.querySelector(".indicators-container").appendChild(phContainer);
+    }
     phContainer.style.backgroundColor = getPHColor(product.pHValue);
 
-    const phValue = document.createElement("span");
-    phValue.classList.add("ph-value");
+    // Обновление или создание значений
+    let phValue = phContainer.querySelector(".ph-value");
+    if (!phValue) {
+        phValue = document.createElement("span");
+        phValue.classList.add("ph-value");
+        phContainer.appendChild(phValue);
+    }
     phValue.textContent = `pH: ${product.pHValue}`;
 
-    const phTooltip = document.createElement("div");
-    phTooltip.classList.add("ph-tooltip");
+    let phTooltip = phContainer.querySelector(".ph-tooltip");
+    if (!phTooltip) {
+        phTooltip = document.createElement("div");
+        phTooltip.classList.add("ph-tooltip");
+        phContainer.appendChild(phTooltip);
+    }
     phTooltip.innerHTML = getPHTooltip(product.pHValue);
-
-    phContainer.appendChild(phValue);
-    phContainer.appendChild(phTooltip);
-    card.querySelector(".indicators-container").appendChild(phContainer);
 }
 
 
