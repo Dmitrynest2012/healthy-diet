@@ -117,6 +117,22 @@
         "vitaminEunits": "мг",
         "vitaminK": 0.0,
         "vitaminKunits": "мкг"
+    },
+    "fattyAcidsAndCholesterol": {
+        "omega3": 53.4,
+        "omega3Units": "г",
+        "omega6": 12.7,
+        "omega6Units": "г",
+        "cholesterol": 0.0,
+        "cholesterolUnits": "мг",
+        "saturatedFats": 9.0,
+        "saturatedFatsUnits": "г",
+        "monounsaturatedFats": 18.5,
+        "monounsaturatedFatsUnits": "г",
+        "polyunsaturatedFats": 66.1,
+        "polyunsaturatedFatsUnits": "г",
+        "transFats": 0.0,
+        "transFatsUnits": "г"
     }
     
   },
@@ -240,7 +256,43 @@
     "iodineUnits": "мкг",
     "fluorine": 60.00,
     "fluorineUnits": "мкг"
-  }
+  },
+  "fattyAcidsAndCholesterol": {
+        "omega3": 0.3,
+        "omega3Units": "г",
+        "omega6": 2.7,
+        "omega6Units": "г",
+        "cholesterol": 0.0,
+        "cholesterolUnits": "мг",
+        "saturatedFats": 0.4,
+        "saturatedFatsUnits": "г",
+        "monounsaturatedFats": 0.9,
+        "monounsaturatedFatsUnits": "г",
+        "polyunsaturatedFats": 1.1,
+        "polyunsaturatedFatsUnits": "г",
+        "transFats": 0.0,
+        "transFatsUnits": "г"
+    },
+    "essentialAminoAcids": {
+    "histidine": 14.0,
+    "histidineUnits": "мг",
+    "isoleucine": 17.0,
+    "isoleucineUnits": "мг",
+    "leucine": 29.0,
+    "leucineUnits": "мг",
+    "lysine": 20.0,
+    "lysineUnits": "мг",
+    "methionine": 8.0,
+    "methionineUnits": "мг",
+    "phenylalanine": 18.0,
+    "phenylalanineUnits": "мг",
+    "threonine": 13.0,
+    "threonineUnits": "мг",
+    "tryptophan": 5.0,
+    "tryptophanUnits": "мг",
+    "valine": 19.0,
+    "valineUnits": "мг"
+}
   },
   {
     "id": "4",
@@ -353,7 +405,43 @@
         "iodineUnits": "мкг",
         "fluorine": 0.0,
         "fluorineUnits": "мкг"
-    }
+    },
+    "fattyAcidsAndCholesterol": {
+    "omega3": 0.1,
+    "omega3Units": "г",
+    "omega6": 0.4,
+    "omega6Units": "г",
+    "cholesterol": 0.0,
+    "cholesterolUnits": "мг",
+    "saturatedFats": 0.1,
+    "saturatedFatsUnits": "г",
+    "monounsaturatedFats": 0.2,
+    "monounsaturatedFatsUnits": "г",
+    "polyunsaturatedFats": 0.3,
+    "polyunsaturatedFatsUnits": "г",
+    "transFats": 0.0,
+    "transFatsUnits": "г"
+},
+"essentialAminoAcids": {
+    "histidine": 15.0,
+    "histidineUnits": "мг",
+    "isoleucine": 18.0,
+    "isoleucineUnits": "мг",
+    "leucine": 29.0,
+    "leucineUnits": "мг",
+    "lysine": 22.0,
+    "lysineUnits": "мг",
+    "methionine": 8.0,
+    "methionineUnits": "мг",
+    "phenylalanine": 20.0,
+    "phenylalanineUnits": "мг",
+    "threonine": 13.0,
+    "threonineUnits": "мг",
+    "tryptophan": 5.0,
+    "tryptophanUnits": "мг",
+    "valine": 19.0,
+    "valineUnits": "мг"
+}
   },
   {
     "id": "5",
@@ -465,7 +553,43 @@
         "iodineUnits": "мкг",
         "fluorine": 0.0,
         "fluorineUnits": "мкг"
-    }
+    },
+    "fattyAcidsAndCholesterol": {
+    "omega3": 0.015,
+    "omega3Units": "г",
+    "omega6": 0.014,
+    "omega6Units": "г",
+    "cholesterol": 0.0,
+    "cholesterolUnits": "мг",
+    "saturatedFats": 0.02,
+    "saturatedFatsUnits": "г",
+    "monounsaturatedFats": 0.017,
+    "monounsaturatedFatsUnits": "г",
+    "polyunsaturatedFats": 0.03,
+    "polyunsaturatedFatsUnits": "г",
+    "transFats": 0.0,
+    "transFatsUnits": "г"
+},
+"essentialAminoAcids": {
+    "histidine": 8.0,
+    "histidineUnits": "мг",
+    "isoleucine": 10.0,
+    "isoleucineUnits": "мг",
+    "leucine": 15.0,
+    "leucineUnits": "мг",
+    "lysine": 12.0,
+    "lysineUnits": "мг",
+    "methionine": 6.0,
+    "methionineUnits": "мг",
+    "phenylalanine": 11.0,
+    "phenylalanineUnits": "мг",
+    "threonine": 9.0,
+    "threonineUnits": "мг",
+    "tryptophan": 4.0,
+    "tryptophanUnits": "мг",
+    "valine": 10.0,
+    "valineUnits": "мг"
+}
   },
   {
     "id": "6",
@@ -577,7 +701,43 @@
         "iodineUnits": "мкг",
         "fluorine": 0.0,
         "fluorineUnits": "мкг"
-    }
+    },
+    "fattyAcidsAndCholesterol": {
+    "omega3": 0.002,
+    "omega3Units": "г",
+    "omega6": 0.010,
+    "omega6Units": "г",
+    "cholesterol": 0.0,
+    "cholesterolUnits": "мг",
+    "saturatedFats": 0.037,
+    "saturatedFatsUnits": "г",
+    "monounsaturatedFats": 0.01,
+    "monounsaturatedFatsUnits": "г",
+    "polyunsaturatedFats": 0.12,
+    "polyunsaturatedFatsUnits": "г",
+    "transFats": 0.0,
+    "transFatsUnits": "г"
+},
+"essentialAminoAcids": {
+    "histidine": 16.0,
+    "histidineUnits": "мг",
+    "isoleucine": 12.0,
+    "isoleucineUnits": "мг",
+    "leucine": 26.0,
+    "leucineUnits": "мг",
+    "lysine": 19.0,
+    "lysineUnits": "мг",
+    "methionine": 9.0,
+    "methionineUnits": "мг",
+    "phenylalanine": 18.0,
+    "phenylalanineUnits": "мг",
+    "threonine": 11.0,
+    "threonineUnits": "мг",
+    "tryptophan": 7.0,
+    "tryptophanUnits": "мг",
+    "valine": 15.0,
+    "valineUnits": "мг"
+}
   },
   {
     "id": "7",
@@ -689,9 +849,49 @@
         "iodineUnits": "мкг",
         "fluorine": 0.0,
         "fluorineUnits": "мкг"
-    }
+    },
+    "fattyAcidsAndCholesterol": {
+    "omega3": 0.11,
+    "omega3Units": "г",
+    "omega6": 1.82,
+    "omega6Units": "г",
+    "cholesterol": 0.0,
+    "cholesterolUnits": "мг",
+    "saturatedFats": 2.13,
+    "saturatedFatsUnits": "г",
+    "monounsaturatedFats": 9.8,
+    "monounsaturatedFatsUnits": "г",
+    "polyunsaturatedFats": 1.8,
+    "polyunsaturatedFatsUnits": "г",
+    "transFats": 0.0,
+    "transFatsUnits": "г"
+},
+
+  "essentialAminoAcids": {
+    "histidine": 14.0,
+    "histidineUnits": "мг",
+    "isoleucine": 14.0,
+    "isoleucineUnits": "мг",
+    "leucine": 28.0,
+    "leucineUnits": "мг",
+    "lysine": 21.0,
+    "lysineUnits": "мг",
+    "methionine": 11.0,
+    "methionineUnits": "мг",
+    "phenylalanine": 19.0,
+    "phenylalanineUnits": "мг",
+    "threonine": 12.0,
+    "threonineUnits": "мг",
+    "tryptophan": 8.0,
+    "tryptophanUnits": "мг",
+    "valine": 17.0,
+    "valineUnits": "мг"
+  }
+
+
   }
 ]
+
 
 
 
