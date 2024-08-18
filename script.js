@@ -780,6 +780,68 @@ function getGlClassColor(gl) {
 
 
 
+// Определение цвета ОВП
+function getORPColor(orp) {
+    if (orp >= 300 && orp <= 500) return 'rgba(189, 77, 77, 0.685)'; // Сильные свободные радикалы - ярко-красный
+    if (orp > 0 && orp < 300) return '#ff7f00'; // Слабые свободные радикалы - оранжевый
+    if (orp >= -200 && orp <= 0) return '#4caf50'; // Слабые антиоксиданты - зеленый
+    if (orp < -200 && orp >= -700) return '#9400d3'; // Сильные антиоксиданты - фиолетовый
+    return '#d3d3d3'; // По умолчанию - серый
+}
+
+// Создание всплывающего окна для ОВП с подсветкой соответствующей нормы
+function getORPTooltip(orp) {
+    let description = '';
+    
+    if (orp >= 300 && orp <= 500) {
+        description = 'Этот продукт обладает ярко выраженным наличием свободных радикалов. Он будет быстро забирать энергию из ваших клеток (отрицательный заряд), чтобы восстановиться.';
+    } else if (orp > 0 && orp < 300) {
+        description = 'Этот продукт обладает слабыми свободными радикалами и будет забирать небольшое количество энергии из ваших клеток для восстановления.';
+    } else if (orp >= -200 && orp <= 0) {
+        description = 'Этот продукт обладает слабыми антиоксидантными свойствами. Он будет восстанавливать энергию ваших клеток, немного улучшая их защитные свойства.';
+    } else if (orp < -200 && orp >= -700) {
+        description = 'Этот продукт обладает сильными антиоксидантными свойствами. Он будет эффективно восстанавливать энергию клеток и значительно усиливать их защитные функции.';
+    }
+
+    return `
+        <p><b>Нормы ОВП:</b><br>[Окислительно-восстановительный потенциал]</p>
+        <p class="${orp >= 300 && orp <= 500 ? 'highlight' : ''}" style="background-color: ${orp >= 300 && orp <= 500 ? 'rgba(189, 77, 77, 0.685)' : 'transparent'};">+300 - +500 мВ (Сильные свободные радикалы)</p>
+        <p class="${orp > 0 && orp < 300 ? 'highlight' : ''}" style="background-color: ${orp > 0 && orp < 300 ? '#ff7f00' : 'transparent'};">0 - +300 мВ (Слабые свободные радикалы)</p>
+        <p class="${orp >= -200 && orp <= 0 ? 'highlight' : ''}" style="background-color: ${orp >= -200 && orp <= 0 ? '#4caf50' : 'transparent'};">0 - -200 мВ (Слабые антиоксиданты)</p>
+        <p class="${orp < -200 && orp >= -700 ? 'highlight' : ''}" style="background-color: ${orp < -200 && orp >= -700 ? '#9400d3' : 'transparent'};">-200 - -700 мВ (Сильные антиоксиданты)</p>
+        <p class="orp-recommendation">${description}</p>
+    `;
+}
+
+// Функция для обновления отображения ОВП
+function updateORPDisplay(product, card) {
+    if (product.ORPValue === undefined || product.ORPValue === null) {
+        // Если у продукта нет значения ОВП, не создавать индикатор
+        return;
+    }
+
+    const orpContainer = document.createElement("div");
+    orpContainer.classList.add("orp-container");
+    orpContainer.style.backgroundColor = getORPColor(product.ORPValue);
+
+    const orpValue = document.createElement("span");
+    orpValue.classList.add("orp-value");
+    orpValue.textContent = `ОВП: ${product.ORPValue} мВ`;
+
+    const orpTooltip = document.createElement("div");
+    orpTooltip.classList.add("orp-tooltip");
+    orpTooltip.innerHTML = getORPTooltip(product.ORPValue);
+
+    orpContainer.appendChild(orpValue);
+    orpContainer.appendChild(orpTooltip);
+    card.querySelector(".indicators-container").appendChild(orpContainer);
+}
+
+
+
+
+
+
 
 
 
@@ -1026,6 +1088,8 @@ const updateServingsOptions = () => {
         // Обновляем отображение ГИ
         const methodIndex = Object.keys(processingMethods).indexOf(method);
         updateGlycemicIndexDisplay(methodIndex, product, card);
+
+        updateORPDisplay(product, card); // Обновление ОВП-индикатора
     
         // Обновляем опции порций
         updateServingsOptions(editableWeight);
