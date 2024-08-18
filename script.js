@@ -1,5 +1,3 @@
-
-
 document.addEventListener("DOMContentLoaded", function() {
 
     // Восстановление позиции прокрутки
@@ -838,6 +836,77 @@ function updateORPDisplay(product, card) {
 }
 
 
+// Определение цвета pH
+function getPHColor(ph) {
+    if (ph < 3.5) return '#ff0000'; // Сильно кислый - красный
+    if (ph >= 3.5 && ph < 4.5) return '#ff7f7f'; // Умеренно кислый - светло-красный
+    if (ph >= 4.5 && ph < 7) return '#ff7f00'; // Легкая кислотность - оранжевый
+    if (ph === 7) return '#4caf50'; // Нейтральный - зеленый
+    if (ph > 7 && ph <= 9) return '#1f9c76'; // Легкая щелочность - темно-бирюзовый
+    if (ph > 9) return '#9400d3'; // Щелочной - фиолетовый
+    return '#d3d3d3'; // По умолчанию - серый
+}
+
+
+
+
+// Создание всплывающего окна для pH с подсветкой соответствующей нормы
+function getPHTooltip(ph) {
+    let description = '';
+
+    if (ph < 3.5) {
+        description = 'Сильно кислые продукты могут повышать риск повреждения зубной эмали, раздражать желудок и провоцировать Ацидоз. Они также могут способствовать потере минералов из костей.';
+    } else if (ph >= 3.5 && ph < 4.5) {
+        description = 'Умеренно кислые продукты могут иметь слабое влияние на зубы и желудок. Включение таких продуктов в рацион следует ограничивать.';
+    } else if (ph >= 4.5 && ph < 7) {
+        description = 'Легкая кислотность. Продукты в этом диапазоне обычно безопасны, но употребление их без ограничений может негативно сказаться на организме.';
+    } else if (ph === 7) {
+        description = 'Нейтральный pH. Такие продукты не оказывают значительного воздействия на кислотно-щелочной баланс организма.';
+    } else if (ph > 7 && ph <= 9) {
+        description = 'Легкая щелочность. Щелочные продукты могут способствовать улучшению pH баланса крови и укреплению костей.';
+    } else if (ph > 9) {
+        description = 'Щелочные продукты помогают поддерживать щелочной баланс в организме, что может способствовать лучшему усвоению минералов и укреплению здоровья костей. Но не рекомендуются в больших количествах т.к. вызывают Алколоз.';
+    }
+
+    return `
+        <p><b>Нормы pH:</b><br>[Кислотно-щелочной баланс]</p>
+        <p class="${ph < 3.5 ? 'highlight' : ''}" style="background-color: ${ph < 3.5 ? '#ff0000' : 'transparent'};">pH < 3.5 (Сильно кислый)</p>
+        <p class="${ph >= 3.5 && ph < 4.5 ? 'highlight' : ''}" style="background-color: ${ph >= 3.5 && ph < 4.5 ? '#ff7f7f' : 'transparent'};">3.5 - 4.5 (Умеренно кислый)</p>
+        <p class="${ph >= 4.5 && ph < 7 ? 'highlight' : ''}" style="background-color: ${ph >= 4.5 && ph < 7 ? '#ff7f00' : 'transparent'};">4.5 - 7 (Легкая кислотность)</p>
+        <p class="${ph === 7 ? 'highlight' : ''}" style="background-color: ${ph === 7 ? '#4caf50' : 'transparent'};">pH = 7 (Нейтральный)</p>
+        <p class="${ph > 7 && ph <= 9 ? 'highlight' : ''}" style="background-color: ${ph > 7 && ph <= 9 ? '#1f9c76' : 'transparent'};">7 - 9 (Легкая щелочность)</p>
+        <p class="${ph > 9 ? 'highlight' : ''}" style="background-color: ${ph > 9 ? '#9400d3' : 'transparent'};">pH > 9 (Щелочной)</p>
+        <p class="ph-recommendation">${description}</p>
+    `;
+}
+
+
+// Функция для обновления отображения pH
+function updatePHDisplay(product, card) {
+    if (product.pHValue === undefined || product.pHValue === null) {
+        // Если у продукта нет значения pH, не создавать индикатор
+        return;
+    }
+
+    const phContainer = document.createElement("div");
+    phContainer.classList.add("ph-container");
+    phContainer.style.backgroundColor = getPHColor(product.pHValue);
+
+    const phValue = document.createElement("span");
+    phValue.classList.add("ph-value");
+    phValue.textContent = `pH: ${product.pHValue}`;
+
+    const phTooltip = document.createElement("div");
+    phTooltip.classList.add("ph-tooltip");
+    phTooltip.innerHTML = getPHTooltip(product.pHValue);
+
+    phContainer.appendChild(phValue);
+    phContainer.appendChild(phTooltip);
+    card.querySelector(".indicators-container").appendChild(phContainer);
+}
+
+
+
 
 
 
@@ -1090,6 +1159,8 @@ const updateServingsOptions = () => {
         updateGlycemicIndexDisplay(methodIndex, product, card);
 
         updateORPDisplay(product, card); // Обновление ОВП-индикатора
+        // Обновление отображения pH
+        updatePHDisplay(product, card);
     
         // Обновляем опции порций
         updateServingsOptions(editableWeight);
