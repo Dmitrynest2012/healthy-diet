@@ -707,6 +707,32 @@ const mineralTranslations = {
     'fluorine': 'Фтор [F]'
 };
 
+// Переводы названий жиров и холестерина
+const fattyAcidsAndCholesterolTranslations = {
+    'omega3': 'Омега-3 Жирные кислоты',
+    'omega6': 'Омега-6 Жирные кислоты',
+    'cholesterol': 'Холестерин',
+    'saturatedFats': 'Насыщенные жирные кислоты',
+    'monounsaturatedFats': 'Мононенасыщенные жирные кислоты',
+    'polyunsaturatedFats': 'Полиненасыщенные жирные кислоты',
+    'transFats': 'Трансжиры'
+};
+
+// Переводы названий незаменимых аминокислот
+const essentialAminoAcidsTranslations = {
+    'histidine': 'Гистидин',
+    'isoleucine': 'Изолейцин',
+    'leucine': 'Лейцин',
+    'lysine': 'Лизин',
+    'methionine': 'Метионин',
+    'phenylalanine': 'Фенилаланин',
+    'threonine': 'Треонин',
+    'tryptophan': 'Триптофан',
+    'valine': 'Валин'
+};
+
+
+
 
 // Определение цвета ГИ
 function getGlycemicIndexColor(gi) {
@@ -1108,6 +1134,43 @@ if (product.minerals && Object.keys(product.minerals).length > 0) {
     card.appendChild(mineralsContainer);
 }
 
+// Добавляем контейнер для жиров только если есть данные о жирах
+if (product.fattyAcidsAndCholesterol && Object.keys(product.fattyAcidsAndCholesterol).length > 0) {
+    const fatsContainer = document.createElement("div");
+    fatsContainer.classList.add("fats-container");
+    fatsContainer.innerHTML = '<h4>Жиры</h4>' +
+        Object.entries(product.fattyAcidsAndCholesterol).map(([fat, value]) => {
+            if (fat.endsWith("Units")) {
+                return ''; // Пропускаем поля units
+            }
+            const unitKey = fat + 'Units';
+            const unit = product.fattyAcidsAndCholesterol[unitKey] || '';
+            const fatName = fattyAcidsAndCholesterolTranslations[fat] || fat;
+            const fatValue = (value * defaultWeight / 100).toFixed(2);
+            return `<p><b>${fatName}:</b> ${fatValue} ${unit}</p>`;
+        }).join('');
+    card.appendChild(fatsContainer);
+}
+
+// Добавляем контейнер для незаменимых аминокислот только если есть данные о них
+if (product.essentialAminoAcids && Object.keys(product.essentialAminoAcids).length > 0) {
+    const aminoAcidsContainer = document.createElement("div");
+    aminoAcidsContainer.classList.add("amino-acids-container");
+    aminoAcidsContainer.innerHTML = '<h4>Незаменимые аминокислоты</h4>' +
+        Object.entries(product.essentialAminoAcids).map(([aminoAcid, value]) => {
+            if (aminoAcid.endsWith("Units")) {
+                return ''; // Пропускаем поля units
+            }
+            const unitKey = aminoAcid + 'Units';
+            const unit = product.essentialAminoAcids[unitKey] || '';
+            const aminoAcidName = essentialAminoAcidsTranslations[aminoAcid] || aminoAcid;
+            const aminoAcidValue = (value * defaultWeight / 100).toFixed(2);
+            return `<p><b>${aminoAcidName}:</b> ${aminoAcidValue} ${unit}</p>`;
+        }).join('');
+    card.appendChild(aminoAcidsContainer);
+}
+
+
 
 
     productsDiv.appendChild(card);
@@ -1240,6 +1303,41 @@ if (product.minerals && Object.keys(product.minerals).length > 0) {
                 return `<p><b>${mineralName}:</b> ${mineralValue} ${unit}</p>`;
             }).join('');
     }
+
+    // Пересчет незаменимых аминокислот
+const aminoAcidsContainer = card.querySelector(".amino-acids-container");
+if (aminoAcidsContainer) {
+    aminoAcidsContainer.innerHTML = '<h4>Незаменимые аминокислоты</h4>' +
+        Object.entries(product.essentialAminoAcids).map(([aminoAcid, value]) => {
+            if (aminoAcid.endsWith("Units")) {
+                return ''; // Пропускаем поля units
+            }
+            const unitKey = aminoAcid + 'Units';
+            const unit = product.essentialAminoAcids[unitKey] || '';
+            const aminoAcidName = essentialAminoAcidsTranslations[aminoAcid] || aminoAcid;
+            const aminoAcidValue = (value * weight / 100 * factor).toFixed(2);
+            return `<p><b>${aminoAcidName}:</b> ${aminoAcidValue} ${unit}</p>`;
+        }).join('');
+}
+
+
+
+    // Пересчет жиров
+const fatsContainer = card.querySelector(".fats-container");
+if (fatsContainer) {
+    fatsContainer.innerHTML = '<h4>Жиры</h4>' +
+        Object.entries(product.fattyAcidsAndCholesterol).map(([fat, value]) => {
+            if (fat.endsWith("Units")) {
+                return ''; // Пропускаем поля units
+            }
+            const unitKey = fat + 'Units';
+            const unit = product.fattyAcidsAndCholesterol[unitKey] || '';
+            const fatName = fattyAcidsAndCholesterolTranslations[fat] || fat;
+            const fatValue = (value * weight / 100 * factor).toFixed(2);
+            return `<p><b>${fatName}:</b> ${fatValue} ${unit}</p>`;
+        }).join('');
+}
+
     
         updateRawInfo(); // Обновляем отображение RAW
     
