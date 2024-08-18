@@ -677,6 +677,37 @@ const vitaminTranslations = {
     
 };
 
+// Переводы названий минералов
+const mineralTranslations = {
+    'lithium': 'Литий [Li]',
+    'boron': 'Бор [B]',
+    'sodium': 'Натрий [Na]',
+    'silicon': 'Кремний [Si]',
+    'potassium': 'Калий [K]',
+    'calcium': 'Кальций [Ca]',
+    'chromium': 'Хром [Cr]',
+    'cadmium': 'Кадмий [Cd]',
+    'lead': 'Свинец [Pb]',
+    'magnesium': 'Магний [Mg]',
+    'aluminum': 'Алюминий [Al]',
+    'titanium': 'Титан [Ti]',
+    'manganese': 'Марганец [Mn]',
+    'iron': 'Железо [Fe]',
+    'cobalt': 'Кобальт [Co]',
+    'nickel': 'Никель [Ni]',
+    'copper': 'Медь [Cu]',
+    'zinc': 'Цинк [Zn]',
+    'arsenic': 'Мышьяк [As]',
+    'selenium': 'Селен [Se]',
+    'molybdenum': 'Молибден [Mo]',
+    'antimony': 'Сурьма [Sb]',
+    'mercury': 'Ртуть [Hg]',
+    'phosphorus': 'Фосфор [P]',
+    'iodine': 'Йод [I]',
+    'fluorine': 'Фтор [F]'
+};
+
+
 // Определение цвета ГИ
 function getGlycemicIndexColor(gi) {
     if (gi <= 55) return '#28a745';
@@ -997,6 +1028,8 @@ const updateServingsOptions = () => {
             
             </div>
 
+            <div class="modification-panel">
+
             <label><b>Введите вес продукта (граммы):</b>
                 <input type="number" class="product-weight" min="1" step="1" value="${defaultWeight}">
             </label>
@@ -1035,6 +1068,7 @@ const updateServingsOptions = () => {
             </label>
 
             <button class="add-to-meal">Добавить в прием пищи</button>
+            </div>
         </div>
     `;
 
@@ -1055,6 +1089,25 @@ const updateServingsOptions = () => {
             }).join('');
         card.appendChild(vitaminsContainer);
     }
+
+    // Добавляем контейнер для минералов только если есть минералы
+if (product.minerals && Object.keys(product.minerals).length > 0) {
+    const mineralsContainer = document.createElement("div");
+    mineralsContainer.classList.add("minerals-container");
+    mineralsContainer.innerHTML = '<h4>Минералы</h4>' +
+        Object.entries(product.minerals).map(([mineral, value]) => {
+            if (mineral.endsWith("Units")) {
+                return ''; // Пропускаем поля units
+            }
+            const unitKey = mineral + 'Units';
+            const unit = product.minerals[unitKey] || '';
+            const mineralName = mineralTranslations[mineral] || mineral;
+            const mineralValue = (value * defaultWeight / 100).toFixed(2);
+            return `<p><b>${mineralName}:</b> ${mineralValue} ${unit}</p>`;
+        }).join('');
+    card.appendChild(mineralsContainer);
+}
+
 
 
     productsDiv.appendChild(card);
@@ -1171,6 +1224,22 @@ const updateServingsOptions = () => {
                     return `<p><b>${vitaminName}:</b> ${vitaminValue} ${unit}</p>`;
                 }).join('');
         }
+
+        // Пересчет минералов
+    const mineralsContainer = card.querySelector(".minerals-container");
+    if (mineralsContainer) {
+        mineralsContainer.innerHTML = '<h4>Минералы</h4>' +
+            Object.entries(product.minerals).map(([mineral, value]) => {
+                if (mineral.endsWith("Units")) {
+                    return ''; // Пропускаем поля units
+                }
+                const unitKey = mineral + 'Units';
+                const unit = product.minerals[unitKey] || '';
+                const mineralName = mineralTranslations[mineral] || mineral;
+                const mineralValue = (value * weight / 100 * factor).toFixed(2);
+                return `<p><b>${mineralName}:</b> ${mineralValue} ${unit}</p>`;
+            }).join('');
+    }
     
         updateRawInfo(); // Обновляем отображение RAW
     
