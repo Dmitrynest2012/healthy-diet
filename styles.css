@@ -303,6 +303,18 @@ input[type="number"]::-webkit-outer-spin-button {
     font-weight: bold;
 }
 
+.product-name {
+    position: absolute;
+    top: 5px;
+    left: 185px;
+}
+
+.manufacturerOrSeller {
+    position: absolute;
+    top: 135px;
+    left: 185px;
+}
+
 
 .product-image {
     border-radius: 10px; /* Закругление углов */
@@ -316,7 +328,7 @@ input[type="number"]::-webkit-outer-spin-button {
 /* Контейнер для индикаторов RAW и Vegan */
 .indicators-container {
     position: absolute;
-    top: 20px;
+    top: 60px;
     left: 185px;
     display: flex;
     flex-direction: row; /* Горизонтальное расположение элементов */
@@ -416,9 +428,10 @@ input[type="number"]::-webkit-outer-spin-button {
 .vitamins-container {
     position: absolute;
     top: 165px;
-    left: 350px;
-    margin-top: 20px;
+    left: 490px;
+    
     padding: 10px;
+    margin-top: 20px;
     border: 1px solid #ddd;
     border-radius: 15px;
     background-color: #f9f9f9;
@@ -746,6 +759,51 @@ input[type="number"]::-webkit-outer-spin-button {
     margin-top: 10px;
     color: #ccc;
 }
+
+/* Стиль для описания продукта в карточке, общий */
+.description-product-in-card {
+    width: 450px;
+    max-height: 120px;
+    border: 1px solid #afafaf;
+    border-radius: 10px;
+    padding: 5px;
+    overflow-y: auto;
+}
+
+
+
+/* Стиль для описания значения продукта в карточке */
+.description-in-italics {
+    font-size: 0.9em;
+    font-style: italic;
+    margin-top: 10px;
+    color: #333333;
+}
+
+.description-product-in-card::-webkit-scrollbar {
+    width: 8px; /* Ширина полосы прокрутки */
+}
+
+.description-product-in-card::-webkit-scrollbar-thumb {
+    background-color: #d3d3d3; /* Цвет полосы прокрутки */
+
+    border-top-right-radius: 10px; 
+    border-bottom-right-radius: 10px;
+}
+
+.description-product-in-card::-webkit-scrollbar-track {
+    background-color: #f1f1f100; /* Цвет трека (фона) полосы прокрутки */
+    border-radius: 5px 5px 0 0; /* Закругление только правых верхнего и нижнего углов */
+}
+
+.description-product-in-card::-webkit-scrollbar-thumb:hover {
+    background-color: #b3b3b3; /* Цвет полосы прокрутки при наведении */
+}
+
+
+
+
+
 
 
 
