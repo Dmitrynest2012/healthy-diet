@@ -28,6 +28,7 @@
     "waterContent": 100,
     "fiberContent": 0,
     "ORPValue": -480,
+    "pHValue": 7.2,
     "servings": {
       "чайная ложка": 5,
       "столовая ложка": 15,
@@ -102,6 +103,7 @@
     "waterContent": 57,
     "fiberContent": 5.7,
     "ORPValue": -75,
+    "pHValue": 6.8,
     "servings": {
       "мерная ложка": 20,
       "чайная ложка": 4,
@@ -161,6 +163,7 @@
     "waterContent": 67.3,
     "fiberContent": 8,
     "ORPValue": -125,
+    "pHValue": 7.1,
     "servings": {
       "мерная ложка": 15,
       "чайная ложка": 5,
@@ -185,6 +188,7 @@
     "waterContent": 90.4,
     "fiberContent": 2,
     "ORPValue": -50,
+    "pHValue": 6.3,
     "servings": {
       "чайная ложка": 2.5,
       "столовая ложка": 7,
@@ -208,6 +212,7 @@
     "waterContent": 88.29,
     "fiberContent": 2.8,
     "ORPValue": -25,
+    "pHValue": 6.1,
     "servings": {
       "чайная ложка": 6,
       "столовая ложка": 17.5,
@@ -230,6 +235,8 @@
     "GIDuringProcessing" : [15, 15, 15, 15, 15, 17, 20],
     "waterContent": 73.2,
     "fiberContent": 7,
+    "ORPValue": -80,
+    "pHValue": 6.2,
     "servings": {
       "чайная ложка": 4.75,
       "столовая ложка": 14.25,
@@ -238,6 +245,7 @@
     "processingMethod": "Резка"
   }
 ]
+
 
 
 
