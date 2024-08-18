@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap');
+
+
+
 html {
     font-family: 'Play';
 
@@ -690,6 +694,64 @@ input[type="number"]::-webkit-outer-spin-button {
     margin-top: 10px;
     color: #ccc;
 }
+
+
+
+
+/* Основной стиль для контейнера с ОВП */
+.ph-container {
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid rgba(110, 110, 110, 0.233);
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    position: relative;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+/* Стиль для значения ОВП */
+.ph-value {
+    font-weight: bold;
+    color: white;
+}
+
+/* Общий стиль для всплывающего окна ОВП */
+.ph-tooltip {
+    display: none;
+    position: absolute;
+    top: 50px;
+    height: 400px;
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    width: 300px;
+    z-index: 10;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Показ подсказки при наведении на контейнер */
+.ph-container:hover .ph-tooltip {
+    display: block;
+}
+
+/* Стиль для рекомендаций */
+.ph-recommendation {
+    font-size: 0.9em;
+    font-style: italic;
+    margin-top: 10px;
+    color: #ccc;
+}
+
+
+
+
+
+
 
 
 
