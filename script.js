@@ -1390,6 +1390,8 @@ const updateServingsOptions = () => {
     product.vegan;
     product.GlycemicIndex;
 
+    
+
     // Создание HTML-кода карточки
     card.innerHTML = `
         <img class="product-image" src="${product.image}" alt="${product.name}">
@@ -1460,44 +1462,52 @@ const updateServingsOptions = () => {
             
             </div>
 
-            
-        <div class="bju-widget">
-    <h4>Соотношение БЖУ в продукте</h4>
-    <div class="bju-content">
-        <div class="bju-chart-container" id="bjuChart2">
-            <div class="bju-chart" id="bjuChart"></div>
-        </div>
-        <div class="bju-legend">
-            <div class="bju-item">
-                <span class="bju-color" style="background-color: #4caf50;"></span>
-                <span class="bju-label">Белки: <span id="proteinGrams"></span> г (<span id="proteinPercent"></span>%)</span>
-            </div>
-            <div class="bju-item">
-                <span class="bju-color" style="background-color: #ff9800;"></span>
-                <span class="bju-label">Жиры: <span id="fatsGrams"></span> г (<span id="fatsPercent"></span>%)</span>
-            </div>
-            <div class="bju-item">
-                <span class="bju-color" style="background-color: #2196f3;"></span>
-                <span class="bju-label">Углеводы: <span id="carbsGrams"></span> г (<span id="carbsPercent"></span>%)</span>
-            </div>
-        </div>
-    </div>
-</div>
+            <!-- Проверяем, существует ли уже BJU виджет -->
+            ${!document.querySelector('.bju-widget') ? createBJUWidget(product) : ''}
 
-
-
-
-
-
-
-
-
-
+       
 
 
         </div>
     `;
 
+    
+
+
+    function createBJUWidget(product) {
+        // Проверяем наличие белков, жиров или углеводов
+        const hasNutrients = product.protein > 0 || product.fats > 0 || product.carbs > 0;
+    
+        // Если нет белков, жиров и углеводов, возвращаем пустую строку
+        if (!hasNutrients) return '';
+    
+        // Возвращаем HTML-код контейнера с БЖУ
+        return `
+            <div class="bju-widget">
+                <h4>Соотношение БЖУ в продукте</h4>
+                <div class="bju-content">
+                    <div class="bju-chart-container" id="bjuChart2">
+                        <div class="bju-chart" id="bjuChart"></div>
+                    </div>
+                    <div class="bju-legend">
+                        <div class="bju-item">
+                            <span class="bju-color" style="background-color: #4caf50;"></span>
+                            <span class="bju-label">Белки: <span id="proteinGrams">${product.protein}</span> г (<span id="proteinPercent"></span>%)</span>
+                        </div>
+                        <div class="bju-item">
+                            <span class="bju-color" style="background-color: #ff9800;"></span>
+                            <span class="bju-label">Жиры: <span id="fatsGrams">${product.fats}</span> г (<span id="fatsPercent"></span>%)</span>
+                        </div>
+                        <div class="bju-item">
+                            <span class="bju-color" style="background-color: #2196f3;"></span>
+                            <span class="bju-label">Углеводы: <span id="carbsGrams">${product.carbs}</span> г (<span id="carbsPercent"></span>%)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
     
 
  
@@ -1616,6 +1626,7 @@ function getMineralRecommendation(mineral) {
 
 // Функция для создания строки таблицы минералов
 function createMineralRow(mineral, value, unit, defaultWeight, isToxic = false) {
+    if (product.minerals && Object.keys(product.minerals).length > 0) {
     const mineralName = mineralTranslations[mineral] || mineral;
     const mineralValue = (value * defaultWeight / 100).toFixed(2);
 
@@ -1646,6 +1657,7 @@ function createMineralRow(mineral, value, unit, defaultWeight, isToxic = false) 
             <td>${mineralValue} ${unit}</td>
             <td title="${tooltip}">${indicator}</td>
         </tr>`;
+}
 }
 
 // Проверяем наличие минералов в продукте
@@ -1945,6 +1957,13 @@ if (product.essentialAminoAcids && Object.keys(product.essentialAminoAcids).leng
         
 
          function drawBJUChart(ChartProtein, ChartFats, ChartCarbs) {
+            // Проверяем, существуют ли белки, жиры и углеводы и контейнер для графика
+            const hasNutrients = ChartProtein > 0 || ChartFats > 0 || ChartCarbs > 0;
+            const chartContainer = document.getElementById('bjuChart2');
+            
+            // Если нет белков, жиров, углеводов или контейнер не найден, не выполняем функцию
+            if (!hasNutrients || !chartContainer) return;
+        
             const total = ChartProtein + ChartFats + ChartCarbs;
         
             // Вычисляем проценты
@@ -1962,8 +1981,7 @@ if (product.essentialAminoAcids && Object.keys(product.essentialAminoAcids).leng
             console.log('Carbs Angle:', carbsAngle);
         
             // Применяем градиент к диаграмме
-            const chart = document.getElementById('bjuChart2');
-            chart.style.background = `conic-gradient(
+            chartContainer.style.background = `conic-gradient(
                 #4caf50 0% ${proteinAngle}deg, 
                 #ff9800 ${proteinAngle}deg ${proteinAngle + fatsAngle}deg, 
                 #2196f3 ${proteinAngle + fatsAngle}deg 360deg
@@ -1977,6 +1995,7 @@ if (product.essentialAminoAcids && Object.keys(product.essentialAminoAcids).leng
             document.getElementById('carbsGrams').textContent = ChartCarbs.toFixed(2);
             document.getElementById('carbsPercent').textContent = carbsPercent.toFixed(2);
         }
+        
         
         drawBJUChart(ChartProtein, ChartFats, ChartCarbs);
         
