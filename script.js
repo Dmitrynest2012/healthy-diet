@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const button = document.createElement('button');
     button.className = buttonClass;
     button.id = "toggle-profile";
-    button.innerHTML = '&#9650;';
+    
     document.body.appendChild(button);
 
     const modal = document.createElement('div');
@@ -84,6 +84,28 @@ document.addEventListener("DOMContentLoaded", function() {
     const bmiParagraph = document.getElementById('bmi');
     const bmrParagraph = document.getElementById('bmr');
     const metabolicAgeParagraph = document.getElementById('metabolic-age');
+
+    // Функция для обновления кнопки профиля
+function updateProfileButton() {
+    const firstName = firstNameInput.value.trim();
+    const lastName = lastNameInput.value.trim();
+
+    if (firstName && lastName) {
+        // Если имя и фамилия заданы, показываем первую букву имени и фамилии
+        button.innerHTML = `${firstName.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}`;
+        button.style.fontSize = '20px'; // Увеличиваем размер шрифта для букв
+        button.style.display = 'flex';
+        button.style.alignItems = 'center'; // Вертикальное выравнивание по центру
+        button.style.justifyContent = 'center'; // Горизонтальное выравнивание по центру
+    } else {
+        // Если имя и фамилия не заданы, показываем значок по умолчанию
+        button.innerHTML = '&#128100;';
+        button.style.fontSize = '20px'; // Размер шрифта для иконки
+        button.style.justifyContent = 'center'; // Горизонтальное выравнивание по центру
+    }
+}
+
+
 
     // Функция для обновления возраста
 function updateAge() {
@@ -284,6 +306,9 @@ function saveProfileData() {
         metabolicAge: metabolicAge // Сохраняем метаболический возраст
     };
     localStorage.setItem('userProfile', JSON.stringify(userProfile));
+
+    // Проверка сохраненных данных
+    console.log('Profile data saved:', userProfile);
     
 }
 
@@ -345,6 +370,7 @@ function updateDailySummary2() {
             
             const Globalweight = parseFloat(savedData.weight) || 0;
 
+            setInterval(updateProfileButton, 1000); // Обновляем кнопку пользователя
             
         
         if (Globalweight > 0) {
@@ -353,6 +379,9 @@ function updateDailySummary2() {
             // Запуск обновления сводки за день раз в секунду
     setInterval(updateDailySummary2, 1000); // Обновляем сводку за день
         }
+
+        
+        
         
         
 
@@ -369,6 +398,18 @@ function updateDailySummary2() {
     
     // Загрузка сохраненных данных при загрузке страницы
     loadProfileData();
+
+
+    // Сохрняем имя
+    firstNameInput.addEventListener('input', function() {
+        saveProfileData(); // Вызываем функцию сохранения, которая сама обновит все данные
+    });
+
+     // Сохрняем фамилию
+
+    lastNameInput.addEventListener('input', function() {
+        saveProfileData(); // Сохраняем данные при изменении
+    });
 
     // Обновление возраста, ИМТ и BMR при изменении данных
 birthDateInput.addEventListener('input', function() {
@@ -615,38 +656,68 @@ function checkAndOpenCalendar(mealType) {
     nextDayButton.addEventListener('click', () => changeDay(1));
 
     // Загрузка продуктов из JSON файла
-    fetch('products.json')
-        .then(response => response.json())
-        .then(data => {
-            products = data;
-            searchInput.addEventListener('input', handleSearchInput);
+fetch('products.json')
+.then(response => response.json())
+.then(data => {
+    products = data;
+    searchInput.addEventListener('input', handleSearchInput);
+    clearButton.addEventListener('click', clearSearch);
+});
+
+// Обработка ввода в поисковое поле
+function handleSearchInput() {
+const query = searchInput.value.toLowerCase();
+suggestionsDiv.innerHTML = '';
+
+if (query) {
+    const filteredProducts = products.filter(product =>
+        product.name.toLowerCase().includes(query)
+    );
+
+    if (filteredProducts.length > 0) {
+        filteredProducts.forEach(product => {
+            const option = document.createElement('div');
+            option.classList.add('suggestion-item');
+
+            // Форматирование строки
+            option.innerHTML = `
+                <span class="product-name-search">${product.name}</span>
+                <span class="product-details">
+                    ${product.calories} ккал, 
+                    ${product.protein} г белков, 
+                    ${product.fats} г жиров, 
+                    ${product.carbs} г углеводов
+                </span>
+            `;
+
+            // Добавление обработчика клика
+            option.addEventListener('click', () => {
+                displayProductCard(product);
+                suggestionsDiv.innerHTML = ''; // Закрываем предложения
+                searchInput.value = ''; // Очищаем поле поиска
+            });
+
+            suggestionsDiv.appendChild(option);
         });
-
-     // Обработка ввода в поисковое поле
-    function handleSearchInput() {
-        const query = searchInput.value.toLowerCase();
-        suggestionsDiv.innerHTML = '';
-
-        if (query) {
-            const filteredProducts = products.filter(product =>
-                product.name.toLowerCase().includes(query)
-            );
-
-            if (filteredProducts.length > 0) {
-                filteredProducts.forEach(product => {
-                    const option = document.createElement('div');
-                    option.classList.add('suggestion-item');
-                    option.textContent = product.name;
-                    option.addEventListener('click', () => {
-                        displayProductCard(product);
-                        suggestionsDiv.innerHTML = ''; // Закрываем предложения
-                        searchInput.value = ''; // Очищаем поле поиска
-                    });
-                    suggestionsDiv.appendChild(option);
-                });
-            }
-        }
     }
+}
+}
+
+// Очистка поиска и предложений
+function clearSearch() {
+searchInput.value = '';
+suggestionsDiv.innerHTML = '';
+searchInput.focus(); // Фокус на поле поиска после очистки
+}
+
+// Инициализация элементов
+const clearButton = document.getElementById('clear-button');
+
+
+
+
+
+
 
     // Обновление значений питательных веществ с учетом метода обработки
     const processingMethods = {
@@ -1481,32 +1552,50 @@ const updateServingsOptions = () => {
         // Если нет белков, жиров и углеводов, возвращаем пустую строку
         if (!hasNutrients) return '';
     
-        // Возвращаем HTML-код контейнера с БЖУ
+        // Выбираем базовый макроэлемент
+        const baseValue = product.protein || product.fats || product.carbs;
+    
+        // Рассчитываем соотношение БЖУ относительно базового макроэлемента
+        const proteinRatio = (product.protein / baseValue).toFixed(2);
+        const fatsRatio = (product.fats / baseValue).toFixed(2);
+        const carbsRatio = (product.carbs / baseValue).toFixed(2);
+    
+        // Форматируем соотношение для вывода
+        const bjuRatio = `${proteinRatio} : ${fatsRatio} : ${carbsRatio}`;
+    
+        // Возвращаем HTML-код контейнера с БЖУ и отдельным элементом для соотношения
         return `
             <div class="bju-widget">
-                <h4>Соотношение БЖУ в продукте</h4>
+                <h4>Доля БЖУ в продукте</h4>
                 <div class="bju-content">
+                    
                     <div class="bju-chart-container" id="bjuChart2">
                         <div class="bju-chart" id="bjuChart"></div>
                     </div>
                     <div class="bju-legend">
                         <div class="bju-item">
-                            <span class="bju-color" style="background-color: #4caf50;"></span>
+                            <span class="bju-color" style="background-color: #4CAF50;"></span>
                             <span class="bju-label">Белки: <span id="proteinGrams">${product.protein}</span> г (<span id="proteinPercent"></span>%)</span>
                         </div>
                         <div class="bju-item">
-                            <span class="bju-color" style="background-color: #ff9800;"></span>
+                            <span class="bju-color" style="background-color: #FFEB3B;"></span>
                             <span class="bju-label">Жиры: <span id="fatsGrams">${product.fats}</span> г (<span id="fatsPercent"></span>%)</span>
                         </div>
                         <div class="bju-item">
-                            <span class="bju-color" style="background-color: #2196f3;"></span>
+                            <span class="bju-color" style="background-color: #F44336;"></span>
                             <span class="bju-label">Углеводы: <span id="carbsGrams">${product.carbs}</span> г (<span id="carbsPercent"></span>%)</span>
                         </div>
+                        <div class="bju-ratio">
+                        <span class="bju-ratio-label">Соотношение БЖУ: ${bjuRatio}</span>
+                    </div>
                     </div>
                 </div>
             </div>
         `;
     }
+    
+    
+    
     
     
 
@@ -1982,9 +2071,9 @@ if (product.essentialAminoAcids && Object.keys(product.essentialAminoAcids).leng
         
             // Применяем градиент к диаграмме
             chartContainer.style.background = `conic-gradient(
-                #4caf50 0% ${proteinAngle}deg, 
-                #ff9800 ${proteinAngle}deg ${proteinAngle + fatsAngle}deg, 
-                #2196f3 ${proteinAngle + fatsAngle}deg 360deg
+                #4CAF50 0% ${proteinAngle}deg, 
+                #FFEB3B ${proteinAngle}deg ${proteinAngle + fatsAngle}deg, 
+                #F44336 ${proteinAngle + fatsAngle}deg 360deg
             )`;
         
             // Обновляем значения в легенде
