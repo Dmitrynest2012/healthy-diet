@@ -677,6 +677,92 @@ const vitaminTranslations = {
     
 };
 
+/**
+ * Суточные нормы потребления витаминов.
+ * Включает нижнюю и верхнюю границу нормы по каждому витамину.
+ * Значения основаны на рекомендациях от ВОЗ и IOM.
+ */
+
+const vitaminRecommendations = {
+    vitamins: {
+      "vitaminA": {
+        "lowerBound": 900, // Нижняя граница нормы для мужчин
+        "upperBound": 3000, // Верхняя граница нормы для мужчин
+        "unit": "мкг"
+      },
+      "vitaminBeta-carotene": {
+        "lowerBound": 0.9, // Оценочная доза в миллиграммах
+        "upperBound": 6,   // Оценочная доза в миллиграммах
+        "unit": "мг"
+      },
+      "vitaminB1": {
+        "lowerBound": 1.2, // Нижняя граница нормы для мужчин
+        "upperBound": 1.5, // Верхняя граница нормы для мужчин
+        "unit": "мг"
+      },
+      "vitaminB2": {
+        "lowerBound": 1.1, // Нижняя граница нормы для женщин
+        "upperBound": 1.6, // Верхняя граница нормы для мужчин
+        "unit": "мг"
+      },
+      "vitaminB3": {
+        "lowerBound": 14,  // Нижняя граница нормы для женщин
+        "upperBound": 16,  // Верхняя граница нормы для мужчин
+        "unit": "мг"
+      },
+      "vitaminCholine": {
+        "lowerBound": 425, // Нижняя граница нормы для женщин
+        "upperBound": 550, // Верхняя граница нормы для мужчин
+        "unit": "мг"
+      },
+      "vitaminB5": {
+        "lowerBound": 5,   // Оценочная доза
+        "upperBound": 10,  // Оценочная доза
+        "unit": "мг"
+      },
+      "vitaminB6": {
+        "lowerBound": 1.3, // Нижняя граница нормы для женщин (19-50 лет)
+        "upperBound": 2.0, // Верхняя граница нормы для мужчин (19-50 лет)
+        "unit": "мг"
+      },
+      "vitaminB7": {
+        "lowerBound": 30,  // Нижняя граница нормы
+        "upperBound": 100, // Верхняя граница нормы
+        "unit": "мкг"
+      },
+      "vitaminB9": {
+        "lowerBound": 400, // Нижняя граница нормы
+        "upperBound": 800, // Верхняя граница нормы при беременности
+        "unit": "мкг"
+      },
+      "vitaminB12": {
+        "lowerBound": 2.4, // Нижняя граница нормы
+        "upperBound": 2.4, // Верхняя граница нормы
+        "unit": "мкг"
+      },
+      "vitaminC": {
+        "lowerBound": 75,  // Нижняя граница нормы для женщин
+        "upperBound": 90,  // Верхняя граница нормы для мужчин
+        "unit": "мг"
+      },
+      "vitaminD": {
+        "lowerBound": 15,  // Нижняя граница нормы для взрослых
+        "upperBound": 100, // Верхняя граница нормы для взрослых
+        "unit": "мкг"
+      },
+      "vitaminE": {
+        "lowerBound": 15,  // Нижняя граница нормы
+        "upperBound": 1000, // Верхняя граница нормы
+        "unit": "мг"
+      },
+      "vitaminK": {
+        "lowerBound": 90,  // Нижняя граница нормы для женщин
+        "upperBound": 120, // Верхняя граница нормы для мужчин
+        "unit": "мкг"
+      }
+    }
+  };
+
 // Переводы названий минералов
 const mineralTranslations = {
     'lithium': 'Литий [Li]',
@@ -707,6 +793,181 @@ const mineralTranslations = {
     'fluorine': 'Фтор [F]'
 };
 
+/**
+ * Суточные нормы потребления минералов.
+ * Включает нижнюю и верхнюю границу нормы по каждому минералу.
+ * Значения основаны на рекомендациях от ВОЗ и IOM.
+ */
+
+const mineralRecommendations = {
+    minerals: {
+        "lithium": {
+            "lowerBound": 0, // Нет официальных рекомендаций
+            "upperBound": 2, // Оценочная верхняя граница, мг
+            "unit": "мг",
+            "effect": "эссенциальный"
+        },
+        "boron": {
+            "lowerBound": 1,  // Оценочная норма, мг
+            "upperBound": 20, // Максимальная допустимая доза, мг
+            "unit": "мг",
+            "effect": "эссенциальный"
+        },
+        "sodium": {
+            "lowerBound": 1500, // Нижняя граница нормы для взрослых, мг
+            "upperBound": 2300, // Верхняя граница нормы для взрослых, мг
+            "unit": "мг",
+            "effect": "эссенциальный"
+        },
+        "silicon": {
+            "lowerBound": 5,  // Оценочная минимальная доза, мг
+            "upperBound": 40, // Оценочная верхняя граница, мг
+            "unit": "мг",
+            "effect": "эссенциальный"
+        },
+        "potassium": {
+            "lowerBound": 3500, // Нижняя граница нормы для взрослых, мг
+            "upperBound": 4700, // Верхняя граница нормы для взрослых, мг
+            "unit": "мг",
+            "effect": "эссенциальный"
+        },
+        "calcium": {
+            "lowerBound": 1000, // Нижняя граница нормы для взрослых, мг
+            "upperBound": 2500, // Верхняя граница нормы для взрослых, мг
+            "unit": "мг",
+            "effect": "эссенциальный"
+        },
+        "chromium": {
+            "lowerBound": 25,  // Нижняя граница нормы для женщин, мкг
+            "upperBound": 35,  // Верхняя граница нормы для мужчин, мкг
+            "unit": "мкг",
+            "effect": "эссенциальный"
+        },
+        "cadmium": {
+            "lowerBound": 0, // Нет официальных рекомендаций
+            "upperBound": 0, // Токсичен, избегать потребления
+            "unit": "мкг",
+            "effect": "токсичный",
+            "toxicUpperBound": 5 // Верхняя граница, за которой начинается негативное воздействие, мкг
+        },
+        "lead": {
+            "lowerBound": 0, // Нет официальных рекомендаций
+            "upperBound": 0, // Токсичен, избегать потребления
+            "unit": "мкг",
+            "effect": "токсичный",
+            "toxicUpperBound": 10 // Верхняя граница, за которой начинается негативное воздействие, мкг
+        },
+        "magnesium": {
+            "lowerBound": 310, // Нижняя граница нормы для женщин, мг
+            "upperBound": 420, // Верхняя граница нормы для мужчин, мг
+            "unit": "мг",
+            "effect": "эссенциальный"
+        },
+        "aluminum": {
+            "lowerBound": 0, // Нет официальных рекомендаций
+            "upperBound": 1, // Максимальная допустимая доза, мг
+            "unit": "мг",
+            "effect": "токсичный",
+            "toxicUpperBound": 2 // Верхняя граница, за которой начинается негативное воздействие, мг
+        },
+        "titanium": {
+            "lowerBound": 0, // Нет официальных рекомендаций
+            "upperBound": 0, // Недостаточно данных
+            "unit": "мг",
+            "effect": "эссенциальный"
+        },
+        "manganese": {
+            "lowerBound": 1.8,  // Нижняя граница нормы для женщин, мг
+            "upperBound": 2.3,  // Верхняя граница нормы для мужчин, мг
+            "unit": "мг",
+            "effect": "эссенциальный"
+        },
+        "iron": {
+            "lowerBound": 8,   // Нижняя граница нормы для мужчин, мг
+            "upperBound": 18,  // Верхняя граница нормы для женщин, мг
+            "unit": "мг",
+            "effect": "эссенциальный"
+        },
+        "cobalt": {
+            "lowerBound": 0,   // Нет официальных рекомендаций
+            "upperBound": 0.1, // Оценочная максимальная доза, мкг
+            "unit": "мкг",
+            "effect": "эссенциальный"
+        },
+        "nickel": {
+            "lowerBound": 0,   // Нет официальных рекомендаций
+            "upperBound": 1,   // Максимальная допустимая доза, мг
+            "unit": "мг",
+            "effect": "эссенциальный"
+        },
+        "copper": {
+            "lowerBound": 0.9,  // Нижняя граница нормы для взрослых, мг
+            "upperBound": 10,   // Верхняя граница нормы для взрослых, мг
+            "unit": "мг",
+            "effect": "эссенциальный"
+        },
+        "zinc": {
+            "lowerBound": 8,   // Нижняя граница нормы для женщин, мг
+            "upperBound": 11,  // Верхняя граница нормы для мужчин, мг
+            "unit": "мг",
+            "effect": "эссенциальный"
+        },
+        "arsenic": {
+            "lowerBound": 0, // Нет официальных рекомендаций
+            "upperBound": 0, // Токсичен, избегать потребления
+            "unit": "мкг",
+            "effect": "токсичный",
+            "toxicUpperBound": 1 // Верхняя граница, за которой начинается негативное воздействие, мкг
+        },
+        "selenium": {
+            "lowerBound": 55,   // Нижняя граница нормы для взрослых, мкг
+            "upperBound": 400,  // Верхняя граница нормы для взрослых, мкг
+            "unit": "мкг",
+            "effect": "эссенциальный"
+        },
+        "molybdenum": {
+            "lowerBound": 45,  // Нижняя граница нормы для взрослых, мкг
+            "upperBound": 2000, // Верхняя граница нормы для взрослых, мкг
+            "unit": "мкг",
+            "effect": "эссенциальный"
+        },
+        "antimony": {
+            "lowerBound": 0, // Нет официальных рекомендаций
+            "upperBound": 0.5, // Оценочная верхняя граница, мкг
+            "unit": "мкг",
+            "effect": "токсичный",
+            "toxicUpperBound": 0.5 // Верхняя граница, за которой начинается негативное воздействие, мкг
+        },
+        "mercury": {
+            "lowerBound": 0, // Нет официальных рекомендаций
+            "upperBound": 0, // Токсичен, избегать потребления
+            "unit": "мкг",
+            "effect": "токсичный",
+            "toxicUpperBound": 0.1 // Верхняя граница, за которой начинается негативное воздействие, мкг
+        },
+        "phosphorus": {
+            "lowerBound": 700,  // Нижняя граница нормы для взрослых, мг
+            "upperBound": 4000, // Верхняя граница нормы для взрослых, мг
+            "unit": "мг",
+            "effect": "эссенциальный"
+        },
+        "iodine": {
+            "lowerBound": 150,  // Нижняя граница нормы для взрослых, мкг
+            "upperBound": 1100, // Верхняя граница нормы для взрослых, мкг
+            "unit": "мкг",
+            "effect": "эссенциальный"
+        },
+        "fluorine": {
+            "lowerBound": 3,   // Нижняя граница нормы для женщин, мг
+            "upperBound": 4,   // Верхняя граница нормы для мужчин, мг
+            "unit": "мг",
+            "effect": "эссенциальный"
+        }
+    }
+};
+
+
+
 // Переводы названий жиров и холестерина
 const fattyAcidsAndCholesterolTranslations = {
     'omega3': 'Омега-3 Жирные кислоты',
@@ -717,6 +978,53 @@ const fattyAcidsAndCholesterolTranslations = {
     'polyunsaturatedFats': 'Полиненасыщенные жирные кислоты',
     'transFats': 'Трансжиры'
 };
+
+/**
+ * Суточные нормы потребления жирных кислот и холестерина.
+ * Включает нижнюю и верхнюю границу нормы по каждому виду жиров.
+ * Значения основаны на рекомендациях от ВОЗ и других экспертных источников.
+ */
+
+const fatRecommendations = {
+    fattyAcidsAndCholesterol: {
+        "omega3": {
+            "lowerBound": 1.1, // Нижняя граница нормы для женщин, г
+            "upperBound": 1.6, // Верхняя граница нормы для мужчин, г
+            "unit": "г"
+        },
+        "omega6": {
+            "lowerBound": 11, // Нижняя граница нормы для женщин, г
+            "upperBound": 17, // Верхняя граница нормы для мужчин, г
+            "unit": "г"
+        },
+        "cholesterol": {
+            "lowerBound": 0,   // Минимальная рекомендуемая доза, мг
+            "upperBound": 300, // Максимальная допустимая доза, мг
+            "unit": "мг"
+        },
+        "saturatedFats": {
+            "lowerBound": 0,  // Минимальная рекомендуемая доза, г
+            "upperBound": 20, // Максимальная допустимая доза, г (до 10% от общего калоража)
+            "unit": "г"
+        },
+        "monounsaturatedFats": {
+            "lowerBound": 15, // Нижняя граница нормы, г (10-20% от общего калоража)
+            "upperBound": 30, // Верхняя граница нормы, г
+            "unit": "г"
+        },
+        "polyunsaturatedFats": {
+            "lowerBound": 5,   // Нижняя граница нормы, г (5-10% от общего калоража)
+            "upperBound": 10,  // Верхняя граница нормы, г
+            "unit": "г"
+        },
+        "transFats": {
+            "lowerBound": 0,   // Минимальная рекомендуемая доза, г (избегать потребления)
+            "upperBound": 2,   // Максимальная допустимая доза, г (до 1% от общего калоража)
+            "unit": "г"
+        }
+    }
+};
+
 
 // Переводы названий незаменимых аминокислот
 const essentialAminoAcidsTranslations = {
@@ -730,6 +1038,62 @@ const essentialAminoAcidsTranslations = {
     'tryptophan': 'Триптофан',
     'valine': 'Валин'
 };
+
+/**
+ * Суточные нормы потребления незаменимых аминокислот.
+ * Включает нижнюю и верхнюю границу нормы по каждой аминокислоте.
+ * Значения основаны на рекомендациях от ВОЗ и других экспертных источников.
+ */
+const aminoAcidRecommendations = {
+    essentialAminoAcids: {
+        "histidine": {
+            "lowerBound": 10,  // Нижняя граница нормы, мг/кг массы тела
+            "upperBound": 14,  // Верхняя граница нормы, мг/кг массы тела
+            "unit": "мг"
+        },
+        "isoleucine": {
+            "lowerBound": 19,  // Нижняя граница нормы, мг/кг массы тела
+            "upperBound": 42,  // Верхняя граница нормы, мг/кг массы тела
+            "unit": "мг"
+        },
+        "leucine": {
+            "lowerBound": 39,  // Нижняя граница нормы, мг/кг массы тела
+            "upperBound": 54,  // Верхняя граница нормы, мг/кг массы тела
+            "unit": "мг"
+        },
+        "lysine": {
+            "lowerBound": 30,  // Нижняя граница нормы, мг/кг массы тела
+            "upperBound": 45,  // Верхняя граница нормы, мг/кг массы тела
+            "unit": "мг"
+        },
+        "methionine": {
+            "lowerBound": 10,  // Нижняя граница нормы, мг/кг массы тела
+            "upperBound": 15,  // Верхняя граница нормы, мг/кг массы тела
+            "unit": "мг"
+        },
+        "phenylalanine": {
+            "lowerBound": 25,  // Нижняя граница нормы, мг/кг массы тела
+            "upperBound": 33,  // Верхняя граница нормы, мг/кг массы тела
+            "unit": "мг"
+        },
+        "threonine": {
+            "lowerBound": 15,  // Нижняя граница нормы, мг/кг массы тела
+            "upperBound": 23,  // Верхняя граница нормы, мг/кг массы тела
+            "unit": "мг"
+        },
+        "tryptophan": {
+            "lowerBound": 4,   // Нижняя граница нормы, мг/кг массы тела
+            "upperBound": 6,   // Верхняя граница нормы, мг/кг массы тела
+            "unit": "мг"
+        },
+        "valine": {
+            "lowerBound": 26,  // Нижняя граница нормы, мг/кг массы тела
+            "upperBound": 34,  // Верхняя граница нормы, мг/кг массы тела
+            "unit": "мг"
+        }
+    }
+};
+
 
 
 
@@ -1098,77 +1462,345 @@ const updateServingsOptions = () => {
         </div>
     `;
 
-    // Добавляем контейнер для витаминов только если есть витамины
-    if (product.vitamins && Object.keys(product.vitamins).length > 0) {
-        const vitaminsContainer = document.createElement("div");
-        vitaminsContainer.classList.add("vitamins-container");
-        vitaminsContainer.innerHTML = '<h4>Витамины</h4>' +
-            Object.entries(product.vitamins).map(([vitamin, value]) => {
-                if (vitamin.endsWith("units")) {
-                    return ''; // Пропускаем поля units
-                }
-                const unitKey = vitamin + 'units';
-                const unit = product.vitamins[unitKey] || '';
-                const vitaminName = vitaminTranslations[vitamin] || vitamin;
-                const vitaminValue = (value * defaultWeight / 100).toFixed(2);
-                return `<p><b>${vitaminName}:</b> ${vitaminValue} ${unit}</p>`;
-            }).join('');
-        card.appendChild(vitaminsContainer);
+    
+
+
+
+// Функция для создания цветного индикатора
+function getRecommendationIndicator(percentage) {
+    let color;
+    
+    if (percentage >= 0 && percentage < 25) {
+        color = '#1961a8'; // Мягкий темно-синий цвет
+    } else if (percentage >= 25 && percentage < 75) {
+        color = '#22b376'; // Темно-бирюзовый цвет
+    } else if (percentage >= 75 && percentage < 100) {
+        color = '#4CAF50'; // Зеленый цвет
+    } else if (percentage >= 100 && percentage < 150) {
+        color = '#FF5722'; // Оранжевый цвет
+    } else if (percentage >= 150) {
+        color = '#F44336'; // Красный цвет
     }
 
-    // Добавляем контейнер для минералов только если есть минералы
+    return `
+        <div class="indicator" style="background-color: ${color};">
+            ${percentage}%
+        </div>`;
+}
+
+// Функция для создания цветного индикатора для токсичных веществ
+function getToxicityIndicator(percentage) {
+    let color;
+
+    if (percentage >= 0 && percentage < 25) {
+        color = '#4CAF50'; // Зеленый цвет
+    } else if (percentage >= 25 && percentage < 50) {
+        color = '#FFEB3B'; // Желтый цвет
+    } else if (percentage >= 50 && percentage < 100) {
+        color = '#FF5722'; // Оранжевый цвет
+    } else if (percentage >= 100) {
+        color = '#F44336'; // Красный цвет
+    }
+
+    return `
+        <div class="indicator" style="background-color: ${color};">
+            ${percentage}%
+        </div>`;
+}
+
+
+// Функция для получения суточной нормы витамина
+function getVitaminRecommendation(vitamin) {
+    return vitaminRecommendations.vitamins[vitamin] || {};
+}
+
+
+
+// Добавляем контейнер для витаминов только если есть витамины
+if (product.vitamins && Object.keys(product.vitamins).length > 0) {
+    const vitaminsContainer = document.createElement("div");
+    vitaminsContainer.classList.add("vitamins-container");
+
+    vitaminsContainer.innerHTML = `
+        <h4>Витамины</h4>
+        <table class="vitamins-table">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Значение</th>
+                    <th>От РСП</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${Object.entries(product.vitamins).map(([vitamin, value]) => {
+                    if (vitamin.endsWith("units")) {
+                        return ''; // Пропускаем поля units
+                    }
+                    const unitKey = vitamin + 'units';
+                    const unit = product.vitamins[unitKey] || '';
+                    const vitaminName = vitaminTranslations[vitamin] || vitamin;
+                    const vitaminValue = (value * defaultWeight / 100).toFixed(2);
+
+                    // Получаем рекомендации по витамину
+                    const recommendation = getVitaminRecommendation(vitamin);
+                    const lowerBound = recommendation.lowerBound || 0;
+                    const upperBound = recommendation.upperBound || Infinity;
+                    const recommendedUnit = recommendation.unit || '';
+
+                    // Проверка совпадения единиц измерения
+                    if (unit !== recommendedUnit) {
+                        console.error(`Несоответствие единиц измерения для ${vitaminName}: ${unit} и ${recommendedUnit}`);
+                        return '';
+                    }
+
+                    // Рассчитываем процент от суточной нормы по верхней границе
+                    const percentage = upperBound > 0 ? ((vitaminValue / upperBound) * 100).toFixed(2) : '0';
+
+                    // Всплывающая подсказка с нижней и верхней границей нормы
+                    const tooltip = `Норма: ${lowerBound}-${upperBound} ${unit}`;
+
+                    return `
+                        <tr>
+                            <td>${vitaminName}</td>
+                            <td>${vitaminValue} ${unit}</td>
+                            <td title="${tooltip}">${getRecommendationIndicator(percentage)}</td>
+                        </tr>`;
+                }).join('')}
+            </tbody>
+        </table>`;
+
+    card.appendChild(vitaminsContainer);
+}
+
+// Функция для получения суточной нормы минерала
+function getMineralRecommendation(mineral) {
+    return mineralRecommendations.minerals[mineral] || {};
+}
+
+// Функция для создания строки таблицы минералов
+function createMineralRow(mineral, value, unit, defaultWeight, isToxic = false) {
+    const mineralName = mineralTranslations[mineral] || mineral;
+    const mineralValue = (value * defaultWeight / 100).toFixed(2);
+
+    // Получаем рекомендации по минералу
+    const recommendation = getMineralRecommendation(mineral);
+    const lowerBound = recommendation.lowerBound || 0;
+    const upperBound = recommendation.upperBound || Infinity;
+    const recommendedUnit = recommendation.unit || '';
+
+    // Проверка совпадения единиц измерения
+    if (unit !== recommendedUnit) {
+        console.error(`Несоответствие единиц измерения для ${mineralName}: ${unit} и ${recommendedUnit}`);
+        return '';
+    }
+
+    // Рассчитываем процент от суточной нормы по верхней границе
+    const percentage = upperBound > 0 ? ((mineralValue / upperBound) * 100).toFixed(2) : '0';
+
+    // Всплывающая подсказка с нижней и верхней границей нормы
+    const tooltip = `Норма: ${lowerBound}-${upperBound} ${unit}`;
+
+    // Выбираем индикатор в зависимости от типа минерала
+    const indicator = isToxic ? getToxicityIndicator(percentage) : getRecommendationIndicator(percentage);
+
+    return `
+        <tr>
+            <td>${mineralName}</td>
+            <td>${mineralValue} ${unit}</td>
+            <td title="${tooltip}">${indicator}</td>
+        </tr>`;
+}
+
+// Проверяем наличие минералов в продукте
 if (product.minerals && Object.keys(product.minerals).length > 0) {
     const mineralsContainer = document.createElement("div");
     mineralsContainer.classList.add("minerals-container");
-    mineralsContainer.innerHTML = '<h4>Минералы</h4>' +
-        Object.entries(product.minerals).map(([mineral, value]) => {
-            if (mineral.endsWith("Units")) {
-                return ''; // Пропускаем поля units
-            }
-            const unitKey = mineral + 'Units';
-            const unit = product.minerals[unitKey] || '';
-            const mineralName = mineralTranslations[mineral] || mineral;
-            const mineralValue = (value * defaultWeight / 100).toFixed(2);
-            return `<p><b>${mineralName}:</b> ${mineralValue} ${unit}</p>`;
-        }).join('');
+
+    // Создаем таблицы для эссенциальных и токсичных минералов
+    const essentialMineralsRows = [];
+    const toxicMineralsRows = [];
+
+    Object.entries(product.minerals).forEach(([mineral, value]) => {
+        if (mineral.endsWith("Units")) {
+            return; // Пропускаем поля units
+        }
+
+        const unitKey = mineral + 'Units';
+        const unit = product.minerals[unitKey] || '';
+
+        const recommendation = getMineralRecommendation(mineral);
+        const effect = recommendation.effect || 'неизвестный';
+
+        if (effect === 'эссенциальный') {
+            essentialMineralsRows.push(createMineralRow(mineral, value, unit, defaultWeight));
+        } else if (effect === 'токсичный') {
+            toxicMineralsRows.push(createMineralRow(mineral, value, unit, defaultWeight, true));
+        }
+    });
+
+    // Добавляем таблицу для эссенциальных минералов
+    mineralsContainer.innerHTML = `
+        <h4>Эссенциальные минералы</h4>
+        <table class="minerals-table">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Значение</th>
+                    <th>От РСП</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${essentialMineralsRows.join('')}
+            </tbody>
+        </table>`;
+
+    // Добавляем таблицу для токсичных минералов
+    if (toxicMineralsRows.length > 0) {
+        mineralsContainer.innerHTML += `
+            <h4 class="h-toxic">Токсичные минералы</h4>
+            <table class="minerals-table">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Значение</th>
+                        <th>От РСП</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${toxicMineralsRows.join('')}
+                </tbody>
+            </table>`;
+    }
+
     card.appendChild(mineralsContainer);
+}
+
+
+
+// Функция для получения суточной нормы по жирам и холестерину
+function getFatRecommendation(fat) {
+    return fatRecommendations.fattyAcidsAndCholesterol[fat] || {};
 }
 
 // Добавляем контейнер для жиров только если есть данные о жирах
 if (product.fattyAcidsAndCholesterol && Object.keys(product.fattyAcidsAndCholesterol).length > 0) {
     const fatsContainer = document.createElement("div");
     fatsContainer.classList.add("fats-container");
-    fatsContainer.innerHTML = '<h4>Жиры</h4>' +
-        Object.entries(product.fattyAcidsAndCholesterol).map(([fat, value]) => {
-            if (fat.endsWith("Units")) {
-                return ''; // Пропускаем поля units
-            }
-            const unitKey = fat + 'Units';
-            const unit = product.fattyAcidsAndCholesterol[unitKey] || '';
-            const fatName = fattyAcidsAndCholesterolTranslations[fat] || fat;
-            const fatValue = (value * defaultWeight / 100).toFixed(2);
-            return `<p><b>${fatName}:</b> ${fatValue} ${unit}</p>`;
-        }).join('');
+
+    fatsContainer.innerHTML = `
+        <h4>Жиры</h4>
+        <table class="fats-table">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Значение</th>
+                    <th>От РСП</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${Object.entries(product.fattyAcidsAndCholesterol).map(([fat, value]) => {
+                    if (fat.endsWith("Units")) {
+                        return ''; // Пропускаем поля units
+                    }
+                    const unitKey = fat + 'Units';
+                    const unit = product.fattyAcidsAndCholesterol[unitKey] || '';
+                    const fatName = fattyAcidsAndCholesterolTranslations[fat] || fat;
+                    const fatValue = (value * defaultWeight / 100).toFixed(2);
+
+                    // Получаем рекомендации по жирам
+                    const recommendation = getFatRecommendation(fat);
+                    const lowerBound = recommendation.lowerBound || 0;
+                    const upperBound = recommendation.upperBound || Infinity;
+                    const recommendedUnit = recommendation.unit || '';
+
+                    // Проверка совпадения единиц измерения
+                    if (unit !== recommendedUnit) {
+                        console.error(`Несоответствие единиц измерения для ${fatName}: ${unit} и ${recommendedUnit}`);
+                        return '';
+                    }
+
+                    // Рассчитываем процент от суточной нормы по верхней границе
+                    const percentage = upperBound > 0 ? ((fatValue / upperBound) * 100).toFixed(2) : '0';
+
+                    // Всплывающая подсказка с нижней и верхней границей нормы
+                    const tooltip = `Норма: ${lowerBound}-${upperBound} ${unit}`;
+
+                    return `
+                        <tr>
+                            <td>${fatName}</td>
+                            <td>${fatValue} ${unit}</td>
+                            <td title="${tooltip}">${getRecommendationIndicator(percentage)}</td>
+                        </tr>`;
+                }).join('')}
+            </tbody>
+        </table>`;
+
     card.appendChild(fatsContainer);
 }
+
+// Функция для получения суточной нормы по незаменимым аминокислотам
+function getAminoAcidRecommendation(aminoAcid) {
+    return aminoAcidRecommendations.essentialAminoAcids[aminoAcid] || {};
+}
+
+
 
 // Добавляем контейнер для незаменимых аминокислот только если есть данные о них
 if (product.essentialAminoAcids && Object.keys(product.essentialAminoAcids).length > 0) {
     const aminoAcidsContainer = document.createElement("div");
     aminoAcidsContainer.classList.add("amino-acids-container");
-    aminoAcidsContainer.innerHTML = '<h4>Незаменимые аминокислоты</h4>' +
-        Object.entries(product.essentialAminoAcids).map(([aminoAcid, value]) => {
-            if (aminoAcid.endsWith("Units")) {
-                return ''; // Пропускаем поля units
-            }
-            const unitKey = aminoAcid + 'Units';
-            const unit = product.essentialAminoAcids[unitKey] || '';
-            const aminoAcidName = essentialAminoAcidsTranslations[aminoAcid] || aminoAcid;
-            const aminoAcidValue = (value * defaultWeight / 100).toFixed(2);
-            return `<p><b>${aminoAcidName}:</b> ${aminoAcidValue} ${unit}</p>`;
-        }).join('');
+
+    aminoAcidsContainer.innerHTML = `
+        <h4>Незаменимые аминокислоты</h4>
+        <table class="amino-acids-table">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Значение</th>
+                    <th>От РСП</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${Object.entries(product.essentialAminoAcids).map(([aminoAcid, value]) => {
+                    if (aminoAcid.endsWith("Units")) {
+                        return ''; // Пропускаем поля units
+                    }
+                    const unitKey = aminoAcid + 'Units';
+                    const unit = product.essentialAminoAcids[unitKey] || '';
+                    const aminoAcidName = essentialAminoAcidsTranslations[aminoAcid] || aminoAcid;
+                    const aminoAcidValue = (value * defaultWeight / 100).toFixed(2);
+
+                    // Получаем рекомендации по аминокислоте
+                    const recommendation = getAminoAcidRecommendation(aminoAcid);
+                    const lowerBound = recommendation.lowerBound || 0;
+                    const upperBound = recommendation.upperBound || Infinity;
+                    const recommendedUnit = recommendation.unit || '';
+
+                    // Проверка совпадения единиц измерения
+                    if (unit !== recommendedUnit) {
+                        console.error(`Несоответствие единиц измерения для ${aminoAcidName}: ${unit} и ${recommendedUnit}`);
+                        return '';
+                    }
+
+                    // Рассчитываем процент от суточной нормы по верхней границе
+                    const percentage = upperBound > 0 ? ((aminoAcidValue / upperBound) * 100).toFixed(2) : '0';
+
+                    // Всплывающая подсказка с нижней и верхней границей нормы
+                    const tooltip = `Норма: ${lowerBound}-${upperBound} ${unit}`;
+
+                    return `
+                        <tr>
+                            <td>${aminoAcidName}</td>
+                            <td>${aminoAcidValue} ${unit}</td>
+                            <td title="${tooltip}">${getRecommendationIndicator(percentage)}</td>
+                        </tr>`;
+                }).join('')}
+            </tbody>
+        </table>`;
+
     card.appendChild(aminoAcidsContainer);
 }
+
 
 
 
@@ -1272,71 +1904,295 @@ if (product.essentialAminoAcids && Object.keys(product.essentialAminoAcids).leng
         card.querySelector(".fiber-info").textContent = (product.fiberContent * weight / 100 * factor).toFixed(2);
         card.querySelector(".water-info").textContent = (product.waterContent * weight / 100 * factor).toFixed(2);
     
-        // Пересчет витаминов
-        const vitaminsContainer = card.querySelector(".vitamins-container");
-        if (vitaminsContainer) {
-            vitaminsContainer.innerHTML = '<h4>Витамины</h4>' +
-                Object.entries(product.vitamins).map(([vitamin, value]) => {
-                    if (vitamin.endsWith("units")) {
-                        return ''; // Пропускаем поля units
-                    }
-                    const unitKey = vitamin + 'units';
-                    const unit = product.vitamins[unitKey] || '';
-                    const vitaminName = vitaminTranslations[vitamin] || vitamin;
-                    const vitaminValue = (value * weight / 100 * factor).toFixed(2);
-                    return `<p><b>${vitaminName}:</b> ${vitaminValue} ${unit}</p>`;
-                }).join('');
-        }
+        // Обновление информации о витаминах с учётом процентов от суточной нормы
+// Обновление информации о витаминах с учётом процентов от суточной нормы
+function updateVitaminInfo() {
+    const vitaminsContainer = card.querySelector(".vitamins-container");
+    if (vitaminsContainer) {
+        const weight = servingWeight * servingsAmount;
+        const factor = processingMethods[methodSelect.value] || 1; // Дефолтный фактор 1, если метод не выбран
 
-        // Пересчет минералов
+        vitaminsContainer.innerHTML = `
+            <h4>Витамины</h4>
+            <table class="vitamins-table">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Значение</th>
+                        <th>От РСП</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${Object.entries(product.vitamins).map(([vitamin, value]) => {
+                        if (vitamin.endsWith("units")) {
+                            return ''; // Пропускаем поля units
+                        }
+                        const unitKey = vitamin + 'units';
+                        const unit = product.vitamins[unitKey] || '';
+                        const vitaminName = vitaminTranslations[vitamin] || vitamin;
+                        const vitaminValue = (value * weight / 100 * factor).toFixed(2);
+                        
+                        // Получаем рекомендации по витамину
+                        const recommendation = getVitaminRecommendation(vitamin);
+                        const lowerBound = recommendation.lowerBound || 0;
+                        const upperBound = recommendation.upperBound || Infinity;
+                        
+                        // Рассчитываем процент от суточной нормы по верхней границе
+                        const percentage = upperBound > 0 ? ((vitaminValue / upperBound) * 100).toFixed(2) : '0';
+                        
+                        // Всплывающая подсказка с нижней и верхней границей нормы
+                        const tooltip = `Норма: ${lowerBound}-${upperBound} ${unit}`;
+
+                        return `
+                            <tr>
+                                <td>${vitaminName}</td>
+                                <td>${vitaminValue} ${unit}</td>
+                                <td title="${tooltip}">${getRecommendationIndicator(percentage)}</td>
+                            </tr>`;
+                    }).join('')}
+                </tbody>
+            </table>`;
+    }
+}
+
+// Вызов функции для обновления информации о витаминах
+updateVitaminInfo();
+
+// Обновление информации о минералах с учётом процентов от суточной нормы
+function updateMineralInfo(weight, factor) {
     const mineralsContainer = card.querySelector(".minerals-container");
     if (mineralsContainer) {
-        mineralsContainer.innerHTML = '<h4>Минералы</h4>' +
-            Object.entries(product.minerals).map(([mineral, value]) => {
-                if (mineral.endsWith("Units")) {
-                    return ''; // Пропускаем поля units
-                }
-                const unitKey = mineral + 'Units';
-                const unit = product.minerals[unitKey] || '';
-                const mineralName = mineralTranslations[mineral] || mineral;
-                const mineralValue = (value * weight / 100 * factor).toFixed(2);
-                return `<p><b>${mineralName}:</b> ${mineralValue} ${unit}</p>`;
-            }).join('');
+        const essentialMineralsRows = [];
+        const toxicMineralsRows = [];
+
+        Object.entries(product.minerals).forEach(([mineral, value]) => {
+            if (mineral.endsWith("Units")) {
+                return; // Пропускаем поля units
+            }
+
+            const unitKey = mineral + 'Units';
+            const unit = product.minerals[unitKey] || '';
+            const mineralName = mineralTranslations[mineral] || mineral;
+            const mineralValue = (value * weight / 100 * factor).toFixed(2);
+
+            // Если значение минерала не является числом
+            if (isNaN(mineralValue)) {
+                console.error(`Ошибка: mineralValue для ${mineralName} NaN`);
+                return '';
+            }
+
+            // Получаем рекомендации по минералу
+            const recommendation = getMineralRecommendation(mineral);
+            const lowerBound = recommendation.lowerBound || 0;
+            const upperBound = recommendation.upperBound || Infinity;
+            const recommendedUnit = recommendation.unit || '';
+            const effect = recommendation.effect || 'неизвестный';
+
+            // Проверка совпадения единиц измерения
+            if (unit !== recommendedUnit) {
+                console.error(`Несоответствие единиц измерения для ${mineralName}: ${unit} и ${recommendedUnit}`);
+                return '';
+            }
+
+            // Рассчитываем процент от суточной нормы по верхней границе
+            const percentage = upperBound > 0 ? ((mineralValue / upperBound) * 100).toFixed(2) : '0';
+
+            // Проверка на NaN в проценте
+            if (isNaN(percentage)) {
+                console.error(`Ошибка: percentage для ${mineralName} NaN`);
+                return '';
+            }
+
+            // Всплывающая подсказка с нижней и верхней границей нормы
+            const tooltip = `Норма: ${lowerBound}-${upperBound} ${unit}`;
+
+            // Добавляем строку в соответствующий массив
+            if (effect === 'эссенциальный') {
+                essentialMineralsRows.push(createMineralRow(mineral, value, unit, weight));
+            } else if (effect === 'токсичный') {
+                toxicMineralsRows.push(createMineralRow(mineral, value, unit, weight, true));
+            }
+        });
+
+        // Обновляем контейнер с новыми таблицами
+        mineralsContainer.innerHTML = `
+            <h4>Эссенциальные минералы</h4>
+            <table class="minerals-table">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Значение</th>
+                        <th>От РСП</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${essentialMineralsRows.join('')}
+                </tbody>
+            </table>`;
+
+        if (toxicMineralsRows.length > 0) {
+            mineralsContainer.innerHTML += `
+                <h4 class="h-toxic">Токсичные минералы</h4>
+                <table class="minerals-table">
+                    <thead>
+                        <tr>
+                            <th>Название</th>
+                            <th>Значение</th>
+                            <th>От РСП</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${toxicMineralsRows.join('')}
+                    </tbody>
+                </table>`;
+        }
     }
-
-    // Пересчет незаменимых аминокислот
-const aminoAcidsContainer = card.querySelector(".amino-acids-container");
-if (aminoAcidsContainer) {
-    aminoAcidsContainer.innerHTML = '<h4>Незаменимые аминокислоты</h4>' +
-        Object.entries(product.essentialAminoAcids).map(([aminoAcid, value]) => {
-            if (aminoAcid.endsWith("Units")) {
-                return ''; // Пропускаем поля units
-            }
-            const unitKey = aminoAcid + 'Units';
-            const unit = product.essentialAminoAcids[unitKey] || '';
-            const aminoAcidName = essentialAminoAcidsTranslations[aminoAcid] || aminoAcid;
-            const aminoAcidValue = (value * weight / 100 * factor).toFixed(2);
-            return `<p><b>${aminoAcidName}:</b> ${aminoAcidValue} ${unit}</p>`;
-        }).join('');
 }
 
+// Вызов функции для обновления информации о минералах
+updateMineralInfo(servingWeight * servingsAmount, processingMethods[methodSelect.value] || 1);
 
+    // Обновление информации о незаменимых аминокислотах с учётом процентов от суточной нормы
+function updateAminoAcidInfo(weight, factor) {
+    const aminoAcidsContainer = card.querySelector(".amino-acids-container");
+    if (aminoAcidsContainer) {
+        aminoAcidsContainer.innerHTML = `
+            <h4>Незаменимые аминокислоты</h4>
+            <table class="amino-acids-table">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Значение</th>
+                        <th>От РСП</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${Object.entries(product.essentialAminoAcids).map(([aminoAcid, value]) => {
+                        if (aminoAcid.endsWith("Units")) {
+                            return ''; // Пропускаем поля units
+                        }
+                        const unitKey = aminoAcid + 'Units';
+                        const unit = product.essentialAminoAcids[unitKey] || '';
+                        const aminoAcidName = essentialAminoAcidsTranslations[aminoAcid] || aminoAcid;
+                        const aminoAcidValue = (value * weight / 100 * factor).toFixed(2);
 
-    // Пересчет жиров
-const fatsContainer = card.querySelector(".fats-container");
-if (fatsContainer) {
-    fatsContainer.innerHTML = '<h4>Жиры</h4>' +
-        Object.entries(product.fattyAcidsAndCholesterol).map(([fat, value]) => {
-            if (fat.endsWith("Units")) {
-                return ''; // Пропускаем поля units
-            }
-            const unitKey = fat + 'Units';
-            const unit = product.fattyAcidsAndCholesterol[unitKey] || '';
-            const fatName = fattyAcidsAndCholesterolTranslations[fat] || fat;
-            const fatValue = (value * weight / 100 * factor).toFixed(2);
-            return `<p><b>${fatName}:</b> ${fatValue} ${unit}</p>`;
-        }).join('');
+                        // Если значение аминокислоты не является числом
+                        if (isNaN(aminoAcidValue)) {
+                            console.error(`Ошибка: aminoAcidValue для ${aminoAcidName} NaN`);
+                            return '';
+                        }
+
+                        // Получаем рекомендации по аминокислоте
+                        const recommendation = getAminoAcidRecommendation(aminoAcid);
+                        const lowerBound = recommendation.lowerBound || 0;
+                        const upperBound = recommendation.upperBound || Infinity;
+                        const recommendedUnit = recommendation.unit || '';
+
+                        // Проверка совпадения единиц измерения
+                        if (unit !== recommendedUnit) {
+                            console.error(`Несоответствие единиц измерения для ${aminoAcidName}: ${unit} и ${recommendedUnit}`);
+                            return '';
+                        }
+
+                        // Рассчитываем процент от суточной нормы по верхней границе
+                        const percentage = upperBound > 0 ? ((aminoAcidValue / upperBound) * 100).toFixed(2) : '0';
+
+                        // Проверка на NaN в проценте
+                        if (isNaN(percentage)) {
+                            console.error(`Ошибка: percentage для ${aminoAcidName} NaN`);
+                            return '';
+                        }
+
+                        // Всплывающая подсказка с нижней и верхней границей нормы
+                        const tooltip = `Норма: ${lowerBound}-${upperBound} ${unit}`;
+
+                        return `
+                            <tr>
+                                <td>${aminoAcidName}</td>
+                                <td>${aminoAcidValue} ${unit}</td>
+                                <td title="${tooltip}">${getRecommendationIndicator(percentage)}</td>
+                            </tr>`;
+                    }).join('')}
+                </tbody>
+            </table>`;
+    }
 }
+
+// Вызов функции для обновления информации о незаменимых аминокислотах
+updateAminoAcidInfo(servingWeight * servingsAmount, processingMethods[methodSelect.value] || 1);
+
+
+
+
+    // Обновление информации о жирах с учётом процентов от суточной нормы
+function updateFatInfo(weight, factor) {
+    const fatsContainer = card.querySelector(".fats-container");
+    if (fatsContainer) {
+        fatsContainer.innerHTML = `
+            <h4>Жиры</h4>
+            <table class="fats-table">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Значение</th>
+                        <th>От РСП</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${Object.entries(product.fattyAcidsAndCholesterol).map(([fat, value]) => {
+                        if (fat.endsWith("Units")) {
+                            return ''; // Пропускаем поля units
+                        }
+                        const unitKey = fat + 'Units';
+                        const unit = product.fattyAcidsAndCholesterol[unitKey] || '';
+                        const fatName = fattyAcidsAndCholesterolTranslations[fat] || fat;
+                        const fatValue = (value * weight / 100 * factor).toFixed(2);
+
+                        // Если значение жира не является числом
+                        if (isNaN(fatValue)) {
+                            console.error(`Ошибка: fatValue для ${fatName} NaN`);
+                            return '';
+                        }
+
+                        // Получаем рекомендации по жирам
+                        const recommendation = getFatRecommendation(fat);
+                        const lowerBound = recommendation.lowerBound || 0;
+                        const upperBound = recommendation.upperBound || Infinity;
+                        const recommendedUnit = recommendation.unit || '';
+
+                        // Проверка совпадения единиц измерения
+                        if (unit !== recommendedUnit) {
+                            console.error(`Несоответствие единиц измерения для ${fatName}: ${unit} и ${recommendedUnit}`);
+                            return '';
+                        }
+
+                        // Рассчитываем процент от суточной нормы по верхней границе
+                        const percentage = upperBound > 0 ? ((fatValue / upperBound) * 100).toFixed(2) : '0';
+
+                        // Проверка на NaN в проценте
+                        if (isNaN(percentage)) {
+                            console.error(`Ошибка: percentage для ${fatName} NaN`);
+                            return '';
+                        }
+
+                        // Всплывающая подсказка с нижней и верхней границей нормы
+                        const tooltip = `Норма: ${lowerBound}-${upperBound} ${unit}`;
+
+                        return `
+                            <tr>
+                                <td>${fatName}</td>
+                                <td>${fatValue} ${unit}</td>
+                                <td title="${tooltip}">${getRecommendationIndicator(percentage)}</td>
+                            </tr>`;
+                    }).join('')}
+                </tbody>
+            </table>`;
+    }
+}
+
+// Вызов функции для обновления информации о жирах
+updateFatInfo(servingWeight * servingsAmount, processingMethods[methodSelect.value] || 1);
+
 
     
         updateRawInfo(); // Обновляем отображение RAW
