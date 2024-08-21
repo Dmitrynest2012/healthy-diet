@@ -67,7 +67,7 @@ input[type="number"]::-webkit-outer-spin-button {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
     display: inline-block; /* Изменение блока на inline-block */
-    width: 1000px; /* Ограничение максимальной ширины, чтобы избежать переполнения */
+    width: 1200px; /* Ограничение максимальной ширины, чтобы избежать переполнения */
     height: 1100px;
     box-sizing: border-box; /* Учет padding и border в ширину */
 }
@@ -440,7 +440,7 @@ input[type="number"]::-webkit-outer-spin-button {
     border: 1px solid #ddd;
     border-radius: 15px;
     background-color: #f9f9f9;
-    width: 170px;
+    width: 290px;
     overflow-y: auto;
     height: 400px;
 }
@@ -485,14 +485,14 @@ input[type="number"]::-webkit-outer-spin-button {
 .minerals-container {
     position: absolute;
     top: 165px;
-    left: 690px;
+    left: 810px;
     
     padding: 10px;
     margin-top: 20px;
     border: 1px solid #ddd;
     border-radius: 15px;
     background-color: #f9f9f9;
-    width: 230px; 
+    width: 290px; 
     overflow-y: auto;
     height: 400px;
 }
@@ -993,6 +993,243 @@ input[type="number"]::-webkit-outer-spin-button {
     padding: 10px; 
     background-color: #e2e2e2;
 }
+
+
+
+
+
+
+
+/* Основная стилизация контейнера витаминов */
+.vitamins-container {
+    margin: 20px 0;
+}
+
+.vitamins-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.vitamins-table th, .vitamins-table td {
+    border: 1px solid #ddd;
+    padding: 4px;
+    text-align: left;
+}
+
+.vitamins-table th {
+    font-size: 14px;
+}
+
+
+.vitamins-table td {
+    font-size: 12px;
+}
+
+.vitamins-table th {
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.vitamins-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Индикатор суточной нормы */
+.indicator {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    width: 80px;
+}
+
+/* Всплывающее окно для суточной нормы */
+/*
+.indicator::after {
+    content: attr(title);
+    display: none;
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    border: 1px solid rgb(85, 85, 85);
+    border-radius: 10px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 100;
+}
+
+.indicator:hover::after {
+    display: block;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 1px solid rgb(85, 85, 85);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+*/
+
+
+
+
+
+.minerals-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.minerals-table th, .minerals-table td {
+    border: 1px solid #ddd;
+    padding: 4px;
+    text-align: left;
+}
+
+.minerals-table th {
+    font-size: 14px;
+}
+
+
+.minerals-table td {
+    font-size: 12px;
+}
+
+.minerals-table th {
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.minerals-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+
+
+
+
+
+
+.fats-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.fats-table th, .fats-table td {
+    border: 1px solid #ddd;
+    padding: 4px;
+    text-align: left;
+}
+
+.fats-table th {
+    font-size: 14px;
+}
+
+
+.fats-table td {
+    font-size: 12px;
+}
+
+.fats-table th {
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.fats-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+
+
+
+.amino-acids-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.amino-acids-table th, .amino-acids-table td {
+    border: 1px solid #ddd;
+    padding: 4px;
+    text-align: left;
+}
+
+.amino-acids-table th {
+    font-size: 14px;
+}
+
+
+.amino-acids-table td {
+    font-size: 12px;
+}
+
+.amino-acids-table th {
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.amino-acids-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+
+.h-toxic {
+    padding-top: 15px;
+    
+}
+
+
+
+
+
+/* Стили для индикатора рейтинга питательности */
+.rating-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-weight: bold;
+}
+
+.rating-container .indicator {
+    background-color: #4CAF50; /* Зеленый цвет */
+    color: white;
+    padding: 5px 0px;
+    border-radius: 7px;
+    display: inline-block;
+    cursor: help;
+}
+
+/* Стили для всплывающего окна */
+.rating-container [title] {
+    position: relative;
+    display: inline-block;
+}
+
+.rating-container [title]::after {
+    content: attr(title);
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 7px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+.rating-container [title]:hover::after {
+    opacity: 1;
+}
+
 
 
 
