@@ -15,6 +15,7 @@ header {
     position: absolute;
     width: 100%;
     top: 0;
+    
 }
 
 /* Стилизация стрелок для Chrome, Safari и Edge (в основе WebKit) */
@@ -33,27 +34,110 @@ input[type="number"]::-webkit-outer-spin-button {
     width: 300px;
     padding: 10px;
     font-size: 16px;
+    border: 1px solid rgba(131, 131, 131, 0.541);
+    border-radius: 15px;
+    box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.08), 
+                inset 0px -4px 8px rgba(0, 0, 0, 0.05); /* Тень, уходящая внутрь */
 }
+
+#search-input:hover {
+    border: 1px solid rgba(11, 166, 255, 0.842);
+}
+
+
+.search-container {
+    position: relative; /* Для абсолютного позиционирования кнопки внутри контейнера */
+    display: inline-block; /* Чтобы контейнер не занимал всю ширину */
+}
+
+
+.clear-button {
+    position: absolute; /* Абсолютное позиционирование кнопки внутри контейнера */
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%); /* Центрирование по вертикали */
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    color: #aaa; /* Цвет крестика */
+    cursor: pointer;
+}
+
+.clear-button:hover {
+    color: #333; /* Цвет крестика при наведении */
+}
+
+
+
 
 .suggestions {
     position: absolute;
-    top: 50px;
-    width: 300px;
+    top: 55px;
+    width: auto;
+    max-width: 650px;
     background-color: #fff;
     border: 1px solid #ddd;
-    max-height: 200px;
+    max-height: 300px;
     overflow-y: auto;
+    border-radius: 10px;
     z-index: 100;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1), 
+    0px 2px 4px rgba(0, 0, 0, 0.08); /* Добавляем современную тень */
 }
 
+
+
+
+.suggestions::-webkit-scrollbar {
+    width: 8px; /* Ширина полосы прокрутки */
+}
+
+.suggestions::-webkit-scrollbar-thumb {
+    background-color: #d3d3d3; /* Цвет полосы прокрутки */
+
+    border-top-right-radius: 10px; 
+    border-bottom-right-radius: 10px;
+}
+
+.suggestions::-webkit-scrollbar-track {
+    background-color: #f1f1f100; /* Цвет трека (фона) полосы прокрутки */
+    border-radius: 5px 5px 0 0; /* Закругление только правых верхнего и нижнего углов */
+}
+
+.suggestions::-webkit-scrollbar-thumb:hover {
+    background-color: #b3b3b3; /* Цвет полосы прокрутки при наведении */
+}
+
+
+
+
+
 .suggestion-item {
+    display: flex;
+    align-items: center; /* Вертикальное выравнивание по центру */
     padding: 10px;
     cursor: pointer;
+    border: 1px solid #ddd; /* Разделяющая линия между элементами */
 }
 
 .suggestion-item:hover {
     background-color: #f0f0f0;
+    border: 1px solid rgba(87, 87, 87, 0.473);
+    border-radius: 10px;
 }
+
+.product-name-search {
+    color: #6fa3ef; /* Мягкий синий цвет */
+    font-weight: bold; /* Жирный шрифт для имени */
+    font-size: 14px; /* Размер шрифта для имени */
+    margin-right: 8px; /* Отступ справа между именем и деталями */
+}
+
+.product-details {
+    color: #000; /* Черный цвет для деталей */
+    font-size: 12px; /* Размер шрифта для деталей */
+}
+
 
 .product-card {
     position: relative;
@@ -61,7 +145,7 @@ input[type="number"]::-webkit-outer-spin-button {
     transform: translateX(-50%);
     border: 1px solid #ddd;
     padding: 20px;
-    background: #f3f3f3;
+    background: linear-gradient(to bottom, #f5f5f5, #f1f1f1); /* Вертикальный градиент от светлого к темному */
     margin: 10px 0;
     border-radius: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -214,9 +298,9 @@ input[type="number"]::-webkit-outer-spin-button {
         /* Стили для кнопки с треугольником */
 /* Стили для кнопки */
 .profile-btn {
-    background-color: #a0a0a0;
-    color: white;
-    border: none;
+    background-color: #e2e2e2;
+    color: rgb(0, 0, 0);
+    border: 1px solid rgba(100, 100, 100, 0.349);
     pointer-events: auto; /* Включает взаимодействие с кнопкой */
     border-radius: 50%;
     width: 50px;
@@ -230,12 +314,13 @@ input[type="number"]::-webkit-outer-spin-button {
     right: 10px; /* Отступ от правого края родителя */
     
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s, transform 0.3s;
+    transition: all 0.3s;
     z-index: 5;
 }
 
 .profile-btn:hover {
-    background-color: #0056b3;
+    background-color: #1b73d1;
+    color: rgb(255, 255, 255);
 
 }
 
@@ -310,6 +395,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .product-name {
     position: absolute;
+    
     top: 5px;
     left: 185px;
 }
@@ -1240,7 +1326,7 @@ input[type="number"]::-webkit-outer-spin-button {
     margin-top: 10px;
     margin-left: 0px;
     text-align: center;
-    width: 350px;
+    width: 440px;
     height: 140px;
     
     padding: 10px;
@@ -1275,6 +1361,11 @@ input[type="number"]::-webkit-outer-spin-button {
     position: relative;
     
     top: -31px;
+    /* Добавляем едва заметный темно-серый бордер */
+    border: 1px solid #33333350; /* Темно-серый цвет */
+
+    /* Добавляем внутреннюю тень */
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.3); /* Внутренняя тень устремляется к центру */
 }
 
 .bju-legend {
@@ -1285,12 +1376,14 @@ input[type="number"]::-webkit-outer-spin-button {
     position: relative;
     top: -31px;
     
+    
 }
 
 .bju-item {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    
     
 }
 
@@ -1299,6 +1392,9 @@ input[type="number"]::-webkit-outer-spin-button {
     height: 15px;
     display: inline-block;
     margin-right: 5px;
+    /* Добавляем едва заметный темно-серый бордер */
+    border: 1px solid #3333338e; /* Темно-серый цвет */
+    border-radius: 5px;
 }
 
 .bju-label {
@@ -1306,6 +1402,47 @@ input[type="number"]::-webkit-outer-spin-button {
     font-size: 14px;
     text-align: left;
 }
+
+
+.bju-ratio-label {
+    position: relative;
+    font-weight: bold;
+    font-size: 0.9em;
+    color: #333;
+    margin-bottom: 8px;
+    display: block;
+}
+
+
+
+
+.add-to-meal {
+    background-color: rgba(71, 71, 71, 0.486); /* Полупрозрачный серый фон */
+    color: #ffffff; /* Черный текст */
+    border: 1px solid rgba(0, 0, 0, 0.432); /* Убираем границу */
+    border-radius: 25px; /* Закругленные углы */
+    padding: 10px 20px; /* Внутренние отступы для более удобного клика */
+    font-size: 16px; /* Размер текста */
+    cursor: pointer; /* Курсор в виде указателя при наведении */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Плавный переход для фона и масштаба */
+}
+
+/* Анимация при наведении */
+.add-to-meal:hover {
+    background-color: rgba(59, 59, 59, 0.8); /* Более насыщенный серый при наведении */
+    transform: scale(1.00); /* Легкое увеличение */
+}
+
+/* Анимация при покидании */
+.add-to-meal:focus {
+    outline: none; /* Убираем стандартный фокус */
+}
+
+.add-to-meal:active {
+    background-color: rgba(128, 128, 128, 0.7); /* Немного темнее при нажатии */
+    transform: scale(1); /* Легкое уменьшение при нажатии */
+}
+
 
 
 
