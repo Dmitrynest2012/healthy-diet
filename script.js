@@ -1,5 +1,81 @@
 document.addEventListener("DOMContentLoaded", function() {
 
+    // Создаем контейнер для кнопок
+    const containerMain = document.createElement('div');
+    containerMain.id = 'sections-container';
+
+    // Названия разделов
+    const sections = [
+        { id: 'main', name: 'Главная' },
+        { id: 'food-diary', name: 'Дневник питания' },
+        { id: 'anthropometry', name: 'Антропометрия' },
+        { id: 'sport', name: 'Спорт' },
+        { id: 'analyzes', name: 'Анализы' },
+    ];
+
+    // Функция для создания кнопки
+    function createButton(id, name) {
+        const button = document.createElement('button');
+        button.id = id;
+        button.className = 'section-button';
+        button.textContent = name;
+
+        // При клике меняем хэш в URL и прокручиваем страницу
+        button.addEventListener('click', () => {
+            window.location.hash = id;
+            setActiveButton(id);
+            // Прокрутка страницы к началу
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        return button;
+    }
+
+    // Функция для установки активной кнопки
+    function setActiveButton(activeId) {
+        sections.forEach(section => {
+            const button = document.getElementById(section.id);
+            if (section.id === activeId) {
+                button.classList.add('active');
+            } else {
+                button.classList.remove('active');
+            }
+        });
+    }
+
+    // Добавляем кнопки в контейнер
+    sections.forEach(section => {
+        const button = createButton(section.id, section.name);
+        containerMain.appendChild(button);
+    });
+
+    // Найдем элемент с id 'max' и добавим туда контейнер вторым
+    const maxElement = document.getElementById('max');
+    if (maxElement) {
+        if (maxElement.children.length >= 1) {
+            maxElement.insertBefore(containerMain, maxElement.children[1]);
+        } else {
+            maxElement.appendChild(containerMain); // Если есть только один элемент или ни одного
+        }
+    }
+
+    // Проверяем текущий хэш и устанавливаем активную кнопку
+    window.addEventListener('hashchange', () => {
+        setActiveButton(window.location.hash.substring(1));
+    });
+
+    // Изначально активная кнопка
+    setActiveButton(window.location.hash.substring(1) || 'food-diary');
+
+
+
+
+
+
+
+
+
+
     // Восстановление позиции прокрутки
     const savedScrollPosition = localStorage.getItem('scrollPosition');
     if (savedScrollPosition) {
@@ -1440,6 +1516,9 @@ function displayProductCard(product) {
 
     const card = document.createElement("div");
     card.classList.add("product-card");
+
+    // Установка отступа сверху на 200 пикселей
+card.style.marginTop = '-265px';
 
 // Функция для обновления опций порций
 const updateServingsOptions = () => {
