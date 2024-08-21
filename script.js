@@ -1414,8 +1414,6 @@ const updateServingsOptions = () => {
                     <div class="glycemic-index-tooltip"></div>
                 </div>
 
-            
-            
             </div>
 
             <div class="modification-panel">
@@ -1458,12 +1456,51 @@ const updateServingsOptions = () => {
             </label>
 
             <button class="add-to-meal">Добавить в прием пищи</button>
+
+            
             </div>
+
+            
+        <div class="bju-widget">
+    <h4>Соотношение БЖУ в продукте</h4>
+    <div class="bju-content">
+        <div class="bju-chart-container" id="bjuChart2">
+            <div class="bju-chart" id="bjuChart"></div>
+        </div>
+        <div class="bju-legend">
+            <div class="bju-item">
+                <span class="bju-color" style="background-color: #4caf50;"></span>
+                <span class="bju-label">Белки: <span id="proteinGrams"></span> г (<span id="proteinPercent"></span>%)</span>
+            </div>
+            <div class="bju-item">
+                <span class="bju-color" style="background-color: #ff9800;"></span>
+                <span class="bju-label">Жиры: <span id="fatsGrams"></span> г (<span id="fatsPercent"></span>%)</span>
+            </div>
+            <div class="bju-item">
+                <span class="bju-color" style="background-color: #2196f3;"></span>
+                <span class="bju-label">Углеводы: <span id="carbsGrams"></span> г (<span id="carbsPercent"></span>%)</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
         </div>
     `;
 
     
 
+ 
 
 
 // Функция для создания цветного индикатора
@@ -1802,9 +1839,6 @@ if (product.essentialAminoAcids && Object.keys(product.essentialAminoAcids).leng
 }
 
 
-
-
-
     productsDiv.appendChild(card);
 
     const weightInput = card.querySelector(".product-weight");
@@ -1903,6 +1937,59 @@ if (product.essentialAminoAcids && Object.keys(product.essentialAminoAcids).leng
         card.querySelector(".fats-info").textContent = (product.fats * weight / 100 * factor).toFixed(2);
         card.querySelector(".fiber-info").textContent = (product.fiberContent * weight / 100 * factor).toFixed(2);
         card.querySelector(".water-info").textContent = (product.waterContent * weight / 100 * factor).toFixed(2);
+
+
+         let ChartProtein = product.protein * weight / 100 * factor;
+         let ChartFats = product.fats * weight / 100 * factor;
+         let ChartCarbs = product.carbs * weight / 100 * factor;
+        
+
+         function drawBJUChart(ChartProtein, ChartFats, ChartCarbs) {
+            const total = ChartProtein + ChartFats + ChartCarbs;
+        
+            // Вычисляем проценты
+            const proteinPercent = (ChartProtein / total) * 100;
+            const fatsPercent = (ChartFats / total) * 100;
+            const carbsPercent = (ChartCarbs / total) * 100;
+        
+            // Вычисляем углы для conic-gradient
+            const proteinAngle = proteinPercent * 3.6;
+            const fatsAngle = fatsPercent * 3.6;
+            const carbsAngle = carbsPercent * 3.6;
+        
+            console.log('Protein Angle:', proteinAngle);
+            console.log('Fats Angle:', fatsAngle);
+            console.log('Carbs Angle:', carbsAngle);
+        
+            // Применяем градиент к диаграмме
+            const chart = document.getElementById('bjuChart2');
+            chart.style.background = `conic-gradient(
+                #4caf50 0% ${proteinAngle}deg, 
+                #ff9800 ${proteinAngle}deg ${proteinAngle + fatsAngle}deg, 
+                #2196f3 ${proteinAngle + fatsAngle}deg 360deg
+            )`;
+        
+            // Обновляем значения в легенде
+            document.getElementById('proteinGrams').textContent = ChartProtein.toFixed(2);
+            document.getElementById('proteinPercent').textContent = proteinPercent.toFixed(2);
+            document.getElementById('fatsGrams').textContent = ChartFats.toFixed(2);
+            document.getElementById('fatsPercent').textContent = fatsPercent.toFixed(2);
+            document.getElementById('carbsGrams').textContent = ChartCarbs.toFixed(2);
+            document.getElementById('carbsPercent').textContent = carbsPercent.toFixed(2);
+        }
+        
+        drawBJUChart(ChartProtein, ChartFats, ChartCarbs);
+        
+        
+        
+
+
+
+
+
+
+
+        
     
         // Обновление информации о витаминах с учётом процентов от суточной нормы
 // Обновление информации о витаминах с учётом процентов от суточной нормы
@@ -2192,6 +2279,7 @@ function updateFatInfo(weight, factor) {
 
 // Вызов функции для обновления информации о жирах
 updateFatInfo(servingWeight * servingsAmount, processingMethods[methodSelect.value] || 1);
+
 
 
     
