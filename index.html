@@ -10,8 +10,16 @@
     <header>
        
         
-        <input type="text" id="search-input" placeholder="Поиск продукта...">
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Поиск продукта..." autocomplete="off" autocorrect="off">
+            <button id="clear-button" class="clear-button" aria-label="Очистить поиск">&times;</button>
+        </div>
         <div id="suggestions" class="suggestions"></div>
+        
+        
+
+
+
        
     </header>
     <main class="max">
@@ -48,10 +56,24 @@
             </div>
             
         </section>
+        <section id="daily-summary-vitamins">
+            <div>
+                <p>Витамин A: <span id="daily-vitamin-A">0.00</span> мкг </p>
+                <p>Бета-Каротин: <span id="daily-vitamin-Beta-carotene">0.00</span> мг</p>
+                <p>Витамин B1: <span id="daily-vitamin-B1">0.00</span> мг</p>
+                <p>Витамин B2: <span id="daily-vitamin-B2">0.00</span> мг</p>
+                <p>Витамин B3-Ниацин: <span id="daily-vitamin-B3-Niacin">0.00</span> мг</p>
+                <p>Витамин [B4*]-Холин: <span id="daily-vitamin-B4-Choline">0.00</span> мг</p>
+                <p>Витамин B5: <span id="daily-vitamin-B5">0.00</span> мг</p>
+                <p>Витамин B6: <span id="daily-vitamin-B6">0.00</span> мг</p>
+            </div>
+            
+        </section>
 
     </main>
     <script src="script.js"></script>
 </body>
 </html>
+
 
 
