@@ -545,6 +545,80 @@ input[type="number"]::-webkit-outer-spin-button {
     cursor: pointer;
 }
 
+
+.raw-tooltip {
+    display: none;
+    position: absolute;
+    top: 50px;
+    height: 140px;
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    width: 300px;
+    z-index: 10;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-weight: normal;    /* Убирает жирность текста */
+    
+    /* Эти свойства помогут переносу текста на следующую строку */
+    word-wrap: break-word;  /* Перенос длинных слов на следующую строку */
+    word-break: break-word; /* Разрыв длинных слов */
+    white-space: normal;    /* Позволяет переносу текста, убирает поведение nowrap */
+}
+
+.raw-info:hover .raw-tooltip {
+    display: block;
+}
+
+/* Стиль для рекомендаций */
+.raw-recommendation {
+    font-size: 0.9em;
+    font-style: italic;
+    margin-top: 10px;
+    color: #ccc;
+}
+
+.vegan-tooltip {
+    display: none;
+    position: absolute;
+    top: 50px;
+    height: 140px;
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    width: 300px;
+    z-index: 10;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-weight: normal;    /* Убирает жирность текста */
+    
+    /* Эти свойства помогут переносу текста на следующую строку */
+    word-wrap: break-word;  /* Перенос длинных слов на следующую строку */
+    word-break: break-word; /* Разрыв длинных слов */
+    white-space: normal;    /* Позволяет переносу текста, убирает поведение nowrap */
+}
+
+.vegan-info:hover .vegan-tooltip {
+    display: block;
+}
+
+/* Стиль для рекомендаций */
+.vegan-recommendation {
+    font-size: 0.9em;
+    font-style: italic;
+    margin-top: 10px;
+    color: #ccc;
+}
+
+
+
+
 .product-weight {
     
     border: 1px solid rgb(170, 170, 170);
@@ -926,7 +1000,7 @@ input[type="number"]::-webkit-outer-spin-button {
     display: none;
     position: absolute;
     top: 50px;
-    height: 350px;
+    height: 440px;
     background-color: #333;
     color: white;
     padding: 10px;
@@ -956,7 +1030,7 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .medium-gi.highlight {
-    background-color: rgba(124, 124, 35, 0.863); /* Оливковый цвет для среднего ГИ */
+    background-color: rgba(255, 193, 7, 0.8); /* Оливковый цвет для среднего ГИ */
     color: white;
 }
 
@@ -990,6 +1064,14 @@ input[type="number"]::-webkit-outer-spin-button {
     
 }
 
+/* Стиль для рекомендаций */
+.gi-recommendation {
+    font-size: 0.9em;
+    font-style: italic;
+    margin-top: 10px;
+    color: #ccc;
+}
+
 /* Общий стиль для текста подсказки ГИ и ГН */
 .glycemic-index-tooltip p, .glycemic-load-tooltip p {
     margin: 5px 0;
@@ -1004,7 +1086,7 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .medium-gl.highlight {
-    background-color: rgba(124, 124, 35, 0.863); /* Оливковый цвет для среднего ГН */
+    background-color: rgba(255, 193, 7, 0.8); /* Оливковый цвет для среднего ГН */
     color: white;
 }
 
