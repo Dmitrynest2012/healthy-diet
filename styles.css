@@ -168,8 +168,9 @@ input[type="number"]::-webkit-outer-spin-button {
     background-color: rgb(228, 228, 228);
     border: 1px solid rgba(95, 95, 95, 0.432);
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
     font-family: 'Play';
+    font-weight: bold;
 }
 
 /* Стили для активной кнопки */
@@ -186,6 +187,48 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 
+
+.prev-day {
+    border: 1px solid rgba(126, 126, 126, 0.705);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    transition: all 0.2s;
+    padding: 3px 4px;
+}
+
+.next-day {
+    border: 1px solid rgba(126, 126, 126, 0.705);
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    transition: all 0.2s;
+    padding: 3px 4px;
+}
+
+.prev-day:hover {
+    background-color: rgb(115, 155, 214);
+    color: #ffffff;
+    border: 1px solirgba(224, 224, 224, 0.705);
+}
+
+.next-day:hover {
+    background-color: rgb(115, 155, 214);
+    color: #ffffff;
+    border: 1px solirgba(224, 224, 224, 0.705);
+}
+
+.current-day {
+    border: 1px solid rgba(126, 126, 126, 0.705);
+    padding: 4px;
+    border-radius: 5px;
+    font-family: 'Play';
+}
+
+.date-selector {
+    position: relative;
+    margin-left: 15px;
+    border: 1px solid rgba(126, 126, 126, 0);
+    width: 210px;
+}
 
 
 
@@ -353,7 +396,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .profile-btn {
     background-color: #e2e2e2;
     color: rgb(0, 0, 0);
-    border: 1px solid rgba(100, 100, 100, 0.349);
+    border: 1px solid rgba(100, 100, 100, 0.249);
     pointer-events: auto; /* Включает взаимодействие с кнопкой */
     border-radius: 50%;
     width: 50px;
@@ -366,7 +409,7 @@ input[type="number"]::-webkit-outer-spin-button {
     top: 5px; /* Вертикально центрирует кнопку в родителе */
     right: 10px; /* Отступ от правого края родителя */
     
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s;
     z-index: 5;
 }
@@ -1494,6 +1537,60 @@ input[type="number"]::-webkit-outer-spin-button {
 .add-to-meal:active {
     background-color: rgba(128, 128, 128, 0.7); /* Немного темнее при нажатии */
     transform: scale(1); /* Легкое уменьшение при нажатии */
+}
+
+
+
+.close-button-card {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 26px;
+    border-radius: 7px;
+
+    padding: 1px 8px;
+    cursor: pointer;
+    background-color: rgba(202, 202, 202, 0.486);
+    border: 1px solid rgba(0, 0, 0, 0.432);
+    color: #000000;
+    transition: all 0.2s;
+}
+
+.close-button-card:hover {
+    background-color: rgb(115, 155, 214);
+}
+
+    
+.favorite-button-card {
+    position: absolute;
+    top: 5px;
+    right: 38px;
+    font-size: 20px;
+    border-radius: 7px;
+    padding: 4px 8px;
+    cursor: pointer;
+    background-color: rgba(202, 202, 202, 0.486);
+    border: 1px solid rgba(0, 0, 0, 0.432);
+    color: #252525;
+    transition: all 0.2s;
+}
+
+.favorite-button-card:hover {
+    background-color: rgb(115, 155, 214);
+}
+
+.favorite-active-button-card {
+    position: absolute;
+    top: 5px;
+    right: 38px;
+    font-size: 20px;
+    border-radius: 7px;
+    padding: 4px 8px;
+    cursor: pointer;
+    background-color: rgba(202, 202, 202, 0.486);
+    border: 1px solid rgba(0, 0, 0, 0.432);
+    transition: all 0.2s;
+    color: rgb(255, 67, 10);
 }
 
 
