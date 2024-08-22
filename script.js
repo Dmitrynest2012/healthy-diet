@@ -1282,6 +1282,16 @@ function calculateGlycemicLoad(gi, carbs) {
     return (gi * carbs) / 100;
 }
 
+function getGlycemicLoadRecommendation(gl) {
+    if (gl <= 10) {
+        return "Этот уровень гликемической нагрузки безопасен и способствует стабильному уровню сахара в крови.";
+    } else if (gl > 10 && gl <= 20) {
+        return "Средний уровень гликемической нагрузки. Рекомендуется следить за потреблением углеводов.";
+    } else {
+        return "Высокий уровень гликемической нагрузки может привести к перегрузке поджелудочной железы. Следует сократить вес продукта, количество порций или выбрать продукты с низким ГИ.";
+    }
+}
+
 function updateGlycemicIndexDisplay(methodIndex, product, card) {
     const glycemicIndex = getGlycemicIndex(methodIndex, product);
     const giContainer = card.querySelector(".glycemic-index-container");
@@ -1293,7 +1303,6 @@ function updateGlycemicIndexDisplay(methodIndex, product, card) {
         giValue.textContent = `ГИ: ${glycemicIndex}`;
         giContainer.style.backgroundColor = getGlycemicIndexColor(glycemicIndex);
 
-        // Создание контейнера ГН внутри всплывающего окна ГИ
         let glycemicLoadContainer = giTooltip.querySelector(".glycemic-load-container");
         if (!glycemicLoadContainer) {
             glycemicLoadContainer = document.createElement("div");
@@ -1301,13 +1310,13 @@ function updateGlycemicIndexDisplay(methodIndex, product, card) {
             giTooltip.appendChild(glycemicLoadContainer);
         }
 
-        // Расчет ГН с учетом количества порций
         const servingWeight = parseFloat(card.querySelector(".product-weight").value) || product.weightDefault;
-        const servingsAmount = parseFloat(card.querySelector(".serving-amount").value) || 1; // Количество порций
+        const servingsAmount = parseFloat(card.querySelector(".serving-amount").value) || 1;
         const carbsPerServing = product.carbs * (servingWeight / 100);
-        const glycemicLoad = calculateGlycemicLoad(glycemicIndex, carbsPerServing * servingsAmount); // Учитываем количество порций
+        const glycemicLoad = calculateGlycemicLoad(glycemicIndex, carbsPerServing * servingsAmount);
 
-        // Обновляем всплывающее окно ГИ
+        const recommendation = getGlycemicLoadRecommendation(glycemicLoad);
+
         giTooltip.innerHTML = `
             <p><b>Нормы ГИ:</b><br>[Гликемического индекса]</p>
             <p class="low-gi ${getGiClass(glycemicIndex) === 'low-gi' ? 'highlight' : ''}">0-55 (Низкий)</p>
@@ -1323,10 +1332,11 @@ function updateGlycemicIndexDisplay(methodIndex, product, card) {
                     <p class="high-gl ${getGlClass(glycemicLoad) === 'high-gl' ? 'highlight' : ''}">21+ (Высокая)</p>
                 </div>
             </div>
+            <div class="gi-recommendation">${recommendation}</div>
         `;
     } else {
         giContainer.style.display = 'none';
-        giTooltip.innerHTML = ''; // Очищаем содержимое всплывающего окна, если ГИ не задан
+        giTooltip.innerHTML = '';
     }
 }
 
@@ -1354,7 +1364,7 @@ function getGlClassColor(gl) {
 function getORPColor(orp) {
     if (orp >= 300 && orp <= 500) return 'rgba(189, 77, 77, 0.685)'; // Сильные свободные радикалы - ярко-красный
     if (orp > 0 && orp < 300) return '#ff7f00'; // Слабые свободные радикалы - оранжевый
-    if (orp >= -200 && orp <= 0) return '#4caf50'; // Слабые антиоксиданты - зеленый
+    if (orp >= -200 && orp <= 0) return '#28a745'; // Слабые антиоксиданты - зеленый
     if (orp < -200 && orp >= -700) return '#9400d3'; // Сильные антиоксиданты - фиолетовый
     return '#d3d3d3'; // По умолчанию - серый
 }
@@ -1557,10 +1567,15 @@ const updateServingsOptions = () => {
             <div class="indicators-container">
 
             <!-- Добавляем Vegan, если продукт является веганским -->
-            ${product.vegan ? `<p class="vegan-info"><b>Vegan</b></p>` : ''}
+        ${product.vegan ? `
+            <p class="vegan-info" style="position: relative;"><b>Vegan</b>
+                <span class="vegan-tooltip"><span class="vegan-recommendation">Vegan [веганские] продукты исключают любые ингредиенты животного происхождения, такие как мясо, молоко, яйца, мёд и т.д. Они обычно богаты растительными белками и клетчаткой, что способствует улучшению здоровья сердца, снижению веса и общего самочувствия.</span></span>
+            </p>` : ''}
 
             <!-- Добавляем сюда RAW, он будет динамически управляться -->
-            <p class="raw-info" style="display: none;"><b>RAW</b></p>
+        <p class="raw-info" style="display: none; position: relative;"><b>RAW</b>
+            <span class="raw-tooltip"><span class="raw-recommendation">RAW [сыроедные] продукты сохраняют больше питательных веществ и ферментов, которые могут быть потеряны при термической обработке. Они способствуют улучшению пищеварения, поддержанию уровня энергии и укреплению иммунной системы.</span></span>
+        </p>
 
               <!-- Контейнер для ГИ -->
             <div class="glycemic-index-container">
@@ -2112,19 +2127,32 @@ if (product.essentialAminoAcids && Object.keys(product.essentialAminoAcids).leng
         
     }
 
+
+    // Обновление отображения элемента Vegan
+function updateVeganInfo() {
+    const veganInfo = card.querySelector('.vegan-info');
+    if (product.vegan) {
+        veganInfo.style.display = 'block'; // Показываем Vegan индикатор
+    } else {
+        veganInfo.style.display = 'none'; // Скрываем Vegan индикатор
+    }
+}
+
+    
     // Обновление отображения элемента RAW
-    function updateRawInfo() {
-        const method = methodSelect.value;
-        if (product.RawFood === true) {
+function updateRawInfo() {
+    const method = methodSelect.value;
+    const rawInfo = card.querySelector('.raw-info');
+    if (product.RawFood === true) {
         if (method === 'Отсутствует' || method === 'Резка') {
             rawInfo.style.display = 'block'; // Показываем RAW
         } else {
             rawInfo.style.display = 'none'; // Скрываем RAW
         }
-        } else {
-            rawInfo.style.display = 'none'; // Скрываем RAW
-        }
+    } else {
+        rawInfo.style.display = 'none'; // Скрываем RAW
     }
+}
 
     let editableWeight = null; // Переменная для хранения редактируемого веса для типа 'шт.'
     let defaultProductWeight = null; // Переменная для хранения веса продукта по умолчанию
@@ -2542,7 +2570,7 @@ updateFatInfo(servingWeight * servingsAmount, processingMethods[methodSelect.val
 
 
 
-    
+        updateVeganInfo() // Обновляем отображение Vegan
         updateRawInfo(); // Обновляем отображение RAW
     
         // Обновляем отображение ГИ
