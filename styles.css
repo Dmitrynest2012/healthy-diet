@@ -1558,6 +1558,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .close-button-card:hover {
     background-color: rgb(115, 155, 214);
+    color: #ffffff;
 }
 
     
@@ -1577,6 +1578,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .favorite-button-card:hover {
     background-color: rgb(115, 155, 214);
+    color: #ffffff;
 }
 
 .favorite-active-button-card {
@@ -1591,6 +1593,11 @@ input[type="number"]::-webkit-outer-spin-button {
     border: 1px solid rgba(0, 0, 0, 0.432);
     transition: all 0.2s;
     color: rgb(255, 67, 10);
+}
+
+.favorite-active-button-card:hover {
+    background-color: rgb(115, 155, 214);
+    color: #ffffff;
 }
 
 
