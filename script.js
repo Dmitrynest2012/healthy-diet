@@ -589,6 +589,10 @@ button.addEventListener('click', function() {
     const prevDayButton = document.getElementById("prev-day");
     const nextDayButton = document.getElementById("next-day");
 
+    prevDayButton.classList.add('prev-day');
+    nextDayButton.classList.add('next-day');
+    currentDayInput.classList.add('current-day');
+
     let products = [];
     let selectedDate = new Date();
     let mealData = {};
@@ -1508,8 +1512,6 @@ function updatePHDisplay(product, card) {
 
 
 
-
-
     // Отображение карточки продукта
 function displayProductCard(product) {
     productsDiv.innerHTML = '';
@@ -1620,6 +1622,77 @@ const updateServingsOptions = () => {
 
         </div>
     `;
+
+
+    // Функция для добавления крестика к карточке
+function addCloseButtonCard(card) {
+    const closeButton = document.createElement("span");
+    closeButton.classList.add("close-button-card"); // Добавляем класс для крестика
+    closeButton.innerHTML = "&times;"; // Символ крестика
+
+    // Событие для удаления карточки при клике на крестик
+    closeButton.addEventListener("click", () => {
+        card.remove(); // Удаление карточки
+    });
+
+    // Добавляем крестик в карточку
+    card.appendChild(closeButton);
+}
+
+addCloseButtonCard(card);
+
+
+
+
+
+
+// Функция для добавления кнопки "Избранное" с сердечком
+function addFavoriteButton(card, product) {
+    const favoriteButton = document.createElement("span");
+    favoriteButton.classList.add("favorite-button-card"); // Класс для кнопки с сердечком
+    favoriteButton.innerHTML = "&#9829;"; // Юникод символ сердечка
+
+    // Проверка статуса избранного из локального хранилища
+    const favoriteKey = `${product.id}-${product.category}`;
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || {};
+    const isFavorite = favorites[favoriteKey]?.isFavorite || false;
+
+    // Установка начального состояния кнопки
+    if (isFavorite) {
+        favoriteButton.classList.add("favorite-active-button-card"); // Класс для активного состояния (красное сердечко)
+    }
+
+    // Событие переключения статуса избранного
+    favoriteButton.addEventListener("click", () => {
+        const currentStatus = favoriteButton.classList.toggle("favorite-active-button-card");
+        const updatedFavorite = {
+            id: product.id,
+            category: product.category,
+            isFavorite: currentStatus
+        };
+
+        // Обновление локального хранилища
+        if (currentStatus) {
+            favorites[favoriteKey] = updatedFavorite;
+        } else {
+            delete favorites[favoriteKey];
+        }
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+    });
+
+    // Добавляем кнопку с сердечком в карточку
+    card.appendChild(favoriteButton);
+}
+
+addFavoriteButton(card, product);
+
+
+
+
+
+
+
+
 
     
 
