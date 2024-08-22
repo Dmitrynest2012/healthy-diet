@@ -799,6 +799,340 @@ const clearButton = document.getElementById('clear-button');
 
 
 
+
+
+// Функция для проверки хэша и создания контейнера
+function checkAndCreateSearchContainer() {
+    const hash = window.location.hash.substring(1);
+    const searchContainerId = 'search-container';
+    let searchContainer = document.getElementById(searchContainerId);
+
+    if (hash === 'food-diary') {
+        if (!searchContainer) {
+            // Создаем контейнер для поиска рецептов и продуктов
+            searchContainer = document.createElement('div');
+            searchContainer.id = searchContainerId;
+            searchContainer.className = 'exotic-search-container'; // Новый класс для контейнера поиска
+
+            // Добавляем заголовок в начало контейнера
+            const header = document.createElement('h2');
+            header.className = 'exotic-search-header';
+            header.textContent = 'Поиск рецептов и продуктов';
+            searchContainer.appendChild(header);
+
+            // Вкладки "Полная база" и "Мое"
+            const tabs = document.createElement('div');
+            tabs.className = 'exotic-tabs';
+            tabs.innerHTML = `
+                <button class="exotic-tab active" id="full-base-tab">Полная база</button>
+                <button class="exotic-tab" id="my-tab">Мое</button>
+            `;
+            searchContainer.appendChild(tabs);
+
+            // Контейнер для подвкладок и списка избранных продуктов
+            const subTabsContainer = document.createElement('div');
+            subTabsContainer.className = 'exotic-sub-tabs-container';
+            searchContainer.appendChild(subTabsContainer);
+
+            // Добавляем контейнер в maxElement
+            maxElement.insertBefore(searchContainer, maxElement.children[1]);
+
+            // Логика переключения между вкладками
+            const fullBaseTab = document.getElementById('full-base-tab');
+            const myTab = document.getElementById('my-tab');
+
+            fullBaseTab.addEventListener('click', () => {
+                subTabsContainer.innerHTML = ''; // Очищаем содержимое при выборе "Полная база"
+                fullBaseTab.classList.add('active');
+                myTab.classList.remove('active');
+            });
+
+            myTab.addEventListener('click', () => {
+                showMySubTabs(subTabsContainer); // Показать подвкладки
+                myTab.classList.add('active');
+                fullBaseTab.classList.remove('active');
+            });
+        }
+    } else {
+        // Если хэш не 'food-diary', удаляем контейнер
+        if (searchContainer) {
+            searchContainer.remove();
+        }
+    }
+}
+
+// Функция для показа подвкладок и списка избранных продуктов
+function showMySubTabs(subTabsContainer) {
+    subTabsContainer.innerHTML = `
+        <div class="exotic-subtabs">
+            <button class="exotic-subtab active" id="favorites-tab">Избранное</button>
+            <button class="exotic-subtab" id="my-products-tab">Мои</button>
+        </div>
+        <div class="exotic-favorite-products-container" id="favorite-products-container"></div>
+    `;
+
+    const favoritesTab = document.getElementById('favorites-tab');
+    const myProductsTab = document.getElementById('my-products-tab');
+    const favoriteProductsContainer = document.getElementById('favorite-products-container');
+
+    // Показать избранные продукты при выборе вкладки "Избранное"
+    favoritesTab.addEventListener('click', () => {
+        favoritesTab.classList.add('active');
+        myProductsTab.classList.remove('active');
+        displayFavoriteProducts(favoriteProductsContainer);
+    });
+
+    // Очистить контейнер при выборе вкладки "Мои"
+    myProductsTab.addEventListener('click', () => {
+        myProductsTab.classList.add('active');
+        favoritesTab.classList.remove('active');
+        favoriteProductsContainer.innerHTML = ''; // Очищаем список
+    });
+
+    // Изначально показываем "Избранное"
+    displayFavoriteProducts(favoriteProductsContainer);
+
+    // Обновляем кнопки при изменении статуса
+    document.addEventListener('favoriteStatusChange', () => {
+        displayFavoriteProducts(favoriteProductsContainer);
+    });
+}
+
+function displayFavoriteProducts(container) {
+    container.innerHTML = ''; // Очищаем контейнер перед заполнением
+
+    // Получаем избранные продукты из локального хранилища
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || {};
+
+    // Категории на русском языке
+    const categories = {
+        cereals: 'Крупы',
+        legumes: 'Бобовые',
+        vegetables: 'Овощи',
+        roots: 'Корнеплоды',
+        fruits: 'Фрукты',
+        'vegetable oils': 'Растительные масла',
+        liquids: 'Жидкости'
+    };
+
+    // Проходим по всем категориям
+    Object.keys(categories).forEach(category => {
+        // Фильтруем продукты по категории
+        const categoryProducts = Object.values(favorites).filter(product => product.category === category);
+
+        // Если есть продукты в этой категории, создаем раздел для категории
+        if (categoryProducts.length > 0) {
+            const categoryDiv = document.createElement('div');
+            categoryDiv.className = 'exotic-category';
+
+            // Создаем заголовок категории с кнопкой сворачивания/разворачивания
+            const categoryHeader = document.createElement('h3');
+            categoryHeader.className = 'exotic-category-header';
+            const isOpen = localStorage.getItem(`category-${category}`) === 'open';
+            categoryHeader.innerHTML = `
+                ${categories[category]}
+                <button class="toggle-category-button">${isOpen ? '&#9650;' : '&#9660;'}</button>
+            `;
+
+            // Добавляем обработчик для кнопки сворачивания/разворачивания
+            const toggleButton = categoryHeader.querySelector('.toggle-category-button');
+            toggleButton.addEventListener('click', () => {
+                const content = categoryDiv.querySelector('.exotic-category-content');
+                if (content.style.display === 'none' || content.style.display === '') {
+                    content.style.display = 'block';
+                    toggleButton.innerHTML = '&#9650;'; // Стрелка вверх
+                    localStorage.setItem(`category-${category}`, 'open');
+                } else {
+                    content.style.display = 'none';
+                    toggleButton.innerHTML = '&#9660;'; // Стрелка вниз
+                    localStorage.setItem(`category-${category}`, 'closed');
+                }
+            });
+
+            // Создаем контейнер для продуктов в категории
+            const categoryContent = document.createElement('div');
+            categoryContent.className = 'exotic-category-content';
+            categoryContent.style.display = isOpen ? 'block' : 'none';
+
+            // Проходим по каждому продукту в категории
+            categoryProducts.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'exotic-favorite-product';
+
+                // Создаем элемент для названия продукта, который будет кликабельным
+                const productNameSpan = document.createElement('span');
+                productNameSpan.className = 'exotic-product-name';
+                productNameSpan.textContent = product.name;
+
+                // Добавляем обработчик клика, который будет открывать карточку продукта
+                productNameSpan.addEventListener('click', () => {
+                    const fullProduct = products.find(p => p.id === product.id && p.category === product.category);
+                    if (fullProduct) {
+                        displayProductCard(fullProduct);
+                    }
+                });
+
+                // Создаем кнопку для удаления продукта из избранного
+                const removeButton = document.createElement('button');
+                removeButton.className = 'exotic-remove-button';
+                removeButton.textContent = '×';
+
+                // Добавляем событие для удаления из избранного
+                removeButton.addEventListener('click', () => {
+                    removeProductFromFavorites(product.id, product.category);
+                    productDiv.remove(); // Удаляем продукт из DOM
+                });
+
+                // Добавляем элементы в productDiv
+                productDiv.appendChild(productNameSpan);
+                productDiv.appendChild(removeButton);
+
+                // Добавляем продукт в раздел категории
+                categoryContent.appendChild(productDiv);
+            });
+
+            // Добавляем содержимое категории и заголовок в основной контейнер
+            categoryDiv.appendChild(categoryHeader);
+            categoryDiv.appendChild(categoryContent);
+
+            // Добавляем категорию в основной контейнер
+            container.appendChild(categoryDiv);
+        }
+    });
+
+    // Обновляем состояние кнопок избранного в карточках
+    updateFavoriteButtons();
+}
+
+
+
+
+
+
+// Функция удаления продукта из избранного
+function removeProductFromFavorites(productId, productCategory) {
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || {};
+    const favoriteKey = `${productId}-${productCategory}`;
+
+    delete favorites[favoriteKey];
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    updateFavoriteButtons();
+}
+
+// Проверка хэша при загрузке страницы
+checkAndCreateSearchContainer();
+
+// Проверка хэша при изменении
+window.addEventListener('hashchange', checkAndCreateSearchContainer);
+
+
+
+
+
+
+
+
+// Функция обновления состояния кнопок избранного на странице
+function updateFavoriteButtons() {
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || {};
+    
+    document.querySelectorAll('.favorite-button-card').forEach(button => {
+        const productId = button.dataset.productId;
+        const productCategory = button.dataset.productCategory;
+        const favoriteKey = `${productId}-${productCategory}`;
+        const isFavorite = favorites[favoriteKey]?.isFavorite || false;
+
+        if (isFavorite) {
+            button.classList.add('favorite-active-button-card');
+        } else {
+            button.classList.remove('favorite-active-button-card');
+        }
+    });
+}
+
+
+// Создание события для обновления состояния кнопок избранного
+const favoriteStatusChangeEvent = new Event('favoriteStatusChange');
+
+
+// Функция для добавления кнопки "Избранное" с сердечком
+function addFavoriteButton(card, product) {
+    const favoriteButton = document.createElement('span');
+    favoriteButton.classList.add('favorite-button-card'); // Класс для кнопки с сердечком
+    favoriteButton.innerHTML = '&#9829;'; // Юникод символ сердечка
+
+    // Установка атрибутов для поиска кнопки
+    favoriteButton.setAttribute('data-product-id', product.id);
+    favoriteButton.setAttribute('data-product-category', product.category);
+
+    // Проверка статуса избранного из локального хранилища
+    const favoriteKey = `${product.id}-${product.category}`;
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || {};
+    const isFavorite = favorites[favoriteKey]?.isFavorite || false;
+
+    // Установка начального состояния кнопки
+    if (isFavorite) {
+        favoriteButton.classList.add('favorite-active-button-card');
+    }
+
+    // Событие переключения статуса избранного
+    favoriteButton.addEventListener('click', () => {
+        const currentStatus = favoriteButton.classList.toggle('favorite-active-button-card');
+        const updatedFavorite = {
+            id: product.id,
+            category: product.category,
+            name: product.name, // Сохранение названия продукта
+            isFavorite: currentStatus
+        };
+
+        // Обновление локального хранилища
+        const favorites = JSON.parse(localStorage.getItem('favorites')) || {};
+        if (currentStatus) {
+            favorites[favoriteKey] = updatedFavorite;
+        } else {
+            delete favorites[favoriteKey];
+        }
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+
+        // Генерация события изменения статуса
+        document.dispatchEvent(favoriteStatusChangeEvent);
+    });
+
+    // Добавляем кнопку с сердечком в карточку
+    card.appendChild(favoriteButton);
+}
+
+
+
+updateFavoriteButtons();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // Обновление значений питательных веществ с учетом метода обработки
     const processingMethods = {
         'Отсутствует': 1.0,
@@ -1661,45 +1995,21 @@ addCloseButtonCard(card);
 
 
 
-// Функция для добавления кнопки "Избранное" с сердечком
-function addFavoriteButton(card, product) {
-    const favoriteButton = document.createElement("span");
-    favoriteButton.classList.add("favorite-button-card"); // Класс для кнопки с сердечком
-    favoriteButton.innerHTML = "&#9829;"; // Юникод символ сердечка
 
-    // Проверка статуса избранного из локального хранилища
-    const favoriteKey = `${product.id}-${product.category}`;
-    const favorites = JSON.parse(localStorage.getItem('favorites')) || {};
-    const isFavorite = favorites[favoriteKey]?.isFavorite || false;
 
-    // Установка начального состояния кнопки
-    if (isFavorite) {
-        favoriteButton.classList.add("favorite-active-button-card"); // Класс для активного состояния (красное сердечко)
-    }
 
-    // Событие переключения статуса избранного
-    favoriteButton.addEventListener("click", () => {
-        const currentStatus = favoriteButton.classList.toggle("favorite-active-button-card");
-        const updatedFavorite = {
-            id: product.id,
-            category: product.category,
-            isFavorite: currentStatus
-        };
 
-        // Обновление локального хранилища
-        if (currentStatus) {
-            favorites[favoriteKey] = updatedFavorite;
-        } else {
-            delete favorites[favoriteKey];
-        }
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-    });
 
-    // Добавляем кнопку с сердечком в карточку
-    card.appendChild(favoriteButton);
-}
+
+
 
 addFavoriteButton(card, product);
+
+
+
+
+
+
 
 
 
