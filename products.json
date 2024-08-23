@@ -137,7 +137,6 @@
         "transFats": 0.0,
         "transFatsUnits": "г"
     }
-    
   },
 
 
@@ -294,7 +293,35 @@
     "tryptophanUnits": "мг",
     "valine": 19.0,
     "valineUnits": "мг"
-}
+},
+  "sugars": {
+    "glucose": 0.3,
+    "glucoseUnits": "г",
+    "fructose": 0.1,
+    "fructoseUnits": "г",
+    "sucrose": 0.2,
+    "sucroseUnits": "г",
+    "lactose": 0.0,
+    "lactoseUnits": "г",
+    "maltose": 0.2,
+    "maltoseUnits": "г",
+    "starch": 70.6,
+    "starchUnits": "г",
+    "trehalose": 0.0,
+    "trehaloseUnits": "г",
+    "sorbitol": 0.0,
+    "sorbitolUnits": "г",
+    "xylitol": 0.0,
+    "xylitolUnits": "г",
+    "mannitol": 0.0,
+    "mannitolUnits": "г",
+    "totalCarbohydrates": 71.5,
+    "totalCarbohydratesUnits": "г",
+    "totalSugars": 0.9,
+    "totalSugarsUnits": "г",
+    "addedSugars": 0.0,
+    "addedSugarsUnits": "г"
+  }
   },
   {
     "id": "4",
@@ -444,7 +471,38 @@
     "tryptophanUnits": "мг",
     "valine": 19.0,
     "valineUnits": "мг"
+},
+"sugars": {
+    "glucose": 0.3,
+    "glucoseUnits": "г",
+    "fructose": 0.2,
+    "fructoseUnits": "г",
+    "galactose": 0.1,
+    "galactoseUnits": "г",
+    "sucrose": 0.4,
+    "sucroseUnits": "г",
+    "lactose": 0.0,
+    "lactoseUnits": "г",
+    "maltose": 0.1,
+    "maltoseUnits": "г",
+    "starch": 21.0, 
+    "starchUnits": "г",
+    "trehalose": 0.0,
+    "trehaloseUnits": "г",
+    "sorbitol": 0.0,
+    "sorbitolUnits": "г",
+    "xylitol": 0.0,
+    "xylitolUnits": "г",
+    "mannitol": 0.0,
+    "mannitolUnits": "г",
+    "totalCarbohydrates": 22.14,
+    "totalCarbohydratesUnits": "г",
+    "totalSugars": 1.0, 
+    "totalSugarsUnits": "г",
+    "addedSugars": 0.0,
+    "addedSugarsUnits": "г"
 }
+
   },
   {
     "id": "5",
@@ -593,7 +651,35 @@
     "tryptophanUnits": "мг",
     "valine": 10.0,
     "valineUnits": "мг"
-}
+},
+  "sugars": {
+    "glucose": 1.2,
+    "glucoseUnits": "г",
+    "fructose": 0.8,
+    "fructoseUnits": "г",
+    "sucrose": 0.7,
+    "sucroseUnits": "г",
+    "lactose": 0.0,
+    "lactoseUnits": "г",
+    "maltose": 0.1,
+    "maltoseUnits": "г",
+    "starch": 1.9,
+    "starchUnits": "г",
+    "trehalose": 0.0,
+    "trehaloseUnits": "г",
+    "sorbitol": 0.0,
+    "sorbitolUnits": "г",
+    "xylitol": 0.0,
+    "xylitolUnits": "г",
+    "mannitol": 0.0,
+    "mannitolUnits": "г",
+    "totalCarbohydrates": 4.7,
+    "totalCarbohydratesUnits": "г",
+    "totalSugars": 2.8,
+    "totalSugarsUnits": "г",
+    "addedSugars": 0.0,
+    "addedSugarsUnits": "г"
+  }
   },
   {
     "id": "6",
@@ -742,7 +828,35 @@
     "tryptophanUnits": "мг",
     "valine": 15.0,
     "valineUnits": "мг"
-}
+},
+"sugars": {
+    "glucose": 2.0,
+    "glucoseUnits": "г",
+    "fructose": 1.0,
+    "fructoseUnits": "г",
+    "sucrose": 1.5,
+    "sucroseUnits": "г",
+    "lactose": 0.0,
+    "lactoseUnits": "г",
+    "maltose": 0.2,
+    "maltoseUnits": "г",
+    "starch": 4.88,
+    "starchUnits": "г",
+    "trehalose": 0.0,
+    "trehaloseUnits": "г",
+    "sorbitol": 0.0,
+    "sorbitolUnits": "г",
+    "xylitol": 0.0,
+    "xylitolUnits": "г",
+    "mannitol": 0.0,
+    "mannitolUnits": "г",
+    "totalCarbohydrates": 9.58,
+    "totalCarbohydratesUnits": "г",
+    "totalSugars": 4.7,
+    "totalSugarsUnits": "г",
+    "addedSugars": 0.0,
+    "addedSugarsUnits": "г"
+  }
   },
   {
     "id": "7",
@@ -892,11 +1006,40 @@
     "tryptophanUnits": "мг",
     "valine": 17.0,
     "valineUnits": "мг"
+  },
+  "sugars": {
+    "glucose": 0.1,
+    "glucoseUnits": "г",
+    "fructose": 0.1,
+    "fructoseUnits": "г",
+    "sucrose": 0.0,
+    "sucroseUnits": "г",
+    "lactose": 0.0,
+    "lactoseUnits": "г",
+    "maltose": 0.0,
+    "maltoseUnits": "г",
+    "starch": 8.3,
+    "starchUnits": "г",
+    "trehalose": 0.0,
+    "trehaloseUnits": "г",
+    "sorbitol": 0.0,
+    "sorbitolUnits": "г",
+    "xylitol": 0.0,
+    "xylitolUnits": "г",
+    "mannitol": 0.0,
+    "mannitolUnits": "г",
+    "totalCarbohydrates": 8.5,
+    "totalCarbohydratesUnits": "г",
+    "totalSugars": 0.2,
+    "totalSugarsUnits": "г",
+    "addedSugars": 0.0,
+    "addedSugarsUnits": "г"
   }
 
 
   }
 ]
+
 
 
 
