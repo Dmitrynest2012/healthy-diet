@@ -1844,6 +1844,91 @@ function updatePHDisplay(product, card) {
 
 
 
+// Переводы названий сахаров
+const sugarsTranslations = {
+    'monosaccharides': 'Моносахариды',
+    'glucose': 'Глюкоза',
+    'fructose': 'Фруктоза',
+    'galactose': 'Галактоза',
+    'disaccharides': 'Дисахариды',
+    'sucrose': 'Сахароза',
+    'lactose': 'Лактоза',
+    'maltose': 'Мальтоза',
+    'polysaccharides': 'Полисахариды',
+    'starch': 'Крахмал',
+    'otherSugarsAndSugarAlcohols': 'Другие сахара и сахарные спирты',
+    'trehalose': 'Треалоза',
+    'sorbitol': 'Сорбитол',
+    'xylitol': 'Ксилитол',
+    'mannitol': 'Маннитол',
+    'totalCarbohydrates': 'Общие углеводы',
+    'totalSugars': 'Общие сахара',
+    'addedSugars': 'Добавленные сахара'
+};
+
+
+
+
+
+/**
+ * Суточные нормы потребления сахаров.
+ * Включает рекомендуемые значения потребления по различным видам сахаров.
+ * Значения основаны на рекомендациях от ВОЗ и других экспертных источников.
+ */
+const sugarRecommendations = {
+    sugars: {
+        "glucose": {
+            "recommendedIntake": 130,  // Рекомендуемое потребление, г/день (минимальное количество для мозга)
+            "unit": "г"
+        },
+        "fructose": {
+            "recommendedIntake": 50,  // Рекомендуемое потребление, г/день (рекомендуемая верхняя граница)
+            "unit": "г"
+        },
+        "galactose": {
+            "recommendedIntake": 0,  // Специальных рекомендаций нет, потребление происходит с лактозой
+            "unit": "г"
+        },
+        "sucrose": {
+            "recommendedIntake": 25,  // Рекомендуемая верхняя граница для добавленных сахаров (включая сахарозу), г/день
+            "unit": "г"
+        },
+        "lactose": {
+            "recommendedIntake": 0,  // Специальных рекомендаций нет, потребление происходит с молочными продуктами
+            "unit": "г"
+        },
+        "maltose": {
+            "recommendedIntake": 0,  // Специальных рекомендаций нет, потребление происходит с продуктами из крахмала
+            "unit": "г"
+        },
+        "starch": {
+            "recommendedIntake": 130,  // Рекомендуемое потребление крахмала как источника углеводов, г/день
+            "unit": "г"
+        },
+        "trehalose": {
+            "recommendedIntake": 0,  // Специальных рекомендаций нет, редко встречается в продуктах
+            "unit": "г"
+        },
+        "sorbitol": {
+            "recommendedIntake": 15,  // Рекомендуемая верхняя граница потребления, г/день
+            "unit": "г"
+        },
+        "xylitol": {
+            "recommendedIntake": 10,  // Рекомендуемая верхняя граница потребления, г/день
+            "unit": "г"
+        },
+        "mannitol": {
+            "recommendedIntake": 20,  // Рекомендуемая верхняя граница потребления, г/день
+            "unit": "г"
+        },
+        "addedSugars": {
+            "recommendedIntake": 25,  // Рекомендуемая верхняя граница для добавленных сахаров, г/день
+            "unit": "г"
+        }
+    }
+};
+
+
 
 
 
@@ -2126,6 +2211,8 @@ function getToxicityIndicator(percentage) {
 function getVitaminRecommendation(vitamin) {
     return vitaminRecommendations.vitamins[vitamin] || {};
 }
+
+
 
 
 
@@ -2415,6 +2502,137 @@ if (product.essentialAminoAcids && Object.keys(product.essentialAminoAcids).leng
 
     card.appendChild(aminoAcidsContainer);
 }
+
+
+
+// Функция для создания цветного индикатора для потребления сахаров
+function getSugarRecommendationIndicator(percentage) {
+    let color;
+    
+    if (percentage >= 0 && percentage < 25) {
+        color = '#1961a8'; // Мягкий темно-синий цвет
+    } else if (percentage >= 25 && percentage < 75) {
+        color = '#22b376'; // Темно-бирюзовый цвет
+    } else if (percentage >= 75 && percentage < 100) {
+        color = '#4CAF50'; // Зеленый цвет
+    } else if (percentage >= 100 && percentage < 150) {
+        color = '#FF5722'; // Оранжевый цвет
+    } else if (percentage >= 150) {
+        color = '#F44336'; // Красный цвет
+    }
+
+    return `
+        <div class="indicator" style="background-color: ${color};">
+            ${percentage}%
+        </div>`;
+}
+
+// Функция для создания цветного индикатора для токсичных сахаров
+function getSugarToxicityIndicator(percentage) {
+    let color;
+
+    if (percentage >= 0 && percentage < 25) {
+        color = '#4CAF50'; // Зеленый цвет
+    } else if (percentage >= 25 && percentage < 50) {
+        color = '#FFEB3B'; // Желтый цвет
+    } else if (percentage >= 50 && percentage < 100) {
+        color = '#FF5722'; // Оранжевый цвет
+    } else if (percentage >= 100) {
+        color = '#F44336'; // Красный цвет
+    }
+
+    return `
+        <div class="indicator" style="background-color: ${color};">
+            ${percentage}%
+        </div>`;
+}
+
+// Функция для получения суточной нормы по сахарам
+function getSugarRecommendation(sugar) {
+    return sugarRecommendations.sugars[sugar] || {};
+}
+
+// Добавляем контейнер для сахаров только если они присутствуют в продукте
+if (product.sugars && Object.keys(product.sugars).length > 0) {
+    const sugarsContainer = document.createElement("div");
+    sugarsContainer.classList.add("sugars-container");
+
+    sugarsContainer.innerHTML = `
+        <h4>Сахара</h4>
+        <table class="sugars-table">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Значение</th>
+                    <th>От РСП</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${Object.entries(product.sugars).map(([sugar, value]) => {
+                    if (sugar.endsWith("Units")) {
+                        return ''; // Пропускаем поля units
+                    }
+                    const unitKey = sugar + 'Units';
+                    const unit = product.sugars[unitKey] || '';
+                    const sugarName = sugarsTranslations[sugar] || sugar;
+                    const sugarValue = (value * defaultWeight / 100).toFixed(2);
+
+                    // Получаем рекомендации по сахару
+                    const recommendation = getSugarRecommendation(sugar);
+                    const recommendedIntake = recommendation.recommendedIntake || Infinity;
+                    const recommendedUnit = recommendation.unit || '';
+
+                    // Проверка совпадения единиц измерения
+                    if (unit !== recommendedUnit) {
+                        console.error(`Несоответствие единиц измерения для ${sugarName}: ${unit} и ${recommendedUnit}`);
+                        return '';
+                    }
+
+                    // Рассчитываем процент от суточной нормы
+                    const percentage = recommendedIntake > 0 ? ((sugarValue / recommendedIntake) * 100).toFixed(2) : '0';
+
+                    // Определяем, использовать ли токсичный индикатор
+                    const isToxicSugar = ["sucrose", "fructose", "addedSugars"].includes(sugar);
+                    const indicator = isToxicSugar ? getSugarToxicityIndicator(percentage) : getSugarRecommendationIndicator(percentage);
+
+                    // Всплывающая подсказка с рекомендуемым потреблением
+                    const tooltip = `Норма: до ${recommendedIntake} ${unit}`;
+
+                    return `
+                        <tr>
+                            <td>${sugarName}</td>
+                            <td>${sugarValue} ${unit}</td>
+                            <td title="${tooltip}">${indicator}</td>
+                        </tr>`;
+                }).join('')}
+            </tbody>
+        </table>`;
+
+    card.appendChild(sugarsContainer);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     productsDiv.appendChild(card);
@@ -2877,6 +3095,88 @@ function updateFatInfo(weight, factor) {
 
 // Вызов функции для обновления информации о жирах
 updateFatInfo(servingWeight * servingsAmount, processingMethods[methodSelect.value] || 1);
+
+// Обновление информации о сахарах с учётом процентов от суточной нормы
+function updateSugarInfo() {
+    const sugarsContainer = card.querySelector(".sugars-container");
+    if (sugarsContainer) {
+        const weight = servingWeight * servingsAmount;
+        const factor = processingMethods[methodSelect.value] || 1; // Дефолтный фактор 1, если метод не выбран
+
+        sugarsContainer.innerHTML = `
+            <h4>Сахара</h4>
+            <table class="sugars-table">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Значение</th>
+                        <th>От РСП</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${Object.entries(product.sugars).map(([sugar, value]) => {
+                        if (sugar.endsWith("Units")) {
+                            return ''; // Пропускаем поля units
+                        }
+                        const unitKey = sugar + 'Units';
+                        const unit = product.sugars[unitKey] || '';
+                        const sugarName = sugarsTranslations[sugar] || sugar;
+                        const sugarValue = (value * weight / 100 * factor).toFixed(2);
+
+                        // Проверяем корректность значения сахара
+                        if (isNaN(sugarValue)) {
+                            console.error(`Ошибка: sugarValue для ${sugarName} NaN`);
+                            return '';
+                        }
+
+                        // Получаем рекомендации по сахару
+                        const recommendation = getSugarRecommendation(sugar);
+                        const recommendedIntake = recommendation.recommendedIntake || Infinity;
+                        const recommendedUnit = recommendation.unit || '';
+
+                        // Проверяем совпадение единиц измерения
+                        if (unit !== recommendedUnit) {
+                            console.error(`Несоответствие единиц измерения для ${sugarName}: ${unit} и ${recommendedUnit}`);
+                            return '';
+                        }
+
+                        // Рассчитываем процент от суточной нормы
+                        const percentage = recommendedIntake > 0 ? ((sugarValue / recommendedIntake) * 100).toFixed(2) : '0';
+
+                        // Проверяем корректность процента
+                        if (isNaN(percentage)) {
+                            console.error(`Ошибка: percentage для ${sugarName} NaN`);
+                            return '';
+                        }
+
+                        // Определяем, использовать ли токсичный индикатор
+                        const isToxicSugar = ["sucrose", "fructose", "addedSugars"].includes(sugar);
+                        const indicator = isToxicSugar ? getSugarToxicityIndicator(percentage) : getSugarRecommendationIndicator(percentage);
+
+                        // Всплывающая подсказка с рекомендуемым потреблением
+                        const tooltip = `Норма: до ${recommendedIntake} ${unit}`;
+
+                        return `
+                            <tr>
+                                <td>${sugarName}</td>
+                                <td>${sugarValue} ${unit}</td>
+                                <td title="${tooltip}">${indicator}</td>
+                            </tr>`;
+                    }).join('')}
+                </tbody>
+            </table>`;
+    }
+}
+
+// Вызов функции для обновления информации о сахарах
+updateSugarInfo();
+
+
+
+
+
+
+
 
 
 
