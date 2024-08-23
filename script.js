@@ -1934,6 +1934,125 @@ const sugarRecommendations = {
 
 
 
+const phytochemicalTranslations = {
+    "resveratrol": "Ресвератрол",
+    "catechins": "Катехины",
+    "curcumin": "Куркумин",
+    "quercetin": "Кверцетин",
+    "anthocyanins": "Антоцианы",
+    "lycopene": "Ликопин",
+    "betaCarotene": "Бета-каротин",
+    "lutein": "Лютеин",
+    "zeaxanthin": "Зеаксантин",
+    "ellagicAcid": "Эллаговая кислота",
+    "saponins": "Сапонины",
+    "hesperidin": "Гесперидин",
+    "rutin": "Рутин",
+    "allicin": "Аллицин",
+    "sulforaphane": "Сульфорафан",
+    "flavonols": "Флавонолы",
+    "isoflavones": "Изофлавоны",
+    "epicatechin": "Эпикатехин",
+    "genistein": "Генистеин",
+    "pterostilbene": "Птеростильбен"
+};
+
+
+
+
+/**
+ * Суточные нормы потребления фитохимических соединений.
+ * Включает рекомендуемые значения потребления по различным фитохимическим соединениям.
+ * Значения основаны на текущих исследованиях и экспертных рекомендациях.
+ */
+const phytochemicalRecommendations = {
+    phytochemicals: {
+        "resveratrol": {
+            "recommendedIntake": 1,  // Ориентировочная доза, часто получаемая с пищей, мг/день
+            "unit": "мг"
+        },
+        "catechins": {
+            "recommendedIntake": 300,  // Рекомендуемая доза для поддержания здоровья, мг/день
+            "unit": "мг"
+        },
+        "curcumin": {
+            "recommendedIntake": 500,  // Ориентировочная терапевтическая доза, мг/день
+            "unit": "мг"
+        },
+        "quercetin": {
+            "recommendedIntake": 10,  // Среднее потребление с пищей, мг/день
+            "unit": "мг"
+        },
+        "anthocyanins": {
+            "recommendedIntake": 100,  // Ориентировочная доза для антиоксидантного эффекта, мг/день
+            "unit": "мг"
+        },
+        "lycopene": {
+            "recommendedIntake": 10,  // Ориентировочная доза для антиоксидантного эффекта, мг/день
+            "unit": "мг"
+        },
+        "betaCarotene": {
+            "recommendedIntake": 6000,  // Рекомендуемое потребление как провитамина A, мкг/день
+            "unit": "мкг"
+        },
+        "lutein": {
+            "recommendedIntake": 6000,  // Рекомендуемое потребление для поддержки зрения, мкг/день
+            "unit": "мкг"
+        },
+        "zeaxanthin": {
+            "recommendedIntake": 2000,  // Рекомендуемое потребление для поддержки зрения, мкг/день
+            "unit": "мкг"
+        },
+        "ellagicAcid": {
+            "recommendedIntake": 30,  // Ориентировочное потребление с ягодами и орехами, мг/день
+            "unit": "мг"
+        },
+        "saponins": {
+            "recommendedIntake": 50,  // Ориентировочное потребление с бобовыми, мг/день
+            "unit": "мг"
+        },
+        "hesperidin": {
+            "recommendedIntake": 500,  // Ориентировочная доза с цитрусовыми, мг/день
+            "unit": "мг"
+        },
+        "rutin": {
+            "recommendedIntake": 50,  // Ориентировочная доза для антиоксидантного эффекта, мг/день
+            "unit": "мг"
+        },
+        "allicin": {
+            "recommendedIntake": 10,  // Ориентировочное потребление с чесноком, мг/день
+            "unit": "мг"
+        },
+        "sulforaphane": {
+            "recommendedIntake": 20,  // Ориентировочная доза с крестоцветными овощами, мг/день
+            "unit": "мг"
+        },
+        "flavonols": {
+            "recommendedIntake": 100,  // Среднее потребление с фруктами и овощами, мг/день
+            "unit": "мг"
+        },
+        "isoflavones": {
+            "recommendedIntake": 50,  // Ориентировочная доза с соевыми продуктами, мг/день
+            "unit": "мг"
+        },
+        "epicatechin": {
+            "recommendedIntake": 50,  // Ориентировочная доза с шоколадом и чаем, мг/день
+            "unit": "мг"
+        },
+        "genistein": {
+            "recommendedIntake": 50,  // Ориентировочная доза с соевыми продуктами, мг/день
+            "unit": "мг"
+        },
+        "pterostilbene": {
+            "recommendedIntake": 1,  // Ориентировочная доза с ягодами, мг/день
+            "unit": "мг"
+        }
+    }
+};
+
+
+
+
 
 
 
@@ -2614,8 +2733,65 @@ if (product.sugars && Object.keys(product.sugars).length > 0) {
 
 
 
+// Функция для получения суточной нормы фитохимического соединения
+function getPhytochemicalRecommendation(phytochemical) {
+    return phytochemicalRecommendations.phytochemicals[phytochemical] || {};
+}
 
+// Добавляем контейнер для фитохимических соединений только если они есть
+if (product.phytochemicals && Object.keys(product.phytochemicals).length > 0) {
+    const phytochemicalsContainer = document.createElement("div");
+    phytochemicalsContainer.classList.add("phytochemicals-container");
 
+    phytochemicalsContainer.innerHTML = `
+        <h4>Фитохимические соединения</h4>
+        <table class="phytochemicals-table">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Значение</th>
+                    <th>От РСП</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${Object.entries(product.phytochemicals).map(([phytochemical, value]) => {
+                    if (phytochemical.endsWith("Units")) {
+                        return ''; // Пропускаем поля Units
+                    }
+                    const unitKey = phytochemical + 'Units';
+                    const unit = product.phytochemicals[unitKey] || '';
+                    const phytochemicalName = phytochemicalTranslations[phytochemical] || phytochemical;
+                    const phytochemicalValue = (value * defaultWeight / 100).toFixed(2);
+
+                    // Получаем рекомендации по фитохимическому соединению
+                    const recommendation = getPhytochemicalRecommendation(phytochemical);
+                    const upperBound = recommendation.recommendedIntake || Infinity;
+                    const recommendedUnit = recommendation.unit || '';
+
+                    // Проверка совпадения единиц измерения
+                    if (unit !== recommendedUnit) {
+                        console.error(`Несоответствие единиц измерения для ${phytochemicalName}: ${unit} и ${recommendedUnit}`);
+                        return '';
+                    }
+
+                    // Рассчитываем процент от суточной нормы
+                    const percentage = upperBound > 0 ? ((phytochemicalValue / upperBound) * 100).toFixed(2) : '0';
+
+                    // Всплывающая подсказка с диапазоном нормы
+                    const tooltip = `Норма: 0 - ${upperBound} ${recommendedUnit}`;
+
+                    return `
+                        <tr>
+                            <td>${phytochemicalName}</td>
+                            <td>${phytochemicalValue} ${unit}</td>
+                            <td title="${tooltip}">${getRecommendationIndicator(percentage)}</td>
+                        </tr>`;
+                }).join('')}
+            </tbody>
+        </table>`;
+
+    card.appendChild(phytochemicalsContainer);
+}
 
 
 
@@ -3171,6 +3347,66 @@ function updateSugarInfo() {
 // Вызов функции для обновления информации о сахарах
 updateSugarInfo();
 
+
+
+// Функция для обновления информации о фитохимических соединениях с учётом процентов от суточной нормы
+function updatePhytochemicalInfo() {
+    const phytochemicalsContainer = card.querySelector(".phytochemicals-container");
+    if (phytochemicalsContainer) {
+        const weight = servingWeight * servingsAmount;
+        const factor = processingMethods[methodSelect.value] || 1; // Дефолтный фактор 1, если метод не выбран
+
+        phytochemicalsContainer.innerHTML = `
+            <h4>Фитохимические соединения</h4>
+            <table class="phytochemicals-table">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Значение</th>
+                        <th>От РСП</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${Object.entries(product.phytochemicals).map(([phytochemical, value]) => {
+                        if (phytochemical.endsWith("Units")) {
+                            return ''; // Пропускаем поля Units
+                        }
+                        const unitKey = phytochemical + 'Units';
+                        const unit = product.phytochemicals[unitKey] || '';
+                        const phytochemicalName = phytochemicalTranslations[phytochemical] || phytochemical;
+                        const phytochemicalValue = (value * weight / 100 * factor).toFixed(2);
+
+                        // Получаем рекомендации по фитохимическому соединению
+                        const recommendation = getPhytochemicalRecommendation(phytochemical);
+                        const upperBound = recommendation.recommendedIntake || Infinity;
+                        const recommendedUnit = recommendation.unit || '';
+
+                        // Проверка совпадения единиц измерения
+                        if (unit !== recommendedUnit) {
+                            console.error(`Несоответствие единиц измерения для ${phytochemicalName}: ${unit} и ${recommendedUnit}`);
+                            return '';
+                        }
+
+                        // Рассчитываем процент от суточной нормы
+                        const percentage = upperBound > 0 ? ((phytochemicalValue / upperBound) * 100).toFixed(2) : '0';
+
+                        // Всплывающая подсказка с диапазоном нормы
+                        const tooltip = `Норма: 0 - ${upperBound} ${recommendedUnit}`;
+
+                        return `
+                            <tr>
+                                <td>${phytochemicalName}</td>
+                                <td>${phytochemicalValue} ${unit}</td>
+                                <td title="${tooltip}">${getRecommendationIndicator(percentage)}</td>
+                            </tr>`;
+                    }).join('')}
+                </tbody>
+            </table>`;
+    }
+}
+
+// Вызов функции для обновления информации о фитохимических соединениях
+updatePhytochemicalInfo();
 
 
 
