@@ -2498,81 +2498,72 @@ if (product.minerals && Object.keys(product.minerals).length > 0) {
 
 // Функция для создания полосок баланса натрия и калия
 function createSodiumPotassiumBalanceWidget(sodium, sodiumUnits, potassium, potassiumUnits) {
-    // Рассчитываем соотношение натрия к калию
-    const sodiumPotassiumRatio = (sodium / potassium).toFixed(2);
-    let ratioCategory = '';
-    let ratioColor = '';
-    let ratioText = '';
-    let ratioDescription = '';
+    if (product.minerals && product.minerals.sodium && product.minerals.potassium) {
+        // Рассчитываем соотношение натрия к калию
+        const sodiumPotassiumRatio = (sodium / potassium).toFixed(2);
+        let ratioCategory = '';
+        let ratioColor = '';
+        let ratioText = '';
+        let ratioDescription = '';
 
-    // Определяем категорию соотношения и описание на основе соотношения
-    if (sodiumPotassiumRatio < 0.5) {
-        ratioCategory = 'низкое';
-        ratioColor = '#F44336';
-        ratioText = '▲ Гиперкалиемия';
-        ratioDescription = 'Высокий уровень калия в продукте (по отношению к натрию) может негативно повлиять на здоровье. Избыточное количество калия может нарушить функции сердца, вызывая аритмии и другие сердечные проблемы. Также может затрудниться работа почек, что приведет к накоплению калия и ухудшению общего состояния организма. Рекомендуется следить за потреблением калия и при необходимости проконсультироваться с врачом.';
-    } else if (sodiumPotassiumRatio >= 0.5 && sodiumPotassiumRatio <= 1.5) {
-        ratioCategory = 'оптимальное';
-        ratioColor = '#4CAF50';
-        ratioText = 'Норма';
-        ratioDescription = 'Этот уровень калия и натрия в продукте считается оптимальным для поддержания здоровья. Он способствует нормальному функционированию организма и поддерживает энергетический баланс.';
-    } else {
-        ratioCategory = 'высокое';
-        ratioColor = '#F44336';
-        ratioText = '▲ Гипернатриемия';
-        ratioDescription = 'Высокий уровень натрия в продукте (по отношению к калию) может повышать риск высокого кровяного давления, что в свою очередь увеличивает вероятность сердечно-сосудистых заболеваний. Также это может способствовать задержке жидкости в организме и проблемам с почками. Рекомендуется следить за потреблением натрия для поддержания общего здоровья.';
-    }
+        // Определяем категорию соотношения и описание на основе соотношения
+        if (sodiumPotassiumRatio < 0.5) {
+            ratioCategory = 'низкое';
+            ratioColor = '#F44336';
+            ratioText = '▲ Гиперкалиемия';
+            ratioDescription = 'Высокий уровень калия в продукте (по отношению к натрию) может негативно повлиять на здоровье. Избыточное количество калия может нарушить функции сердца, вызывая аритмии и другие сердечные проблемы. Также может затрудниться работа почек, что приведет к накоплению калия и ухудшению общего состояния организма. Рекомендуется следить за потреблением калия и при необходимости проконсультироваться с врачом.';
+        } else if (sodiumPotassiumRatio >= 0.5 && sodiumPotassiumRatio <= 1.5) {
+            ratioCategory = 'оптимальное';
+            ratioColor = '#4CAF50';
+            ratioText = 'Норма';
+            ratioDescription = 'Этот уровень калия и натрия в продукте считается оптимальным для поддержания здоровья. Он способствует нормальному функционированию организма и поддерживает энергетический баланс.';
+        } else {
+            ratioCategory = 'высокое';
+            ratioColor = '#F44336';
+            ratioText = '▲ Гипернатриемия';
+            ratioDescription = 'Высокий уровень натрия в продукте (по отношению к калию) может повышать риск высокого кровяного давления, что в свою очередь увеличивает вероятность сердечно-сосудистых заболеваний. Также это может способствовать задержке жидкости в организме и проблемам с почками. Рекомендуется следить за потреблением натрия для поддержания общего здоровья.';
+        }
 
-    // Рассчитываем относительную ширину полосок
-    const sodiumWidth = sodiumPotassiumRatio >= 1 ? 100 : (sodiumPotassiumRatio * 100);
-    const potassiumWidth = sodiumPotassiumRatio <= 1 ? 100 : (100 / sodiumPotassiumRatio);
+        // Рассчитываем относительную ширину полосок
+        const sodiumWidth = sodiumPotassiumRatio >= 1 ? 100 : (sodiumPotassiumRatio * 100);
+        const potassiumWidth = sodiumPotassiumRatio <= 1 ? 100 : (100 / sodiumPotassiumRatio);
 
-    // Создаем HTML структуру для виджета
-    return `
-        <div class="balance-widget-NK">
-            <h4 class="balance-title-NK">Баланс Натрия и Калия</h4>
-            <div class="balance-bars-container-NK">
-                <div class="balance-bar-NK sodium-bar-NK" style="background-color: #87CEEB; width: ${sodiumWidth}%;">
+        // Создаем HTML структуру для виджета
+        return `
+            <div class="balance-widget-NK">
+                <h4 class="balance-title-NK">Баланс Натрия и Калия</h4>
+                <div class="balance-bars-container-NK">
+                    <div class="balance-bar-NK sodium-bar-NK" style="background-color: #87CEEB; width: ${sodiumWidth}%;">
+                    </div>
+                    <div class="balance-bar-NK potassium-bar-NK" style="background-color: #665605; width: ${potassiumWidth}%;">
+                    </div>
                 </div>
-                <div class="balance-bar-NK potassium-bar-NK" style="background-color: #665605; width: ${potassiumWidth}%;">
+                
+                <div class="buttons-container-NK">
+                    <button class="mineral-button-NK sodium-button-NK" style="background-color: #87CEEB;">
+                        Натрий: ${sodium} ${sodiumUnits}
+                    </button>
+                    <button class="mineral-button-NK potassium-button-NK" style="background-color: #665605;">
+                        Калий: ${potassium} ${potassiumUnits}
+                    </button>
                 </div>
-            </div>
-            
-            <div class="buttons-container-NK">
-                <button class="mineral-button-NK sodium-button-NK" style="background-color: #87CEEB;">
-                    Натрий: ${sodium} ${sodiumUnits}
-                </button>
-                <button class="mineral-button-NK potassium-button-NK" style="background-color: #665605;">
-                    Калий: ${potassium} ${potassiumUnits}
-                </button>
-            </div>
-            <div class="ratio-NK">
-                <span>Соотношение: ${sodiumPotassiumRatio}:1</span>
-                <div class="ratio-indicator-NK" style="background-color: ${ratioColor};">
-                    <span>${ratioText}</span>
-                    <div class="tooltip-NK">
-                        <div class="tooltip-norm-NK">Норма: 0.5-1.5</div>
-                        <div class="tooltip-description-NK"><em>${ratioDescription}</em></div>
+                <div class="ratio-NK">
+                    <span>Соотношение: ${sodiumPotassiumRatio}:1</span>
+                    <div class="ratio-indicator-NK" style="background-color: ${ratioColor};">
+                        <span>${ratioText}</span>
+                        <div class="tooltip-NK">
+                            <div class="tooltip-norm-NK">Норма: 0.5-1.5</div>
+                            <div class="tooltip-description-NK"><em>${ratioDescription}</em></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    `;
+        `;
+    }
 }
 
-// Проверяем наличие натрия и калия в продукте
-if (product.minerals && product.minerals.sodium && product.minerals.potassium) {
-    const sodium = (product.minerals.sodium * defaultWeight / 100).toFixed(2);
-    const potassium = (product.minerals.potassium * defaultWeight / 100).toFixed(2);
-    const sodiumUnit = product.minerals.sodiumUnits || 'mg';
-    const potassiumUnit = product.minerals.potassiumUnits || 'mg';
 
-    // Создаем виджет баланса натрия и калия
-    const balanceWidget = createSodiumPotassiumBalanceWidget(sodium, sodiumUnit, potassium, potassiumUnit);
 
-    // Добавляем виджет в контейнер минералов
-    card.innerHTML += balanceWidget;
-}
 
 
 
@@ -3171,9 +3162,19 @@ function updateMineralInfo(weight, factor) {
 
             // Добавляем строку в соответствующий массив
             if (effect === 'эссенциальный') {
-                essentialMineralsRows.push(createMineralRow(mineral, value, unit, weight));
+                essentialMineralsRows.push(`
+                    <tr>
+                        <td>${mineralName}</td>
+                        <td>${mineralValue} ${unit}</td>
+                        <td title="${tooltip}">${getRecommendationIndicator(percentage)}</td>
+                    </tr>`);
             } else if (effect === 'токсичный') {
-                toxicMineralsRows.push(createMineralRow(mineral, value, unit, weight, true));
+                toxicMineralsRows.push(`
+                    <tr>
+                        <td>${mineralName}</td>
+                        <td>${mineralValue} ${unit}</td>
+                        <td title="${tooltip}">${getRecommendationIndicator(percentage)}</td>
+                    </tr>`);
             }
         });
 
@@ -3195,7 +3196,7 @@ function updateMineralInfo(weight, factor) {
 
         if (toxicMineralsRows.length > 0) {
             mineralsContainer.innerHTML += `
-                <h4 class="h-toxic">Токсичные минералы</h4>
+                <h4 class ="h-toxic">Токсичные минералы</h4>
                 <table class="minerals-table">
                     <thead>
                         <tr>
@@ -3214,6 +3215,116 @@ function updateMineralInfo(weight, factor) {
 
 // Вызов функции для обновления информации о минералах
 updateMineralInfo(servingWeight * servingsAmount, processingMethods[methodSelect.value] || 1);
+
+
+
+// Проверяем наличие натрия и калия в продукте
+if (product.minerals && product.minerals.sodium && product.minerals.potassium) {
+    // Рассчитываем вес и фактор
+    const weight = servingWeight * servingsAmount;
+    const factor = processingMethods[methodSelect.value] || 1; // Дефолтный фактор 1, если метод не выбран
+    
+    // Рассчитываем значения натрия и калия с учетом веса и фактора
+    const sodium = (product.minerals.sodium * weight / 100 * factor).toFixed(2);
+    const potassium = (product.minerals.potassium * weight / 100 * factor).toFixed(2);
+    const sodiumUnits = product.minerals.sodiumUnits || 'mg';
+    const potassiumUnits = product.minerals.potassiumUnits || 'mg';
+    
+    // Создаем виджет баланса натрия и калия
+    const balanceWidget = createSodiumPotassiumBalanceWidget(sodium, sodiumUnits, potassium, potassiumUnits);
+
+    // Проверяем, существует ли уже контейнер
+    const existingWidget = card.querySelector('.balance-widget-NK');
+    if (existingWidget) {
+        // Если контейнер уже существует, обновляем его содержимое
+        existingWidget.innerHTML = balanceWidget;
+    } else {
+        // Если контейнера нет, добавляем новый
+        card.insertAdjacentHTML('beforeend', balanceWidget);
+    }
+}
+
+// Функция для обновления виджета баланса натрия и калия
+function updateSodiumPotassiumBalanceWidget() {
+    const balanceWidget = card.querySelector(".balance-widget-NK");
+    if (balanceWidget) {
+        // Рассчитываем вес и фактор
+        const weight = servingWeight * servingsAmount;
+        const factor = processingMethods[methodSelect.value] || 1; // Дефолтный фактор 1, если метод не выбран
+        
+        // Получаем значения натрия и калия из продукта
+        const sodium = (product.minerals.sodium * weight / 100 * factor).toFixed(2);
+        const potassium = (product.minerals.potassium * weight / 100 * factor).toFixed(2);
+        const sodiumUnit = product.minerals.sodiumUnits || 'mg';
+        const potassiumUnit = product.minerals.potassiumUnits || 'mg';
+
+        // Рассчитываем соотношение натрия к калию
+        const sodiumPotassiumRatio = potassium > 0 ? (sodium / potassium).toFixed(2) : 0;
+        let ratioCategory = '';
+        let ratioColor = '';
+        let ratioText = '';
+        let ratioDescription = '';
+
+        // Определяем категорию соотношения и описание на основе соотношения
+        if (sodiumPotassiumRatio < 0.5) {
+            ratioCategory = 'низкое';
+            ratioColor = '#F44336';
+            ratioText = '▲ Гиперкалиемия';
+            ratioDescription = 'Высокий уровень калия в продукте (по отношению к натрию) может негативно повлиять на здоровье. Избыточное количество калия может нарушить функции сердца, вызывая аритмии и другие сердечные проблемы. Также может затрудниться работа почек, что приведет к накоплению калия и ухудшению общего состояния организма. Рекомендуется следить за потреблением калия и при необходимости проконсультироваться с врачом.';
+        } else if (sodiumPotassiumRatio >= 0.5 && sodiumPotassiumRatio <= 1.5) {
+            ratioCategory = 'оптимальное';
+            ratioColor = '#4CAF50';
+            ratioText = 'Норма';
+            ratioDescription = 'Этот уровень калия и натрия в продукте считается оптимальным для поддержания здоровья. Он способствует нормальному функционированию организма и поддерживает энергетический баланс.';
+        } else {
+            ratioCategory = 'высокое';
+            ratioColor = '#F44336';
+            ratioText = '▲ Гипернатриемия';
+            ratioDescription = 'Высокий уровень натрия в продукте (по отношению к калию) может повышать риск высокого кровяного давления, что в свою очередь увеличивает вероятность сердечно-сосудистых заболеваний. Также это может способствовать задержке жидкости в организме и проблемам с почками. Рекомендуется следить за потреблением натрия для поддержания общего здоровья.';
+        }
+
+        // Рассчитываем относительную ширину полосок
+        const sodiumWidth = sodiumPotassiumRatio >= 1 ? 100 : (sodiumPotassiumRatio * 100);
+        const potassiumWidth = sodiumPotassiumRatio <= 1 ? 100 : (100 / sodiumPotassiumRatio);
+
+        // Обновляем HTML структуры виджета
+        balanceWidget.innerHTML = `
+            <h4 class="balance-title-NK">Баланс Натрия и Калия</h4>
+            <div class="balance-bars-container-NK">
+                <div class="balance-bar-NK sodium-bar-NK" style="background-color: #1961a8; width: ${sodiumWidth}%;">
+                </div>
+                <div class="balance-bar-NK potassium-bar-NK" style="background-color: #4CAF50; width: ${potassiumWidth}%;">
+                </div>
+            </div>
+            
+            <div class="buttons-container-NK">
+                <button class="mineral-button-NK sodium-button-NK" style="background-color: #1961a8;">
+                    Натрий: ${sodium} ${sodiumUnit}
+                </button>
+                <button class="mineral-button-NK potassium-button-NK" style="background-color: #4CAF50;">
+                    Калий: ${potassium} ${potassiumUnit}
+                </button>
+            </div>
+            <div class="ratio-NK">
+                <span>Соотношение: ${sodiumPotassiumRatio}:1</span>
+                <div class="ratio-indicator-NK" style="background-color: ${ratioColor};">
+                    <span>${ratioText}</span>
+                    <div class="tooltip-NK">
+                        <div class="tooltip-norm-NK">Норма: 0.5-1.5</div>
+                        <div class="tooltip-description-NK"><em>${ratioDescription}</em></div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+}
+
+// Вызов функции для обновления виджета баланса натрия и калия
+updateSodiumPotassiumBalanceWidget();
+
+
+
+
 
     // Обновление информации о незаменимых аминокислотах с учётом процентов от суточной нормы
 function updateAminoAcidInfo(weight, factor) {
@@ -3492,80 +3603,6 @@ function updatePhytochemicalInfo() {
 // Вызов функции для обновления информации о фитохимических соединениях
 updatePhytochemicalInfo();
 
-
-// Функция для обновления виджета баланса натрия и калия
-function updateSodiumPotassiumBalanceWidget(weight, factor) {
-    const balanceWidget = card.querySelector(".balance-widget-NK");
-    if (balanceWidget) {
-        // Получаем значения натрия и калия из продукта
-        const sodium = (product.minerals.sodium * weight / 100 * factor).toFixed(2);
-        const potassium = (product.minerals.potassium * weight / 100 * factor).toFixed(2);
-        const sodiumUnit = product.minerals.sodiumUnits || 'mg';
-        const potassiumUnit = product.minerals.potassiumUnits || 'mg';
-
-        // Рассчитываем соотношение натрия к калию
-        const sodiumPotassiumRatio = (sodium / potassium).toFixed(2);
-        let ratioCategory = '';
-        let ratioColor = '';
-        let ratioText = '';
-        let ratioDescription = '';
-
-        // Определяем категорию соотношения и описание на основе соотношения
-    if (sodiumPotassiumRatio < 0.5) {
-        ratioCategory = 'низкое';
-        ratioColor = '#F44336';
-        ratioText = '▲ Гиперкалиемия';
-        ratioDescription = 'Высокий уровень калия в продукте (по отношению к натрию) может негативно повлиять на здоровье. Избыточное количество калия может нарушить функции сердца, вызывая аритмии и другие сердечные проблемы. Также может затрудниться работа почек, что приведет к накоплению калия и ухудшению общего состояния организма. Рекомендуется следить за потреблением калия и при необходимости проконсультироваться с врачом.';
-    } else if (sodiumPotassiumRatio >= 0.5 && sodiumPotassiumRatio <= 1.5) {
-        ratioCategory = 'оптимальное';
-        ratioColor = '#4CAF50';
-        ratioText = 'Норма';
-        ratioDescription = 'Этот уровень калия и натрия в продукте считается оптимальным для поддержания здоровья. Он способствует нормальному функционированию организма и поддерживает энергетический баланс.';
-    } else {
-        ratioCategory = 'высокое';
-        ratioColor = '#F44336';
-        ratioText = '▲ Гипернатриемия';
-        ratioDescription = 'Высокий уровень натрия в продукте (по отношению к калию) может повышать риск высокого кровяного давления, что в свою очередь увеличивает вероятность сердечно-сосудистых заболеваний. Также это может способствовать задержке жидкости в организме и проблемам с почками. Рекомендуется следить за потреблением натрия для поддержания общего здоровья.';
-    }
-
-        // Рассчитываем относительную ширину полосок
-        const sodiumWidth = sodiumPotassiumRatio >= 1 ? 100 : (sodiumPotassiumRatio * 100);
-        const potassiumWidth = sodiumPotassiumRatio <= 1 ? 100 : (100 / sodiumPotassiumRatio);
-
-        // Обновляем HTML структуры виджета
-        balanceWidget.innerHTML = `
-            <h4 class="balance-title-NK">Баланс Натрия и Калия</h4>
-            <div class="balance-bars-container-NK">
-                <div class="balance-bar-NK sodium-bar-NK" style="background-color: #1961a8; width: ${sodiumWidth}%;">
-                </div>
-                <div class="balance-bar-NK potassium-bar-NK" style="background-color: #4CAF50; width: ${potassiumWidth}%;">
-                </div>
-            </div>
-            
-            <div class="buttons-container-NK">
-                <button class="mineral-button-NK sodium-button-NK" style="background-color: #1961a8;">
-                    Натрий: ${sodium} ${sodiumUnit}
-                </button>
-                <button class="mineral-button-NK potassium-button-NK" style="background-color: #4CAF50;">
-                    Калий: ${potassium} ${potassiumUnit}
-                </button>
-            </div>
-            <div class="ratio-NK">
-                <span>Соотношение: ${sodiumPotassiumRatio}:1</span>
-                <div class="ratio-indicator-NK" style="background-color: ${ratioColor};">
-                    <span>${ratioText}</span>
-                    <div class="tooltip-NK">
-                        <div class="tooltip-norm-NK">Норма: 0.5-1.5</div>
-                        <div class="tooltip-description-NK"><em>${ratioDescription}</em></div>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-}
-
-// Вызов функции для обновления виджета баланса натрия и калия
-updateSodiumPotassiumBalanceWidget(servingWeight * servingsAmount, processingMethods[methodSelect.value] || 1);
 
 
 
