@@ -247,7 +247,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
     display: inline-block; /* Изменение блока на inline-block */
     width: 1225px; /* Ограничение максимальной ширины, чтобы избежать переполнения */
-    height: 1140px;
+    height: 1310px;
     box-sizing: border-box; /* Учет padding и border в ширину */
 }
 
@@ -2046,6 +2046,180 @@ input[type="number"]::-webkit-outer-spin-button {
     cursor: pointer;
     margin-left: 10px;
 }
+
+
+
+
+
+/* Контейнер для виджета баланса */
+.balance-widget-NK {
+    
+    padding: 16px;
+    margin-top: 20px;
+    
+    
+    
+    max-width: 430px;
+
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    background-color: #f9f9f9;
+}
+
+/* Контейнер для виджета баланса */
+.balance-widget-NK h4 {
+    position: relative;
+   top: -20px;
+}
+
+/* Контейнер для кнопок минералов */
+.buttons-container-NK {
+    position: relative;
+    top: -20px;
+    margin-top: 0px;
+    display: flex;
+    justify-content: flex-start; /* Располагаем кнопки рядом */
+    gap: 10px; /* Отступ между кнопками */
+}
+
+/* Кнопки минералов */
+.mineral-button-NK {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-weight: bold;
+    cursor: default;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px; /* Ограничиваем максимальную ширину */
+    flex-shrink: 0; /* Запрещаем кнопкам сжиматься */
+}
+
+/* Убираем отступ между кнопками */
+.mineral-button-NK + .mineral-button-NK {
+    margin-left: 0;
+}
+
+
+/* Контейнер для полосок баланса */
+.balance-bars-container-NK {
+    position: relative;
+    top: -30px;
+    display: flex;
+    justify-content: space-between;
+    /* Добавляем едва заметный темно-серый бордер */
+    border: 1px solid #33333350; /* Темно-серый цвет */
+    border-radius: 10px;
+    height: 30px;
+    overflow: hidden; /* Скрывает содержимое, выходящее за пределы контейнера */
+}
+
+
+/* Полоски для натрия и калия */
+.balance-bar-NK {
+    position: relative;
+    height: 30px;
+    border-radius: 0px;
+    margin-bottom: 10px;
+    
+
+    /* Добавляем внутреннюю тень */
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1); /* Внутренняя тень устремляется к центру */
+}
+
+/* Контейнер для соотношения */
+.ratio-NK {
+    position: relative;
+    top: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0px;
+   
+}
+
+/* Индикатор соотношения */
+.ratio-indicator-NK {
+    padding: 5px 16px;
+    border-radius: 10px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    width: 160px;
+    position: relative;
+
+    /* Обеспечивает вертикальное выравнивание */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Всплывающая подсказка */
+.ratio-indicator-NK .tooltip-NK {
+    display: none;
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    padding: 5px 10px;
+    white-space: normal; /* Позволяет перенос текста */
+    z-index: 10;
+    font-size: 12px;
+    width: 300px;
+    background-color: #333;
+    border-radius: 10px;
+    width: 300px;
+    z-index: 10;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Стиль для нормы */
+.ratio-indicator-NK .tooltip-norm-NK {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+/* Стиль для описания */
+.ratio-indicator-NK .tooltip-description-NK {
+    font-style: italic;
+    font-weight: normal;
+    
+    font-size: 14px;
+    font-style: italic;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #a1a1a1;
+
+}
+
+
+
+/* Показ всплывающей подсказки при наведении */
+.ratio-indicator-NK:hover .tooltip-NK {
+    display: block;
+}
+
+/* Цвета индикатора соотношения */
+.ratio-indicator-NK.blue {
+    background-color: blue;
+}
+
+.ratio-indicator-NK.green {
+    background-color: green;
+}
+
+.ratio-indicator-NK.red {
+    background-color: red;
+}
+
+
+
 
 
 
