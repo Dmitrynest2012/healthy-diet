@@ -2055,7 +2055,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .balance-widget-NK {
     
     padding: 16px;
-    margin-top: 20px;
+    margin-top: 10px;
     
     
     
@@ -2158,6 +2158,11 @@ input[type="number"]::-webkit-outer-spin-button {
     justify-content: center;
 }
 
+.NK-ratios-header-bottom {
+    font-size: 14px;
+    font-weight: bold;
+}
+
 /* Всплывающая подсказка */
 .ratio-indicator-NK .tooltip-NK {
     display: none;
@@ -2217,6 +2222,9 @@ input[type="number"]::-webkit-outer-spin-button {
 .ratio-indicator-NK.red {
     background-color: red;
 }
+
+
+
 
 
 
