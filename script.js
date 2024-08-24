@@ -2548,7 +2548,7 @@ function createSodiumPotassiumBalanceWidget(sodium, sodiumUnits, potassium, pota
                     </button>
                 </div>
                 <div class="ratio-NK">
-                    <span>Соотношение: ${sodiumPotassiumRatio}:1</span>
+                    <span><b>Соотношение: ${sodiumPotassiumRatio}:1</b></span>
                     <div class="ratio-indicator-NK" style="background-color: ${ratioColor};">
                         <span>${ratioText}</span>
                         <div class="tooltip-NK">
@@ -3306,7 +3306,7 @@ function updateSodiumPotassiumBalanceWidget() {
                 </button>
             </div>
             <div class="ratio-NK">
-                <span>Соотношение: ${sodiumPotassiumRatio}:1</span>
+                <span><b>Соотношение: ${sodiumPotassiumRatio}:1</b></span>
                 <div class="ratio-indicator-NK" style="background-color: ${ratioColor};">
                     <span>${ratioText}</span>
                     <div class="tooltip-NK">
@@ -3922,7 +3922,6 @@ function updateMealSummary(meal, productEntry) {
     
     
 });
-
 
 
 
