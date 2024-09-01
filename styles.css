@@ -550,6 +550,7 @@ input[type="number"]::-webkit-outer-spin-button {
     padding-top: 0px;
     padding-bottom: 0px;
     width: fit-content; /* Контейнер будет адаптироваться под содержимое */
+    height: 45px;
 }
 
 .raw-info,
@@ -565,6 +566,7 @@ input[type="number"]::-webkit-outer-spin-button {
     
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Небольшая тень */
     cursor: pointer;
+    
 }
 
 
@@ -2545,6 +2547,10 @@ input[type="number"]::-webkit-outer-spin-button {
 .parameria-total-day-base > .item-total-day {
     margin-bottom: -25px; /* Отступ между элементами */
 }
+
+
+
+
 
 
 
