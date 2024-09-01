@@ -24,13 +24,14 @@
     </header>
     <main id="max" class="max">
 
-        <div id="date-selector">
+        <div id="date-selector" class="date-selector">
             <button id="prev-day">◀</button>
             <input type="text" id="current-day" readonly>
             <button id="next-day">▶</button>
         </div>
         
         <div id="products"></div>
+        <div class="main-meal-block">
         <section id="meals">
             <h2>Завтрак</h2>
             <div id="breakfast-products" class="meal-products"></div>
@@ -44,15 +45,16 @@
             <div id="dinner-products" class="meal-products"></div>
             <div id="dinner-total" class="meal-total"></div>
         </section>
+    </div>
         <section id="daily-summary">
             <h2>Итог за день</h2>
             <div>
-                <p>Калории: <span id="daily-calories">0.00</span> ккал </p>
-                <p>Белки: <span id="daily-protein">0.00</span> г</p>
-                <p>Жиры: <span id="daily-fats">0.00</span> г</p>
-                <p>Углеводы: <span id="daily-carbs">0.00</span> г</p>
-                <p>Клетчатка: <span id="daily-fiber">0.00</span> г</p>
-                <p>Вода: <span id="daily-water">0.00</span> мл</p>
+                <p>Калории: <span id="daily-calories">0.00</span>  </p>
+                <p>Белки: <span id="daily-protein">0.00</span></p>
+                <p>Жиры: <span id="daily-fats">0.00</span></p>
+                <p>Углеводы: <span id="daily-carbs">0.00</span></p>
+                <p>Клетчатка: <span id="daily-fiber">0.00</span></p>
+                <p>Вода: <span id="daily-water">0.00</span></p>
             </div>
             
         </section>
@@ -74,6 +76,7 @@
     <script src="script.js"></script>
 </body>
 </html>
+
 
 
 
