@@ -273,6 +273,7 @@ function updateBMR(age) {
     const height = parseFloat(heightInput.value);
     const weight = parseFloat(weightInput.value);
     const gender = genderSelect.value;
+    
     if (height && weight && age !== null) {
         let bmr;
         if (gender === 'male') {
@@ -289,8 +290,6 @@ function updateBMR(age) {
         globalBMR = bmr;
         localStorage.setItem('globalBMR', bmr);
 
-        
-
         const dailyCaloriesElement = document.getElementById('daily-calories');
         if (dailyCaloriesElement) {
             const dailyCalories = parseFloat(dailyCaloriesElement.textContent);
@@ -301,11 +300,41 @@ function updateBMR(age) {
             GlobalpercentageBMR = percentage;
             localStorage.setItem('globalPercentageBMR', GlobalpercentageBMR);
 
-            // Обновление текста элемента с дневными калориями
-            dailyCaloriesElement.nextSibling.textContent = ` ккал / Норма: ${globalBMR} ккал [${GlobalpercentageBMR}% от нормы]`;
-        }
+            // Определение цвета прогресс-бара в зависимости от процента
+            const percentValue = parseFloat(percentage);
+            let progressBarColorClass = '';
 
-        
+            if (percentValue <= 15) {
+                progressBarColorClass = 'blue';
+            } else if (percentValue > 15 && percentValue <= 50) {
+                progressBarColorClass = 'turquoise';
+            } else if (percentValue > 50 && percentValue <= 100) {
+                progressBarColorClass = 'green';
+            } else if (percentValue > 100 && percentValue <= 200) {
+                progressBarColorClass = 'yellow';
+            } else {
+                progressBarColorClass = 'orange';
+            }
+
+            // Создание контейнера для прогресс-бара
+            let progressBarContainer = document.getElementById('progress-bar-container');
+            if (!progressBarContainer) {
+                progressBarContainer = document.createElement('div');
+                progressBarContainer.id = 'progress-bar-container';
+                dailyCaloriesElement.parentNode.insertBefore(progressBarContainer, dailyCaloriesElement.nextSibling);
+            }
+
+            progressBarContainer.innerHTML = `
+                <div class="progress-bar-wrapper">
+                    <div class="progress-bar-container">
+                        <div id="progress-bar" class="progress-bar ${progressBarColorClass}" style="width: ${percentValue}%;">
+                            ${percentValue}%
+                        </div>
+                    </div>
+                    <span class="calories-text">${globalBMR} ккал</span>
+                </div>
+            `;
+        }
 
         return bmr;
     } else {
@@ -313,6 +342,7 @@ function updateBMR(age) {
         return null;
     }
 }
+
 
 function calculateMetabolicAge() {
     const bmr = parseFloat(globalBMR);
@@ -393,6 +423,7 @@ function saveProfileData() {
 
 
 // Функция для обновления процентного выполнения нормы
+// Функция для обновления процентного выполнения нормы
 function updateDailySummary2() {
     const dailyProtein = parseFloat(document.getElementById('daily-protein').textContent);
     const dailyFats = parseFloat(document.getElementById('daily-fats').textContent);
@@ -400,26 +431,62 @@ function updateDailySummary2() {
     const dailyFiber = parseFloat(document.getElementById('daily-fiber').textContent);
     const dailyWater = parseFloat(document.getElementById('daily-water').textContent);
 
+    // Расчет процентов выполнения норм
     const proteinPercentage = (dailyProtein / globalProteinNorm * 100).toFixed(2);
     const fatsPercentage = (dailyFats / globalFatsNorm * 100).toFixed(2);
     const carbsPercentage = (dailyCarbs / globalCarbsNorm * 100).toFixed(2);
     const fiberPercentage = (dailyFiber / globalFiberNorm * 100).toFixed(2);
     const waterPercentage = (dailyWater / globalWaterNorm * 100).toFixed(2);
 
-    const savedData = JSON.parse(localStorage.getItem('userProfile'));
-    const Globalweight = parseFloat(savedData.weight) || 0;
-    calculateNutrientNorms(Globalweight);
-    
+    // Функция для обновления прогресс-бара
+    function updateProgressBar(elementId, percentage, norm, unit) {
+        const element = document.getElementById(elementId);
 
-    // Обновление HTML
-    document.getElementById('daily-protein').nextSibling.textContent = ` г / Норма: ${globalProteinNorm} г [${proteinPercentage}% от нормы]`;
-    document.getElementById('daily-fats').nextSibling.textContent = ` г / Норма: ${globalFatsNorm} г [${fatsPercentage}% от нормы]`;
-    document.getElementById('daily-carbs').nextSibling.textContent = ` г / Норма: ${globalCarbsNorm} г [${carbsPercentage}% от нормы]`;
-    document.getElementById('daily-fiber').nextSibling.textContent = ` г / Норма: ${globalFiberNorm} г [${fiberPercentage}% от нормы]`;
-    document.getElementById('daily-water').nextSibling.textContent = ` мл / Норма: ${globalWaterNorm} мл [${waterPercentage}% от нормы]`;
+        if (element) {
+            const percentValue = parseFloat(percentage);
+            let progressBarColorClass = '';
 
-    
+            if (percentValue <= 15) {
+                progressBarColorClass = 'blue';
+            } else if (percentValue > 15 && percentValue <= 50) {
+                progressBarColorClass = 'turquoise';
+            } else if (percentValue > 50 && percentValue <= 100) {
+                progressBarColorClass = 'green';
+            } else if (percentValue > 100 && percentValue <= 200) {
+                progressBarColorClass = 'yellow';
+            } else {
+                progressBarColorClass = 'orange';
+            }
+
+            let progressBarContainer = document.getElementById(`${elementId}-progress-bar-container`);
+            if (!progressBarContainer) {
+                progressBarContainer = document.createElement('div');
+                progressBarContainer.id = `${elementId}-progress-bar-container`;
+                element.parentNode.insertBefore(progressBarContainer, element.nextSibling);
+            }
+
+            progressBarContainer.innerHTML = `
+                <div class="progress-bar-wrapper">
+                    <div class="progress-bar-container">
+                        <div class="progress-bar ${progressBarColorClass}" style="width: ${percentValue}%;">
+                            ${percentValue}%
+                        </div>
+                    </div>
+                    <span class="value-text">${norm} ${unit}</span>
+                </div>
+            `;
+        }
+    }
+
+    // Обновление прогресс-баров для каждого макронутриента
+    updateProgressBar('daily-protein', proteinPercentage, globalProteinNorm, 'г');
+    updateProgressBar('daily-fats', fatsPercentage, globalFatsNorm, 'г');
+    updateProgressBar('daily-carbs', carbsPercentage, globalCarbsNorm, 'г');
+    updateProgressBar('daily-fiber', fiberPercentage, globalFiberNorm, 'г');
+    updateProgressBar('daily-water', waterPercentage, globalWaterNorm, 'мл');
 }
+
+
 
     
     // Функция для загрузки данных из локального хранилища
@@ -466,7 +533,7 @@ function updateDailySummary2() {
         const dailyCaloriesElement = document.getElementById('daily-calories');
         if (dailyCaloriesElement && globalBMR) {
             if (!dailyCaloriesElement.nextSibling.textContent.includes('/ Норма:')) {
-                dailyCaloriesElement.nextSibling.textContent += ` / Норма: ${globalBMR} ккал [${GlobalpercentageBMR}% от нормы]`;
+                dailyCaloriesElement.nextSibling.textContent += ``;
             }
         }
     }
@@ -1459,6 +1526,9 @@ function addFavoriteButton(card, product) {
 
 
 updateFavoriteButtons();
+
+
+
 
 
 
