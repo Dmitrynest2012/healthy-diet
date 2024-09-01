@@ -4352,4 +4352,3 @@ function updateMealSummary(meal, productEntry) {
     
     
     
-});
