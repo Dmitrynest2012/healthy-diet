@@ -171,6 +171,7 @@ input[type="number"]::-webkit-outer-spin-button {
     font-size: 16px;
     font-family: 'Play';
     font-weight: bold;
+    transition: all 0.3s;
 }
 
 /* Стили для активной кнопки */
@@ -275,6 +276,7 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .meal-total {
+    font-size: 14px;
     border: 1px solid #ddd;
     padding: 10px;
     background-color: #f8f8f8;
@@ -285,6 +287,7 @@ input[type="number"]::-webkit-outer-spin-button {
     position: absolute;
     top: 70px;
     margin: 5px;
+    
 }
 
 .product-entry {
@@ -321,23 +324,42 @@ input[type="number"]::-webkit-outer-spin-button {
     margin-bottom: 10px;
 }
 
+
+
+
 .meal-products th, .meal-total th {
-    background-color: #f4f4f4;
+    background-color: #7c7c7c;
     padding: 8px;
     width: 200px;
     text-align: left;
-    border: 1px solid #ddd;
+    border: 1px solid #b1b1b1;
 }
+
+.meal-products th {
+    background-color: #ffffff;
+}
+
+
 
 .meal-products td, .meal-total td {
     padding: 8px;
-    border: 1px solid #ddd;
+    border: 1px solid #b1b1b1;
     width: 200px;
 }
 
 .meal-products th, .meal-total th {
-    background-color: #f4f4f4;
+    background-color: #dfdfdf;
 }
+
+.meal-products td{
+    background-color: #ffffff;
+}
+
+.meal-total th {
+    background-color: #ffffff;
+}
+
+
 
 .product-entry-item {
     padding: 8px;
@@ -1904,6 +1926,11 @@ input[type="number"]::-webkit-outer-spin-button {
     transition: background-color 0.3s, color 0.3s;
 }
 
+.exotic-tab:hover {
+    background-color: rgb(73, 73, 73);
+    color: #ffffff;
+}
+
 .exotic-tab.active {
     background-color: rgb(115, 155, 214);
     font-weight: bold;
@@ -1930,6 +1957,11 @@ input[type="number"]::-webkit-outer-spin-button {
     font-family: "Play";
 }
 
+.exotic-subtab:hover {
+    background-color: rgb(73, 73, 73);
+    color: #ffffff;
+}
+
 .exotic-subtab.active {
     background-color: rgb(115, 155, 214);
     font-weight: bold;
@@ -1946,6 +1978,7 @@ input[type="number"]::-webkit-outer-spin-button {
     font-family: "Play";
     height: 315px;
     overflow-y: auto;
+    background-color: #e2e2e21f;
     
 }
 
@@ -1988,6 +2021,13 @@ input[type="number"]::-webkit-outer-spin-button {
     background-color: #eeeeee98;
     padding: 3px 8px;
     border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.exotic-category-header:hover {
+    background-color: rgb(73, 73, 73);
+    color: #ffffff;
 }
 
 /* Строка с позицией продукта */
@@ -1996,6 +2036,7 @@ input[type="number"]::-webkit-outer-spin-button {
     justify-content: space-between;
     padding: 10px;
     border: 1px solid #eee;
+    background-color: #ffffffd2;
     border-radius: 10px;
     transition: background-color 0.3s;
     font-size: 14px;
@@ -2036,10 +2077,11 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .exotic-category-content {
     display: block; /* или 'none' по умолчанию, если хотите скрыть категории по умолчанию */
+    
 }
 
 .toggle-category-button {
-    background: none;
+    background: rgb(248, 248, 248);
     border: 1px solid rgba(170, 170, 170, 0.603);
     border-radius: 10px;
     font-size: 1.2em;
@@ -2232,6 +2274,44 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 
+
+
+
+
+/* Стили для контейнера с основной базой продуктов  */
+.exotic-products-block {
+    padding: 12px;
+    background-color: #fff;
+    border-radius: 15px;
+    border: 1px solid #ddd;
+    font-family: "Play";
+    height: 315px;
+    overflow-y: auto;
+    background-color: #e2e2e21f;
+}
+
+.exotic-products-block::-webkit-scrollbar {
+    width: 8px; /* Ширина полосы прокрутки */
+}
+
+.exotic-products-block::-webkit-scrollbar-thumb {
+    background-color: #d3d3d3; /* Цвет полосы прокрутки */
+
+    border-top-right-radius: 10px; 
+    border-bottom-right-radius: 10px;
+}
+
+.exotic-products-block::-webkit-scrollbar-track {
+    background-color: #f1f1f100; /* Цвет трека (фона) полосы прокрутки */
+    border-radius: 5px 5px 0 0; /* Закругление только правых верхнего и нижнего углов */
+}
+
+.exotic-products-block::-webkit-scrollbar-thumb:hover {
+    background-color: #b3b3b3; /* Цвет полосы прокрутки при наведении */
+}
+
+
+
 .toggle-button-search {
     background: none;
     border: none;
@@ -2245,6 +2325,7 @@ input[type="number"]::-webkit-outer-spin-button {
     align-items: center;
     cursor: pointer;
     font-size: 16px;
+    
 }
 
 .products-list-search {
@@ -2253,6 +2334,7 @@ input[type="number"]::-webkit-outer-spin-button {
     list-style-type: none;
     padding-left: 0;
     cursor: pointer;
+    
     
 }
 
@@ -2299,6 +2381,152 @@ input[type="number"]::-webkit-outer-spin-button {
     font-size: 12px;
     color: #3d3d3d;
 }
+
+
+/* Главный блок с приемами пищи */
+.main-meal-block {
+    
+    margin-top: 10px;
+    padding: 5px 10px;
+    padding-bottom: 15px;
+    
+
+    background-color: #f3f3f3;
+    
+    border: 1px solid rgba(197, 197, 197, 0.432);
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+#meals h2 {
+    position: relative;
+    width: auto;
+    height: auto;
+    color: #252525;
+    font-size: 17px;
+}
+
+
+
+
+
+
+
+
+/* Общий стиль для прогресс-бара */
+.progress-bar-wrapper {
+    position: relative;
+    top: -22.5px;
+    left: 100px;
+    margin-left: 90px;
+    display: flex;
+    align-items: center;
+    background-color: #e7e7e7;
+    width: 500px;
+    height: 30px;
+    padding-right: 5px;
+    border: 1px solid rgba(165, 165, 165, 0.521);
+    border-radius: 10px;
+    padding: 0px 0px;
+    margin-top: -0px;
+}
+
+.progress-bar-container {
+    position: relative;
+    
+    flex-grow: 1;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-right: 10px;
+    width: 300px;
+    
+}
+
+.progress-bar {
+    position: relative;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    padding: 5px 0px;
+    border-radius: 10px;
+    width: 200px;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-shadow: inset 0 2px 4px 4px rgba(0, 0, 0, 0.1); /* Внутренняя тень */
+    
+    
+}
+
+/* Цвета для разных процентов выполнения */
+.progress-bar.blue {
+    background-color: #81c0ff80; /* Синий цвет */
+}
+
+.progress-bar.turquoise {
+    background-color: #22b37777; /* Бирюзовый цвет */
+}
+
+.progress-bar.green {
+    background-color: #28a74691; /* Зеленый цвет */
+}
+
+.progress-bar.yellow {
+    background-color: rgba(255, 193, 7, 0.575); /* Желтый цвет */
+    color: black; /* Черный текст для контраста */
+}
+
+.progress-bar.orange {
+    background-color: #ff80008f; /* Оранжевый цвет */
+}
+
+/* Текст с калориями справа от прогресс-бара */
+.calories-text {
+    position: relative;
+    right: 1px;
+    margin-left: 0px;
+    font-weight: normal;
+    width: 200px;
+    white-space: nowrap; /* Отключает перенос текста */
+    padding-right: 5px;
+    margin-top: -0px;
+}
+
+
+
+#daily-summary {
+    position: relative;
+    margin-left: 5px;
+    margin-top: 15px;
+    background-color: #f3f3f3;
+    padding: 0px 15px;
+    border: 1px solid rgba(197, 197, 197, 0.432);
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 700px;
+    margin-bottom: 15px;
+}
+
+#daily-summary h2 {
+    position: relative;
+    margin-left: 0px;
+    margin-top: 10px;
+    background-color: #f3f3f3;
+    padding: 5px 15px;
+    font-size: 19px;
+    width: 500px;
+    margin-bottom: 25px;
+}
+
+#daily-summary-vitamins {
+    display: none;
+}
+
+
+
+
+
+
 
 
 
