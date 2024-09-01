@@ -1193,8 +1193,9 @@ const categoryTranslations = {
     'vegetables': 'Овощи',
     'roots': 'Корнеплоды',
     'fruits': 'Фрукты',
-    'vegetable oils': 'Растительные масла',
-    'liquids': 'Жидкости'
+    'vegetable_oils': 'Растительные масла',
+    'liquids': 'Жидкости',
+    'dairy_products': 'Молочные продукты'
 };
 
 // Функция для проверки хэша и создания контейнера
@@ -1332,8 +1333,9 @@ function displayFavoriteProducts(container) {
         vegetables: 'Овощи',
         roots: 'Корнеплоды',
         fruits: 'Фрукты',
-        'vegetable oils': 'Растительные масла',
-        liquids: 'Жидкости'
+        vegetable_oils: 'Растительные масла',
+        liquids: 'Жидкости',
+        dairy_products: "Молочные продукты"
     };
 
     // Проходим по всем категориям
@@ -2528,11 +2530,11 @@ const updateServingsOptions = () => {
             <!-- Контейнер для индикаторов -->
             <div class="indicators-container">
 
-            <!-- Добавляем Vegan, если продукт является веганским -->
-        ${product.vegan ? `
-            <p class="vegan-info" style="position: relative;"><b>Vegan</b>
-                <span class="vegan-tooltip"><span class="vegan-recommendation">Vegan [веганские] продукты исключают любые ингредиенты животного происхождения, такие как мясо, молоко, яйца, мёд и т.д. Они обычно богаты растительными белками и клетчаткой, что способствует улучшению здоровья сердца, снижению веса и общего самочувствия.</span></span>
-            </p>` : ''}
+            <!-- Добавляем Vegan в любом случае -->
+<p class="vegan-info" style="position: relative;"><b>Vegan</b>
+    <span class="vegan-tooltip"><span class="vegan-recommendation">Vegan [веганские] продукты исключают любые ингредиенты животного происхождения, такие как мясо, молоко, яйца, мёд и т.д. Они обычно богаты растительными белками и клетчаткой, что способствует улучшению здоровья сердца, снижению веса и общего самочувствия.</span></span>
+</p>
+
 
             <!-- Добавляем сюда RAW, он будет динамически управляться -->
         <p class="raw-info" style="display: none; position: relative;"><b>RAW</b>
@@ -3337,6 +3339,7 @@ function updateVeganInfo() {
     if (product.vegan) {
         veganInfo.style.display = 'block'; // Показываем Vegan индикатор
     } else {
+        veganInfo.style.padding = '5px';
         veganInfo.style.display = 'none'; // Скрываем Vegan индикатор
     }
 }
@@ -4342,6 +4345,10 @@ function updateMealSummary(meal, productEntry) {
     // Инициализация текущей даты
     updateDateDisplay();
     loadMealData();
+    
+    
+    
+});
     
     
     
