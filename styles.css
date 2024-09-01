@@ -2423,12 +2423,13 @@ input[type="number"]::-webkit-outer-spin-button {
     display: flex;
     align-items: center;
     background-color: #e7e7e7;
-    width: 500px;
+    width: 400px;
     height: 30px;
-    padding-right: 5px;
+    
     border: 1px solid rgba(165, 165, 165, 0.521);
     border-radius: 10px;
     padding: 0px 0px;
+    padding-right: 15px;
     margin-top: -0px;
 }
 
@@ -2441,13 +2442,13 @@ input[type="number"]::-webkit-outer-spin-button {
     overflow: hidden;
     margin-right: 10px;
     width: 300px;
-    
+    padding-right: 5px;
 }
 
 .progress-bar {
     position: relative;
     color: rgb(0, 0, 0);
-    text-align: center;
+    text-align: left;
     padding: 5px 0px;
     border-radius: 10px;
     width: 200px;
@@ -2483,13 +2484,14 @@ input[type="number"]::-webkit-outer-spin-button {
 /* Текст с калориями справа от прогресс-бара */
 .calories-text {
     position: relative;
-    right: 1px;
+   
     margin-left: 0px;
     font-weight: normal;
-    width: 200px;
+   
     white-space: nowrap; /* Отключает перенос текста */
-    padding-right: 5px;
+    padding-right: 15px;
     margin-top: -0px;
+    margin-right: 15px;
 }
 
 
@@ -2503,7 +2505,7 @@ input[type="number"]::-webkit-outer-spin-button {
     border: 1px solid rgba(197, 197, 197, 0.432);
     border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 700px;
+    width: 605px;
     margin-bottom: 15px;
 }
 
@@ -2515,12 +2517,34 @@ input[type="number"]::-webkit-outer-spin-button {
     padding: 5px 15px;
     font-size: 19px;
     width: 500px;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
 }
 
 #daily-summary-vitamins {
     display: none;
 }
+
+
+
+.parameria-total-day-base {
+    display: flex; /* Используем Flexbox для управления размещением элементов */
+    flex-direction: column; /* Располагаем элементы по вертикали */
+    gap: 0px; /* Устанавливаем отступ между элементами */
+    margin: 0; /* Убираем внешние отступы у контейнера */
+    padding: 0; /* Убираем внутренние отступы у контейнера */
+    margin-bottom: 15px; /* Отступ между элементами */
+}
+
+
+
+
+.parameria-total-day-base > .item-total-day {
+    margin-bottom: -25px; /* Отступ между элементами */
+}
+
+
+
+
 
 
 
