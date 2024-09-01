@@ -2385,8 +2385,10 @@ input[type="number"]::-webkit-outer-spin-button {
 
 /* Главный блок с приемами пищи */
 .main-meal-block {
-    
-    margin-top: 10px;
+    position: relative;
+    left: 270px;
+    width: 1160px;
+    margin-top: 20px;
     padding: 5px 10px;
     padding-bottom: 15px;
     
@@ -2498,6 +2500,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 #daily-summary {
     position: relative;
+    left: 270px;
     margin-left: 5px;
     margin-top: 15px;
     background-color: #f3f3f3;
@@ -2506,11 +2509,12 @@ input[type="number"]::-webkit-outer-spin-button {
     border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 605px;
-    margin-bottom: 15px;
+    margin-bottom: 45px;
 }
 
 #daily-summary h2 {
     position: relative;
+    
     margin-left: 0px;
     margin-top: 10px;
     background-color: #f3f3f3;
@@ -2541,6 +2545,10 @@ input[type="number"]::-webkit-outer-spin-button {
 .parameria-total-day-base > .item-total-day {
     margin-bottom: -25px; /* Отступ между элементами */
 }
+
+
+
+
 
 
 
