@@ -1405,7 +1405,7 @@
     "galactoseUnits": "г",
     "sucrose": 0.0,
     "sucroseUnits": "г",
-    "lactose": 0.0,
+    "lactose": 0.4,
     "lactoseUnits": "г",
     "maltose": 0.0,
     "maltoseUnits": "г",
@@ -1421,12 +1421,11 @@
     "mannitolUnits": "г",
     "totalCarbohydrates": 2.2,
     "totalCarbohydratesUnits": "г",
-    "totalSugars": 0.1, 
+    "totalSugars": 0.5, 
     "totalSugarsUnits": "г",
     "addedSugars": 0.0,
     "addedSugarsUnits": "г"
 },
-
   "phytochemicals": {
     "resveratrol": 0.0,
     "resveratrolUnits": "мг",
@@ -1473,6 +1472,11 @@
 
 
 ]
+
+
+
+
+
 
 
 
