@@ -72,13 +72,146 @@
             
         </section>
 
+
+        <div id="anthropometric-container" class="anthropometric-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Параметр</th>
+                        <th>Значение</th>
+                        <th>Норма</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Параметр: Рост -->
+                    <tr>
+                        <td><label for="height-input" id="height-label">Рост (см):</label></td>
+                        <td><input type="number" id="height-input" class="parameter-input" placeholder="Введите ваш рост"></td>
+                        <td>
+                            <div class="indicator-container">
+                                <span id="height-indicator" class="indicator-anthropometric">Норма</span>
+                                <div class="tooltip-anthropometric"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Параметр: Вес -->
+                    <tr>
+                        <td><label for="weight-input" id="weight-label">Вес (кг):</label></td>
+                        <td><input type="number" id="weight-input" class="parameter-input" placeholder="Введите ваш вес"></td>
+                        <td>
+                            <div class="indicator-container">
+                                <span id="weight-indicator" class="indicator-anthropometric">Норма</span>
+                                <div class="tooltip-anthropometric"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Параметр: Общий жир (%) -->
+                    <tr>
+                        <td><label for="body-fat-input" id="body-fat-label">Общий жир (%):</label></td>
+                        <td><input type="number" id="body-fat-input" class="parameter-input" placeholder="Введите процент общего жира"></td>
+                        <td>
+                            <div class="indicator-container">
+                                <span id="body-fat-indicator" class="indicator-anthropometric">Норма</span>
+                                <div class="tooltip-anthropometric"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Параметр: Индекс висцерального жира -->
+                    <tr>
+                        <td><label for="visceral-fat-input" id="visceral-fat-label">Индекс висцерального жира:</label></td>
+                        <td><input type="number" id="visceral-fat-input" class="parameter-input" placeholder="Введите индекс висцерального жира"></td>
+                        <td>
+                            <div class="indicator-container">
+                                <span id="visceral-fat-indicator" class="indicator-anthropometric">Норма</span>
+                                <div class="tooltip-anthropometric"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Параметр: Белок (%) -->
+                    <tr>
+                        <td><label for="protein-input" id="protein-label">Белок (%):</label></td>
+                        <td><input type="number" id="protein-input" class="parameter-input" placeholder="Введите процент белка"></td>
+                        <td>
+                            <div class="indicator-container">
+                                <span id="protein-indicator" class="indicator-anthropometric">Норма</span>
+                                <div class="tooltip-anthropometric"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Параметр: Мышцы (%) -->
+                    <tr>
+                        <td><label for="muscle-input" id="muscle-label">Мышцы (%):</label></td>
+                        <td><input type="number" id="muscle-input" class="parameter-input" placeholder="Введите процент мышц"></td>
+                        <td>
+                            <div class="indicator-container">
+                                <span id="muscle-indicator" class="indicator-anthropometric">Норма</span>
+                                <div class="tooltip-anthropometric"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Параметр: Скелетные мышцы (%) -->
+                    <tr>
+                        <td><label for="skeletal-muscle-input" id="skeletal-muscle-label">Скелетные мышцы (%):</label></td>
+                        <td><input type="number" id="skeletal-muscle-input" class="parameter-input" placeholder="Введите процент скелетных мышц"></td>
+                        <td>
+                            <div class="indicator-container">
+                                <span id="skeletal-muscle-indicator" class="indicator-anthropometric">Норма</span>
+                                <div class="tooltip-anthropometric"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Параметр: Костная масса (кг) -->
+                    <tr>
+                        <td><label for="bone-mass-input" id="bone-mass-label">Костная масса (кг):</label></td>
+                        <td><input type="number" id="bone-mass-input" class="parameter-input" placeholder="Введите костную массу"></td>
+                        <td>
+                            <div class="indicator-container">
+                                <span id="bone-mass-indicator" class="indicator-anthropometric">Норма</span>
+                                <div class="tooltip-anthropometric"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Параметр: Вода в организме (%) -->
+                    <tr>
+                        <td><label for="body-water-input" id="body-water-label">Вода в организме (%):</label></td>
+                        <td><input type="number" id="body-water-input" class="parameter-input" placeholder="Введите процент воды в организме"></td>
+                        <td>
+                            <div class="indicator-container">
+                                <span id="body-water-indicator" class="indicator-anthropometric">Норма</span>
+                                <div class="tooltip-anthropometric"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Параметр: Окружность талии -->
+                    <tr>
+                        <td><label for="waist-input" id="waist-label">Окружность талии (см):</label></td>
+                        <td><input type="number" id="waist-input" class="parameter-input" placeholder="Введите окружность талии"></td>
+                        <td>
+                            <div class="indicator-container">
+                                <span id="waist-indicator" class="indicator-anthropometric">Норма</span>
+                                <div class="tooltip-anthropometric"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Параметр: Окружность бедер -->
+                    <tr>
+                        <td><label for="hips-input" id="hips-label">Окружность бедер (см):</label></td>
+                        <td><input type="number" id="hips-input" class="parameter-input" placeholder="Введите окружность бедер"></td>
+                        <td>
+                            <div class="indicator-container">
+                                <span id="hips-indicator" class="indicator-anthropometric">Норма</span>
+                                <div class="tooltip-anthropometric"></div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        
+        
+
     </main>
     <script src="script.js"></script>
 </body>
 </html>
-
-
-
-
-
-

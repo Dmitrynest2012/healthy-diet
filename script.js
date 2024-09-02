@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
 
+    
+
     // Создаем контейнер для кнопок
     const containerMain = document.createElement('div');
     containerMain.id = 'sections-container';
@@ -859,6 +861,160 @@ searchInput.focus(); // Фокус на поле поиска после очи�
 
 // Инициализация элементов
 const clearButton = document.getElementById('clear-button');
+
+
+
+
+/**
+ * Функция проверяет хэш в URL и скрывает элементы дневника питания на странице,
+ * если хэш не равен 'food-diary'. Проверка выполняется каждую секунду.
+ */
+function checkAndHideElements() {
+    const hash = window.location.hash.substring(1);
+
+    const productsDiv = document.getElementById('products');
+    const mainMealBlockDiv = document.querySelector('.main-meal-block');
+    const dailySummarySection = document.getElementById('daily-summary');
+    const dailySummaryVitaminsSection = document.getElementById('daily-summary-vitamins');
+    const searchContainerDiv = document.querySelector('.search-container');
+    const suggestionsDiv = document.getElementById('suggestions');
+
+    if (hash !== 'food-diary') {
+        if (productsDiv) {
+            productsDiv.style.display = 'none';
+        }
+        if (mainMealBlockDiv) {
+            mainMealBlockDiv.style.display = 'none';
+        }
+        if (dailySummarySection) {
+            dailySummarySection.style.display = 'none';
+        }
+        if (dailySummaryVitaminsSection) {
+            dailySummaryVitaminsSection.style.display = 'none';
+        }
+        if (searchContainerDiv) {
+            searchContainerDiv.style.display = 'none';
+        }
+        if (suggestionsDiv) {
+            suggestionsDiv.style.display = 'none';
+        }
+    } else {
+        if (productsDiv) {
+            productsDiv.style.display = '';
+        }
+        if (mainMealBlockDiv) {
+            mainMealBlockDiv.style.display = '';
+        }
+        if (dailySummarySection) {
+            dailySummarySection.style.display = '';
+        }
+        if (dailySummaryVitaminsSection) {
+            dailySummaryVitaminsSection.style.display = '';
+        }
+        if (searchContainerDiv) {
+            searchContainerDiv.style.display = '';
+        }
+        if (suggestionsDiv) {
+            suggestionsDiv.style.display = '';
+        }
+    }
+}
+
+// Запускаем функцию каждые 1000 миллисекунд (1 секунда)
+setInterval(checkAndHideElements, 1000);
+
+
+
+function checkAndToggleAnthropometricContainer() {
+    const hash = window.location.hash.substring(1);
+    const anthropometricContainer = document.getElementById('anthropometric-container');
+
+    if (anthropometricContainer) {
+        if (hash === 'anthropometry') {
+            anthropometricContainer.style.display = 'block';  // Показываем контейнер
+        } else {
+            anthropometricContainer.style.display = 'none';   // Скрываем контейнер
+        }
+    }
+}
+
+// Запускаем функцию каждые 1000 миллисекунд (1 секунда)
+setInterval(checkAndToggleAnthropometricContainer, 1000);
+
+
+
+
+
+// индикаторы антропометрии
+
+
+
+
+
+
+const norms = {
+    height: { min: 140, max: 200, unit: 'см' },
+    weight: { min: 50, max: 100, unit: 'кг' },
+    bodyFat: { min: 10, max: 25, unit: '%' },
+    visceralFat: { min: 1, max: 12, unit: '' },
+    protein: { min: 12, max: 20, unit: '%' },
+    muscle: { min: 30, max: 50, unit: '%' },
+    skeletalMuscle: { min: 25, max: 40, unit: '%' },
+    boneMass: { min: 2, max: 4, unit: 'кг' },
+    bodyWater: { min: 50, max: 70, unit: '%' },
+    waist: { min: 60, max: 100, unit: 'см' },
+    hips: { min: 80, max: 120, unit: 'см' },
+};
+
+function setIndicatorAntropometric(value, min, max) {
+    if (value < min) {
+        return "below";
+    } else if (value > max) {
+        return "above";
+    } else {
+        return "norm";
+    }
+}
+
+function updateIndicatorsAntropometric() {
+    function applyIndicator(id, value, norm) {
+        const indicator = document.getElementById(id);
+        const tooltip = indicator.nextElementSibling; // Получаем tooltip, который следует за индикатором
+        const indicatorClass = setIndicatorAntropometric(value, norm.min, norm.max);
+        indicator.textContent = indicatorClass === 'norm' ? 'Норма' : (indicatorClass === 'below' ? 'Ниже нормы' : 'Выше нормы');
+        indicator.className = `indicator-anthropometric ${indicatorClass}`;
+        tooltip.textContent = `Норма: ${norm.min} - ${norm.max} ${norm.unit}`;
+    }
+
+    applyIndicator('height-indicator', document.getElementById('height-input').value, norms.height);
+    applyIndicator('weight-indicator', document.getElementById('weight-input').value, norms.weight);
+    applyIndicator('body-fat-indicator', document.getElementById('body-fat-input').value, norms.bodyFat);
+    applyIndicator('visceral-fat-indicator', document.getElementById('visceral-fat-input').value, norms.visceralFat);
+    applyIndicator('protein-indicator', document.getElementById('protein-input').value, norms.protein);
+    applyIndicator('muscle-indicator', document.getElementById('muscle-input').value, norms.muscle);
+    applyIndicator('skeletal-muscle-indicator', document.getElementById('skeletal-muscle-input').value, norms.skeletalMuscle);
+    applyIndicator('bone-mass-indicator', document.getElementById('bone-mass-input').value, norms.boneMass);
+    applyIndicator('body-water-indicator', document.getElementById('body-water-input').value, norms.bodyWater);
+    applyIndicator('waist-indicator', document.getElementById('waist-input').value, norms.waist);
+    applyIndicator('hips-indicator', document.getElementById('hips-input').value, norms.hips);
+}
+
+// Событие, которое обновляет индикаторы при изменении значения любого из параметров
+document.querySelectorAll('.parameter-input').forEach(input => {
+    input.addEventListener('input', updateIndicatorsAntropometric);
+});
+
+// Изначальная установка индикаторов
+updateIndicatorsAntropometric();
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3310,9 +3466,11 @@ if (product.phytochemicals && Object.keys(product.phytochemicals).length > 0) {
 
 
 
-
-
+// Создаем карточку, только если хэш у сайта дневник питания (в адресной строке)
+const hash = window.location.hash.substring(1);
+    if (hash === 'food-diary') {
     productsDiv.appendChild(card);
+    }
 
     const weightInput = card.querySelector(".product-weight");
     const methodSelect = card.querySelector(".processing-method");
@@ -4349,6 +4507,3 @@ function updateMealSummary(meal, productEntry) {
     
     
 });
-    
-    
-    
